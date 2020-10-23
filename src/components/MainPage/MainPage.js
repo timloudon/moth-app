@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
-import MainHeader from '../../shared/MainHeader';
-import Logo from '../../shared/Logo';
 
 export class Home extends Component {
     render() {
         return (
             <React.Fragment>
-                <MainHeader />
-                <div>
-                    <Logo />
-                    <h2>MAJOR</h2>
-                </div>
-                <div>
-                    
-                </div>
-                <h2>MINOR</h2>
-                <h2>MAJOR CHROMATIC</h2>
-                <h2>MINOR CHROMATIC</h2>
+                <h1>Major</h1>
+                <h1>Minor</h1>
+                <h1>Major Chromatic</h1>
+                <h1>Minor Chromatic</h1>
             </React.Fragment>
         )
     }
