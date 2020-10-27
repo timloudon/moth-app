@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 
 function ExerciseIntervalButton(props) {
 
-    const { number, name, sound } = props;
+    const [color, setColor] = useState("default");
+
+    useEffect(() => {
+        window.addEventListener('keydown', changeButtonColor);
+        window.addEventListener('keyup', removeButtonColor);
+        // add cleanup function!
+        return () => {
+            console.log('cleanup')
+            window.removeEventListener('keydown', changeButtonColor);
+            window.removeEventListener('keyup', removeButtonColor);
+        }
+    })
+
+    const { number, name, sound, dataKey, mykey } = props;
 
     const note = new Audio(sound);
 
-    const playSound = () => {
+    const changeButtonColor = () => {
+        setColor("primary")
+    }
+
+    const removeButtonColor = () => {
+        setColor("default")
+    }
+
+    const playSound = (e) => {
         note.currentTime = 0;
         note.play();
     };
@@ -15,8 +36,11 @@ function ExerciseIntervalButton(props) {
     return (
         <>
             <Button
+                color={color}
                 variant="contained"
-                color="primary"
+                data-key={dataKey}
+                className="key"
+                data-mykey={mykey}
                 onClick={playSound}>
                 {number}({name})
             </Button>

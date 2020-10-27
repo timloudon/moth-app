@@ -5,22 +5,36 @@ import './App.css';
 import MainPage from './MainPage/MainPage';
 import Exercise from './Exercise/Exercise';
 import Options from './Options/Options';
+
+// React Router DOM
+
 import { Link, Route, Switch } from 'react-router-dom';
-// import { Button } from '@material-ui/core';
-// import { LinearScale } from '@material-ui/icons';
+
+// Material UI Imports
+
+import "typeface-roboto";
+import { CssBaseline, Container } from '@material-ui/core';
 
 function App() {
   return (
     <React.Fragment>
-      {/* include splash page here */}
-      <Link to={`/`}>Main Page</Link>
-      <Link to={`/components/Exercise`}>Exercise</Link>
-      <Link to={`/components/Options`}>Options</Link>
-      <Switch>
-        <Route exact path="/" component={MainPage} />
-        <Route exact path="/components/Exercise" component={Exercise} />
-        <Route exact path="/components/Options" component={Options} />
-      </Switch>
+      <CssBaseline />
+      <Container
+        maxWidth='md'
+        style={{
+          height: '100vh',
+        }}
+      >
+        {/* include splash page here */}
+        <Link to={`/`}>Main Page</Link>
+        <Link to={`/components/Exercise`}>Exercise</Link>
+        <Link to={`/components/Options`}>Options</Link>
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route exact path="/components/Exercise" component={Exercise} />
+          <Route exact path="/components/Options" component={Options} />
+        </Switch>
+      </Container>
     </React.Fragment>
   );
 }
