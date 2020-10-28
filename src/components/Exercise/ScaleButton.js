@@ -1,16 +1,15 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 
-function ExerciseScaleButton(props) {
+function ScaleButton(props) {
 
-    const { onClickHandler, scaleButton, scaleType } = props;
+    const { onClickHandler, scaleType } = props;
 
     return (
         <Button
             fullWidth={true}
             size="small"
             variant="contained"
-            color={scaleButton}
             onClick={onClickHandler}
         >
             {scaleType}
@@ -18,4 +17,4 @@ function ExerciseScaleButton(props) {
     );
 }
 
-export default ExerciseScaleButton;
+export default ScaleButton;

@@ -3,7 +3,7 @@ import './App.css';
 // import Splash from './SplashScreen/withSplashScreen';
 // import MainHeader from '../shared/MainHeader';
 import MainPage from './MainPage/MainPage';
-import Exercise from './Exercise/Exercise';
+import ExerciseContainer from './Exercise/ExerciseContainer';
 import Options from './Options/Options';
 
 // React Router DOM
@@ -27,11 +27,11 @@ function App() {
       >
         {/* include splash page here */}
         <Link to={`/`}>Main Page</Link>
-        <Link to={`/components/Exercise`}>Exercise</Link>
+        <Link to={`/components/ExerciseContainer`}>Exercise</Link>
         <Link to={`/components/Options`}>Options</Link>
         <Switch>
           <Route exact path="/" component={MainPage} />
-          <Route exact path="/components/Exercise" component={Exercise} />
+          <Route exact path="/components/Exercise" component={ExerciseContainer} />
           <Route exact path="/components/Options" component={Options} />
         </Switch>
       </Container>

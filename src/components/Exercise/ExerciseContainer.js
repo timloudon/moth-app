@@ -1,6 +1,8 @@
+// Considerations:
+// i) Have the audio of each key pre-rendered as a component (longer initial loading time)?
+
 import React, { useState, useEffect } from "react";
-import ExerciseIntervalButton from "./ExerciseIntervalButton";
-import ExerciseScaleButton from "./ExerciseScaleButton";
+import ScaleButtonContainer from "./ScaleButtonContainer";
 import {
     getScaleKeys,
     scalePatterns,
@@ -14,33 +16,40 @@ import {
     Typography,
     Switch,
     FormGroup,
-    FormControlLabel
+    FormControlLabel,
 } from "@material-ui/core";
-// import KeyboardIcon from "@material-ui/icons/Keyboard";
-
 import "typeface-roboto";
+import IntervalButtonContainer from "./IntervalButtonContainer";
 
-function Exercise() {
+function ExerciseContainer() {
 
+    // scale useState sets the note keys based on the scale tape button pressed
     const [scale, setScale] = useState(getScaleKeys(scalePatternsEnum.major, pianoKeys));
+    // toggleSwitch useState toggles the event listeners in useEffect
     const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: false });
-    const [scaleButton, setScaleButton] = useState("default");
 
     useEffect(() => {
+        // If the toggle switch is on adds keydown event listener
+        // playSoundWithKeys listens for key value and triggers the approriate sound (Wes Bos)
         toggleSwitch.keyboardSwitch
             ? window.addEventListener('keydown', playSoundWithKeys)
             : window.removeEventListener('keydown', playSoundWithKeys);
     })
 
+    // Changes the state of the toggle switch
     const handleChange = (e) => {
         setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
+    }
+
+    // Changes the state of the interval buttons (it is passed the string from the scale type button)
+    const changeIntervalButtons = (scaleType) => {
+        setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, pianoKeys));
     }
 
     return (
         <>
             <Grid container justify="center" spacing={4}>
                 <Typography variant="h1">Scale Selector</Typography>
-                <Typography variant="h2">{scaleButton}</Typography>
             </Grid>
             <Grid
                 container
@@ -50,35 +59,17 @@ function Exercise() {
                 alignItems="stretch"
                 justify="center"
             >
+                {/* <ButtonStyled /> */}
                 <Grid item width="200px">
-                    {scalePatterns.map((item) => {
-                        console.log(item.scaleType, 'item.scaleType')
-                        return (
-                            <ExerciseScaleButton
-                                key={item.scaleType}
-                                mykey={item.scaleType}
-                                onClickHandler={() => {
-                                    setScale(getScaleKeys(item.pattern, pianoKeys));
-                                    setScaleButton("primary");
-                                }}
-                                scaleButton={scaleButton}
-                                scaleType={item.scaleType}
-                            />
-                        );
-                    })}
+                    <ScaleButtonContainer
+                        changeIntervalButtons={changeIntervalButtons}
+                    />
                 </Grid>
                 <Grid item>
-                    {scale.map((item, index) => {
-                        return (
-                            <ExerciseIntervalButton
-                                key={item.number}
-                                name={item.name}
-                                number={item.number}
-                                sound={item.sound}
-                                dataKey={keyboardKeyValues[index]}
-                            />
-                        );
-                    })}
+                    <IntervalButtonContainer
+                        scale={scale}
+                        keyboardKeyValues={keyboardKeyValues}
+                    />
                 </Grid>
                 <FormGroup>
                     <FormControlLabel
@@ -99,4 +90,4 @@ function Exercise() {
     );
 }
 
-export default Exercise;
+export default ExerciseContainer;

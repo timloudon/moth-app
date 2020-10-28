@@ -7,7 +7,8 @@ export const scalePatterns = [
     { scaleType: "Mixo", pattern: [2, 2, 1, 2, 2, 1, 2] },
     { scaleType: "Ahava Raba", pattern: [3, 2, 2, 3, 2] },
     { scaleType: "Altered", pattern: [1, 2, 1, 2, 2, 2, 2] },
-    { scaleType: "Lyd Dom", pattern: [2, 2, 2, 1, 2, 2, 1] }
+    { scaleType: "Lyd Dom", pattern: [2, 2, 2, 1, 2, 2, 1] },
+    { scaleType: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
 ]
 
 export const scalePatternsEnum = {
