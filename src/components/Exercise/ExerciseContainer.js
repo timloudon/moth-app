@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 // Components
 import ScaleButtonContainer from "./ScaleButtonContainer";
 import IntervalButtonContainer from "./IntervalButtonContainer";
-import IntervalSound from "./IntervalSound";
+// import IntervalSound from "./IntervalSound";
 // Arrays & Functions
 import {
     getScaleKeys,
@@ -41,7 +41,7 @@ function ExerciseContainer() {
         toggleSwitch.keyboardSwitch
             ? window.addEventListener('keydown', playSoundWithKeys)
             : window.removeEventListener('keydown', playSoundWithKeys);
-    })
+    });
 
     // Changes the state of the toggle switch
     const handleChange = (e) => {
@@ -51,17 +51,28 @@ function ExerciseContainer() {
     // Changes the state of the interval buttons (it is passed the string from the scale type button)
     const changeIntervalButtons = (scaleType) => {
         setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, pianoKeys));
-        console.log(scaleType)
+        console.log(scaleType);
     }
+
+    // Creates all the sound objects form the pianoKeys array (all avaialable sounds)
+    function soundObjects() {
+        pianoKeys.forEach((item) => {
+            let note = new Audio(item.sound);
+            note.setAttribute('id', `${item.number}`);
+        })
+    }
+    soundObjects();
 
     // Plays the audio element where the id of the element matched the number property of the scale
     const playSound = (keyNumber) => {
         // Gets the audio element with an id that matches the key number of the button pressed
-        const sound = document.getElementById(keyNumber);
+        console.log(keyNumber, 'keyNumber');
+        const sound = document.getElementById(`${keyNumber}`);
+        console.log(sound, 'sound elements');
         // Must reset currentTime otherwise have to wait for the sample to end to replay
-        sound.currentTime = 0;
-        sound.play();
-    };
+        // sound.currentTime = 0;
+        // sound.play();
+    }
 
     return (
         <>
@@ -74,8 +85,8 @@ function ExerciseContainer() {
                 scale={scale}
                 playSound={playSound}
                 keyboardKeyValues={keyboardKeyValues} />
-            <IntervalSound
-                allNotes={pianoKeys} />
+            {/* <IntervalSound */}
+            {/* allNotes={pianoKeys} /> */}
 
             <FormGroup>
                 <FormControlLabel
