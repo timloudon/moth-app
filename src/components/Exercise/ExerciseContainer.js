@@ -34,6 +34,11 @@ function ExerciseContainer() {
     const [scale, setScale] = useState(getScaleKeys(scalePatternsEnum.major, pianoKeys));
     // toggleSwitch useState toggles the event listeners in useEffect
     const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: false });
+    // sets the state for the audio as an array of audio objects (currently identified by the index)
+    // future: find a more precise and less breakable way of identifying each array
+    // Cal's future problem:
+    // ** On a server he had to use the play method and stop stragight away in order to have the note loaded
+    const [allPianoKeys, setAllPianoKeys] = useState(getSoundObjects(pianoKeys));
 
     useEffect(() => {
         // If the toggle switch is on adds keydown event listener
@@ -54,23 +59,29 @@ function ExerciseContainer() {
         console.log(scaleType);
     }
 
-    // Creates all the sound objects form the pianoKeys array (all avaialable sounds)
-    function soundObjects() {
-        pianoKeys.forEach((item) => {
-            let note = new Audio(item.sound);
-            note.setAttribute('id', `${item.number}`);
-            note.play();
+    // Creates an array of audio objects
+    function getSoundObjects(noteArray) {
+        return noteArray.map((item) => {
+            return new Audio(item.sound);
         })
     }
-    soundObjects();
+    getSoundObjects();
 
     // Plays the audio element where the id of the element matched the number property of the scale
     const playSound = (keyNumber) => {
+        // To Do:
+        // Which button was pressed (keyNumber)
+        // Which Audio object has the matching id (to keynumber)
+        // Play that audio object (how to access within this function)
+
+        // Match the keyNumber to the corresponding index of the array of audio objects
+
         // Gets the audio element with an id that matches the key number of the button pressed
-        console.log(keyNumber, 'keyNumber');
-        const sound = document.getElementById(`${keyNumber}`);
-        console.log(sound, 'sound elements');
-        // Must reset currentTime otherwise have to wait for the sample to end to replay
+        // console.log(keyNumber, 'keyNumber');
+        // console.log(document.getElementById(`${keyNumber}`))
+        // const sound = document.getElementById(`${keyNumber}`);
+        // console.log(sound, 'sound elements');
+        // // Must reset currentTime otherwise have to wait for the sample to end to replay
         // sound.currentTime = 0;
         // sound.play();
     }

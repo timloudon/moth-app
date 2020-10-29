@@ -10,10 +10,7 @@ import Options from './Options/Options';
 // Styles
 import './App.css';
 // MaterialUI
-import {
-  Grid,
-
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import "typeface-roboto";
 
 function App() {
@@ -25,7 +22,7 @@ function App() {
 
       {/* include splash page here */}
       <Link to={`/`}>Main Page</Link>
-      <Link to={`/components/ExerciseContainer`}>Exercise</Link>
+      <Link to={`/components/Exercise`}>Exercise</Link>
       <Link to={`/components/Options`}>Options</Link>
 
       <Grid container>
