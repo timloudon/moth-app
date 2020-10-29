@@ -1,9 +1,10 @@
 import React from 'react';
+// Components
 import IntervalButton from "./IntervalButton";
 
 function IntervalButtonContainer(props) {
 
-    const { scale, keyboardKeyValues } = props;
+    const { scale, keyboardKeyValues, playSound } = props;
 
     return (
         // maps out note buttons based on the scale prop (passed in from Exercise Container)
@@ -14,7 +15,9 @@ function IntervalButtonContainer(props) {
                     name={item.name}
                     number={item.number}
                     sound={item.sound}
+                    onClickHandler={() => playSound(item.number)}
                     dataKey={keyboardKeyValues[index]}
+                    myKey={keyboardKeyValues[index]}
                 />
             );
         })

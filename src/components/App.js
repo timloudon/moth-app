@@ -1,40 +1,43 @@
 import React from 'react';
-import './App.css';
-// import Splash from './SplashScreen/withSplashScreen';
-// import MainHeader from '../shared/MainHeader';
+// React Router DOM
+import { Link, Route, Switch } from 'react-router-dom';
+// Components
 import MainPage from './MainPage/MainPage';
 import ExerciseContainer from './Exercise/ExerciseContainer';
+import Header from './Layouts/Header';
+import Footer from './Layouts/Footer';
 import Options from './Options/Options';
+// Styles
+import './App.css';
+// MaterialUI
+import {
+  Grid,
 
-// React Router DOM
-
-import { Link, Route, Switch } from 'react-router-dom';
-
-// Material UI Imports
-
+} from '@material-ui/core';
 import "typeface-roboto";
-import { CssBaseline, Container } from '@material-ui/core';
 
 function App() {
   return (
     <React.Fragment>
-      <CssBaseline />
-      <Container
-        maxWidth='md'
-        style={{
-          height: '100vh',
-        }}
-      >
-        {/* include splash page here */}
-        <Link to={`/`}>Main Page</Link>
-        <Link to={`/components/ExerciseContainer`}>Exercise</Link>
-        <Link to={`/components/Options`}>Options</Link>
+
+      {/* Need to pass in the title of each page into the title prop */}
+      <Header title={'Exercise'} />
+
+      {/* include splash page here */}
+      <Link to={`/`}>Main Page</Link>
+      <Link to={`/components/ExerciseContainer`}>Exercise</Link>
+      <Link to={`/components/Options`}>Options</Link>
+
+      <Grid container>
         <Switch>
           <Route exact path="/" component={MainPage} />
           <Route exact path="/components/Exercise" component={ExerciseContainer} />
           <Route exact path="/components/Options" component={Options} />
         </Switch>
-      </Container>
+      </Grid>
+
+      <Footer />
+
     </React.Fragment>
   );
 }

@@ -1,8 +1,15 @@
 // Considerations:
 // i) Have the audio of each key pre-rendered as a component (longer initial loading time)?
+// ii) Use styling rules to dynamically change the colour of the buttons on click:
+// a) Current scale type (stays until another is clicked)
+// b) Interval button changes colour on keydown and reverts on keyup
 
 import React, { useState, useEffect } from "react";
+// Components
 import ScaleButtonContainer from "./ScaleButtonContainer";
+import IntervalButtonContainer from "./IntervalButtonContainer";
+import IntervalSound from "./IntervalSound";
+// Arrays & Functions
 import {
     getScaleKeys,
     scalePatterns,
@@ -11,15 +18,15 @@ import {
     keyboardKeyValues,
     playSoundWithKeys
 } from "../../shared/scales";
+// MaterialUI
 import {
-    Grid,
+    // Grid,
     Typography,
     Switch,
     FormGroup,
     FormControlLabel,
 } from "@material-ui/core";
 import "typeface-roboto";
-import IntervalButtonContainer from "./IntervalButtonContainer";
 
 function ExerciseContainer() {
 
@@ -44,48 +51,44 @@ function ExerciseContainer() {
     // Changes the state of the interval buttons (it is passed the string from the scale type button)
     const changeIntervalButtons = (scaleType) => {
         setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, pianoKeys));
+        console.log(scaleType)
     }
+
+    // Plays the audio element where the id of the element matched the number property of the scale
+    const playSound = (keyNumber) => {
+        // Gets the audio element with an id that matches the key number of the button pressed
+        const sound = document.getElementById(keyNumber);
+        // Must reset currentTime otherwise have to wait for the sample to end to replay
+        sound.currentTime = 0;
+        sound.play();
+    };
 
     return (
         <>
-            <Grid container justify="center" spacing={4}>
-                <Typography variant="h1">Scale Selector</Typography>
-            </Grid>
-            <Grid
-                container
-                spacing={4}
-                direction="row"
-                alignContent="center"
-                alignItems="stretch"
-                justify="center"
-            >
-                {/* <ButtonStyled /> */}
-                <Grid item width="200px">
-                    <ScaleButtonContainer
-                        changeIntervalButtons={changeIntervalButtons}
-                    />
-                </Grid>
-                <Grid item>
-                    <IntervalButtonContainer
-                        scale={scale}
-                        keyboardKeyValues={keyboardKeyValues}
-                    />
-                </Grid>
-                <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={toggleSwitch.keyboardSwitch}
-                                onChange={handleChange}
-                                name="keyboardSwitch"
-                                color="primary"
-                            />
-                        }
-                        label="Play with keyboard"
-                    >
-                    </FormControlLabel>
-                </FormGroup>
-            </Grid>
+            <Typography variant="h1">Scale Selector</Typography>
+
+            <ScaleButtonContainer
+                changeIntervalButtons={changeIntervalButtons} />
+
+            <IntervalButtonContainer
+                scale={scale}
+                playSound={playSound}
+                keyboardKeyValues={keyboardKeyValues} />
+            <IntervalSound
+                allNotes={pianoKeys} />
+
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={toggleSwitch.keyboardSwitch}
+                            onChange={handleChange}
+                            name="keyboardSwitch"
+                            color="primary" />
+                    }
+                    label="Play with keyboard">
+                </FormControlLabel>
+            </FormGroup>
         </>
     );
 }

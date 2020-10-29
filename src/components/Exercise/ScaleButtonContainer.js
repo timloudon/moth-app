@@ -1,5 +1,7 @@
 import React from 'react';
+// Components
 import ScaleButton from "./ScaleButton";
+// Arrays
 import { scalePatterns } from "../../shared/scales";
 
 function ScaleButtonContainer(props) {
