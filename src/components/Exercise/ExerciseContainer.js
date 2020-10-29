@@ -41,7 +41,7 @@ function ExerciseContainer() {
         toggleSwitch.keyboardSwitch
             ? window.addEventListener('keydown', playSoundWithKeys)
             : window.removeEventListener('keydown', playSoundWithKeys);
-    });
+    })
 
     // Changes the state of the toggle switch
     const handleChange = (e) => {
@@ -59,6 +59,7 @@ function ExerciseContainer() {
         pianoKeys.forEach((item) => {
             let note = new Audio(item.sound);
             note.setAttribute('id', `${item.number}`);
+            note.play();
         })
     }
     soundObjects();
