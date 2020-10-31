@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 
 function IntervalButton(props) {
 
-    const { number, name, dataKey, mykey, onClickHandler } = props;
+    const { number, dataKey, mykey, onClickHandler } = props;
 
     return (
         <>
@@ -14,7 +14,7 @@ function IntervalButton(props) {
                 className="key"
                 data-mykey={mykey}
                 onClick={onClickHandler}>
-                {number}({name})
+                {number}
             </Button>
         </>
     );

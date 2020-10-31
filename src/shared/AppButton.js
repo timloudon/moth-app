@@ -6,10 +6,11 @@ import { Button } from "@material-ui/core";
 
 function AppButton(props) {
 
-    const { onClickHandler, buttonText } = props;
+    const { onClickHandler, buttonText, style } = props;
 
     return (
         <Button
+            style={style}
             variant="contained"
             onClick={onClickHandler}
         >

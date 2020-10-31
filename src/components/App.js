@@ -40,15 +40,3 @@ function App() {
 }
 
 export default App;
-
-// Ideas
-
-// Possibility of having the exercise components in a JSON (major scale, minor scale etc.) 
-// and have an arrow function component return a particular object with the correct scales,
-// controlled by the state which is passed by what is currently selected in the options
-
-// const Scale = () => {
-//   return(
-//     // return object here with corresponding options
-//   )
-// }
