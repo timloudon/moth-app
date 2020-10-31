@@ -1,5 +1,6 @@
 // Considerations:
-// i) Have the audio of each key pre-rendered as a component (longer initial loading time)?
+// i) Create a more complex event listener:
+// a) Keyup or mouseup triggering a new sample of the tail end of the note (the sample of the key in NI) 
 // ii) Use styling rules to dynamically change the colour of the buttons on click:
 // a) Current scale type (stays until another is clicked)
 // b) Interval button changes colour on keydown and reverts on keyup
@@ -8,19 +9,18 @@ import React, { useState, useEffect } from "react";
 // Components
 import ScaleButtonContainer from "./ScaleButtonContainer";
 import IntervalButtonContainer from "./IntervalButtonContainer";
-// import IntervalSound from "./IntervalSound";
+import SoundButtonContainer from "./SoundButtonContainer";
 // Arrays & Functions
 import {
     getScaleKeys,
     scalePatterns,
-    scalePatternsEnum,
-    pianoKeys,
+    instruments,
     keyboardKeyValues,
     playSoundWithKeys
 } from "../../shared/scales";
 // MaterialUI
 import {
-    // Grid,
+    // makeStyles,
     Typography,
     Switch,
     FormGroup,
@@ -30,15 +30,27 @@ import "typeface-roboto";
 
 function ExerciseContainer() {
 
+    // VARIABLES
+
+    // Provides the all the available notes for setting the default state
+    const defaultNotes = instruments[0].instrumentSounds;
+    // Provides the major scale for the initial state
+    const defaultScalePattern = scalePatterns[0].pattern
+
+    // STATES
+
     // scale useState sets the note keys based on the scale tape button pressed
-    const [scale, setScale] = useState(getScaleKeys(scalePatternsEnum.major, pianoKeys));
+    const [scale, setScale] = useState(getScaleKeys(defaultScalePattern, defaultNotes));
     // toggleSwitch useState toggles the event listeners in useEffect
     const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: false });
     // sets the state for the audio as an array of audio objects (currently identified by the index)
     // future: find a more precise and less breakable way of identifying each array
     // Cal's future problem:
-    // ** On a server he had to use the play method and stop stragight away in order to have the note loaded
-    const [allPianoKeys, setAllPianoKeys] = useState(getSoundObjects(pianoKeys));
+    // ** On a server he had to use the play method and stop straight away in order to have the note loaded
+    const [instrumentSounds, setInstrumentSounds] = useState(getSoundObjects(defaultNotes));
+
+    console.log(scale, 'scale');
+    console.log(instrumentSounds, 'instrumentSounds');
 
     useEffect(() => {
         // If the toggle switch is on adds keydown event listener
@@ -48,15 +60,31 @@ function ExerciseContainer() {
             : window.removeEventListener('keydown', playSoundWithKeys);
     })
 
+    // STYLES
+
+    // Goal: When a scale type button is pressed the background should stay blue until a different button is pressed
+
+    // const useStyles = makeStyles({
+    //     buttonStyle: {
+    //         color: props => ()
+    //     }
+    // })
+
+    // FUNCTIONS
+
     // Changes the state of the toggle switch
     const handleChange = (e) => {
         setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
     }
 
+    // Changes the state of the sound objects
+    const changeInstrumentSound = (instrumentSounds) => {
+        setInstrumentSounds(getSoundObjects(instrumentSounds));
+    }
+
     // Changes the state of the interval buttons (it is passed the string from the scale type button)
     const changeIntervalButtons = (scaleType) => {
-        setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, pianoKeys));
-        console.log(scaleType);
+        setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, defaultNotes));
     }
 
     // Creates an array of audio objects
@@ -65,30 +93,24 @@ function ExerciseContainer() {
             return new Audio(item.sound);
         })
     }
-    getSoundObjects();
 
     // Plays the audio element where the id of the element matched the number property of the scale
     const playSound = (keyNumber) => {
-        // To Do:
-        // Which button was pressed (keyNumber)
-        // Which Audio object has the matching id (to keynumber)
-        // Play that audio object (how to access within this function)
-
         // Match the keyNumber to the corresponding index of the array of audio objects
-
-        // Gets the audio element with an id that matches the key number of the button pressed
-        // console.log(keyNumber, 'keyNumber');
-        // console.log(document.getElementById(`${keyNumber}`))
-        // const sound = document.getElementById(`${keyNumber}`);
-        // console.log(sound, 'sound elements');
-        // // Must reset currentTime otherwise have to wait for the sample to end to replay
-        // sound.currentTime = 0;
-        // sound.play();
+        const sound = instrumentSounds[keyNumber];
+        // Must reset currentTime otherwise have to wait for the sample to end to replay
+        sound.currentTime = 0;
+        sound.play();
     }
 
     return (
         <>
             <Typography variant="h1">Scale Selector</Typography>
+            {/* <Typography variant="h1">{}</Typography> */}
+
+            <SoundButtonContainer
+                changeInstrumentSound={changeInstrumentSound}
+            />
 
             <ScaleButtonContainer
                 changeIntervalButtons={changeIntervalButtons} />
@@ -97,8 +119,6 @@ function ExerciseContainer() {
                 scale={scale}
                 playSound={playSound}
                 keyboardKeyValues={keyboardKeyValues} />
-            {/* <IntervalSound */}
-            {/* allNotes={pianoKeys} /> */}
 
             <FormGroup>
                 <FormControlLabel

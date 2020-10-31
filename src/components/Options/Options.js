@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+// import AppButton from '../../shared/AppButton';
 
-export class Options extends Component {
-    render() {
-        return (
-            <div>
-                <h1>These are the options</h1>
-            </div>
-        )
-    }
+function Options(props) {
+
+    // const { onClickHandler, buttonText } = props;
+
+    return (
+        <>
+            {/* <AppButton
+                onClickHandler={}
+                buttonText={} /> */}
+        </>
+    )
 }
 
-export default Options;
+export default Options
+
