@@ -1,6 +1,6 @@
 import React from 'react';
 // React Router DOM
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 // Components
 import MainPage from './MainPage/MainPage';
 import ExerciseContainer from './Exercise/ExerciseContainer';
@@ -13,27 +13,36 @@ import './App.css';
 import { Grid } from '@material-ui/core';
 import "typeface-roboto";
 
+// All grid components are containers - the grid components within the rendered components are items
+
 function App() {
   return (
     <React.Fragment>
+      <Grid container
+        // spacing={0}
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch">
 
-      {/* Need to pass in the title of each page into the title prop */}
-      <Header title={'Exercise'} />
+        <Grid item>
+          {/* Need to pass in the title of each page into the title prop */}
+          <Header title={'Title'} />
+          {/* include splash page here */}
+        </Grid>
 
-      {/* include splash page here */}
-      <Link to={`/`}>Main Page</Link>
-      <Link to={`/components/Exercise`}>Exercise</Link>
-      <Link to={`/components/Options`}>Options</Link>
+        <Grid item>
+          <Switch>
+            <Route exact path="/" component={MainPage} />
+            <Route exact path="/components/Exercise" component={ExerciseContainer} />
+            <Route exact path="/components/Options" component={Options} />
+          </Switch>
+        </Grid>
 
-      <Grid container>
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route exact path="/components/Exercise" component={ExerciseContainer} />
-          <Route exact path="/components/Options" component={Options} />
-        </Switch>
+        <Grid item>
+          <Footer />
+        </Grid>
+
       </Grid>
-
-      <Footer />
 
     </React.Fragment>
   );

@@ -12,10 +12,6 @@ export const scalePatterns = [
     { scaleType: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
 ]
 
-// export const scalePatternsEnum = {
-//     major: scalePatterns[0].pattern,
-// }
-
 // Array of available instruments
 export const instruments = [
     {

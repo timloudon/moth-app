@@ -21,6 +21,7 @@ import {
 // MaterialUI
 import {
     // makeStyles,
+    Grid,
     Typography,
     Switch,
     FormGroup,
@@ -102,35 +103,65 @@ function ExerciseContainer() {
     }
 
     return (
-        <>
-            <Typography variant="h1">Scale Selector</Typography>
+        <Grid container
+            spacing={3}
+            direction="row"
+            justify="flex-start"
+            alignItems="stretch">
 
-            <SoundButtonContainer
-                changeInstrumentSound={changeInstrumentSound}
-            />
+            <Grid item xs={2}></Grid>
+            <Grid container item
+                spacing={7}
+                xs={8}
+                direction="row"
+                justify="flex-start"
+                alignItems="stretch">
 
-            <ScaleButtonContainer
-                buttonIsClicked={selectedScale}
-                changeScale={changeScale} />
+                <Grid item
+                    xs={12}>
+                    <Typography variant="h3" align="center">Scale Selector</Typography>
+                </Grid>
 
-            <IntervalButtonContainer
-                scale={scale}
-                playSound={playSound}
-                keyboardKeyValues={keyboardKeyValues} />
+                <Grid item
+                    xs={12}>
+                    <SoundButtonContainer
+                        changeInstrumentSound={changeInstrumentSound} />
+                </Grid>
 
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={toggleSwitch.keyboardSwitch}
-                            onChange={handleChange}
-                            name="keyboardSwitch"
-                            color="primary" />
-                    }
-                    label="Play with keyboard">
-                </FormControlLabel>
-            </FormGroup>
-        </>
+                <Grid item
+                    xs={12} >
+                    <ScaleButtonContainer
+                        buttonIsClicked={selectedScale}
+                        changeScale={changeScale} />
+                </Grid>
+
+                <Grid item
+                    xs={12} >
+                    <IntervalButtonContainer
+                        scale={scale}
+                        playSound={playSound}
+                        keyboardKeyValues={keyboardKeyValues} />
+                </Grid>
+
+                <Grid item
+                    xs={12} >
+                    <FormGroup>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={toggleSwitch.keyboardSwitch}
+                                    onChange={handleChange}
+                                    name="keyboardSwitch"
+                                    color="primary" />
+                            }
+                            label="Play with keyboard">
+                        </FormControlLabel>
+                    </FormGroup>
+                </Grid>
+            </Grid>
+            <Grid item xs={2}></Grid>
+
+        </Grid>
     );
 }
 
