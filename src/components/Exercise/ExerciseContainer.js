@@ -7,9 +7,10 @@
 
 import React, { useState, useEffect } from "react";
 // Components
-import ScaleButtonContainer from "./ScaleButtonContainer";
+// import ScaleButtonContainer from "./ScaleButtonContainer";
 import IntervalButtonContainer from "./IntervalButtonContainer";
 import SoundButtonContainer from "./SoundButtonContainer";
+import { intervalQuizQuestions } from "./quizQuestions";
 // Arrays & Functions
 import {
     getScaleKeys,
@@ -29,7 +30,7 @@ import {
 } from "@material-ui/core";
 import "typeface-roboto";
 
-function ExerciseContainer() {
+function ExerciseContainer(props) {
 
     // VARIABLES
 
@@ -42,8 +43,17 @@ function ExerciseContainer() {
 
     // STATES
 
+    // question useState sets the current question
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+
+    // score useState keeps track of the user's score
+    const [score, setScore] = useState(0);
+
+    // showScore useState displays the user's score
+    const [showScore, setShowScore] = useState(false);
+
     // scale useState sets the note keys based on the scale tape button pressed
-    const [scale, setScale] = useState(getScaleKeys(defaultScalePattern, defaultNotes));
+    const [scale, setScale] = useState(getScaleKeys(props.props.location.state.pattern, defaultNotes));
 
     // changes the style of the selected scale type button (to show which is pressed)
     const [selectedScale, setSelectedScale] = useState(defaultScaleType);
@@ -102,6 +112,20 @@ function ExerciseContainer() {
         setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
     }
 
+    // Handles the answer to the question
+    const handleAnswerOptionClick = (isCorrect) => {
+        if (isCorrect) {
+            setScore(score + 1);
+        }
+
+        const nextQuestion = currentQuestion + 1;
+        if (nextQuestion < intervalQuizQuestions.length) {
+            setCurrentQuestion(nextQuestion);
+        } else {
+            setShowScore(true)
+        }
+    }
+
     return (
         <Grid container
             spacing={3}
@@ -119,20 +143,13 @@ function ExerciseContainer() {
 
                 <Grid item
                     xs={12}>
-                    <Typography variant="h3" align="center">Scale Selector</Typography>
+                    <Typography variant="h3" align="center">Interval Quiz</Typography>
                 </Grid>
 
                 <Grid item
                     xs={12}>
                     <SoundButtonContainer
                         changeInstrumentSound={changeInstrumentSound} />
-                </Grid>
-
-                <Grid item
-                    xs={12} >
-                    <ScaleButtonContainer
-                        buttonIsClicked={selectedScale}
-                        changeScale={changeScale} />
                 </Grid>
 
                 <Grid item

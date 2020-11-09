@@ -30,10 +30,8 @@ function Header(props) {
                         direction="row"
                         justify="flex-end"
                         alignItems="center">
-                        {/* Links point back to routing in App component */}
-                        <Grid item><Link to={`../`}>Main Page</Link></Grid>
-                        <Grid item><Link to={`../components/Exercise`}>Exercise</Link></Grid>
-                        <Grid item><Link to={`../components/Options`}>Options</Link></Grid>
+                        {/* Link points back to routing in App component */}
+                        <Grid item><Link to={`../Options`}>Options</Link></Grid>
                     </Grid>
                 </Grid>
             </Toolbar>

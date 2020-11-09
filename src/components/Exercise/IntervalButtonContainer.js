@@ -13,7 +13,7 @@ function IntervalButtonContainer(props) {
                 <IntervalButton
                     key={item.number}
                     name={item.name}
-                    number={item.number}
+                    intervalValue={item.intervalValue}
                     sound={item.sound}
                     onClickHandler={() => playSound(item.number)}
                     dataKey={keyboardKeyValues[index]}

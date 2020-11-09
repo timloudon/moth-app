@@ -1,5 +1,6 @@
 // Patterns of different scale types (pattern property is an array of semitone value differences between notes of the scale)
 export const scalePatterns = [
+    { scaleType: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
     { scaleType: "Maj", pattern: [2, 2, 1, 2, 2, 2, 1, 1] },
     { scaleType: "Min", pattern: [2, 1, 2, 2, 1, 2, 2] },
     { scaleType: "Harm Min", pattern: [2, 1, 2, 2, 1, 3, 1] },
@@ -17,19 +18,19 @@ export const instruments = [
     {
         instrumentName: "Piano",
         instrumentSounds: [
-            { number: 0, name: "C", sound: "/audio/piano/C2.mp3" },
-            { number: 1, name: "C#", sound: "/audio/piano/Csharp2.mp3" },
-            { number: 2, name: "D", sound: "/audio/piano/D2.mp3" },
-            { number: 3, name: "D#", sound: "/audio/piano/Dsharp2.mp3" },
-            { number: 4, name: "E", sound: "/audio/piano/E2.mp3" },
-            { number: 5, name: "F", sound: "/audio/piano/F2.mp3" },
-            { number: 6, name: "F#", sound: "/audio/piano/Fsharp2.mp3" },
-            { number: 7, name: "G", sound: "/audio/piano/G2.mp3" },
-            { number: 8, name: "G#", sound: "/audio/piano/Gsharp2.mp3" },
-            { number: 9, name: "A", sound: "/audio/piano/A2.mp3" },
-            { number: 10, name: "A#", sound: "/audio/piano/Asharp2.mp3" },
-            { number: 11, name: "B", sound: "/audio/piano/B2.mp3" },
-            { number: 12, name: "C", sound: "/audio/piano/C3.mp3" },
+            { number: 0, intervalValue: "1", name: "C", sound: "/audio/piano/C2.mp3" },
+            { number: 1, intervalValue: "b2", name: "C#", sound: "/audio/piano/Csharp2.mp3" },
+            { number: 2, intervalValue: "2", name: "D", sound: "/audio/piano/D2.mp3" },
+            { number: 3, intervalValue: "b3", name: "D#", sound: "/audio/piano/Dsharp2.mp3" },
+            { number: 4, intervalValue: "3", name: "E", sound: "/audio/piano/E2.mp3" },
+            { number: 5, intervalValue: "4", name: "F", sound: "/audio/piano/F2.mp3" },
+            { number: 6, intervalValue: "#4/b5", name: "F#", sound: "/audio/piano/Fsharp2.mp3" },
+            { number: 7, intervalValue: "5", name: "G", sound: "/audio/piano/G2.mp3" },
+            { number: 8, intervalValue: "b6", name: "G#", sound: "/audio/piano/Gsharp2.mp3" },
+            { number: 9, intervalValue: "6", name: "A", sound: "/audio/piano/A2.mp3" },
+            { number: 10, intervalValue: "b7", name: "A#", sound: "/audio/piano/Asharp2.mp3" },
+            { number: 11, intervalValue: "7", name: "B", sound: "/audio/piano/B2.mp3" },
+            { number: 12, intervalValue: "8", name: "C", sound: "/audio/piano/C3.mp3" },
         ]
     },
     {
