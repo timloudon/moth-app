@@ -53,6 +53,13 @@ export const instruments = [
     }
 ]
 
+export const cadenceTypes = [
+    { number: 0, name: "ii V I", sound: "/audio/piano/iiVI(C).mp3" },
+    { number: 1, name: "ii V7 i", sound: "/audio/piano/iiV7i(Cm).mp3" },
+    { number: 2, name: "ii V I", sound: "/audio/rhodes/iiVI(C).mp3" },
+    { number: 3, name: "ii V7 i", sound: "/audio/rhodes/iiV7i(Cm).mp3" }
+]
+
 // Provides the key values for keys A, S, D, F, G, H, J, K
 export const keyboardKeyValues = [65, 83, 68, 70, 71, 72, 74, 75];
 
@@ -74,4 +81,11 @@ export function playSoundWithKeys(e) {
     const scaleButton = document.querySelector(`button.key[data-key="${e.keyCode}"]`);
     if (!scaleButton) return;
     scaleButton.click();
+}
+
+// Creates an array of audio objects
+export function getSoundObjects(noteArray) {
+    return noteArray.map((item) => {
+        return new Audio(item.sound);
+    })
 }

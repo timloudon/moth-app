@@ -1,1 +1,0 @@
-export const intervalQuizQuestions = [3, 4, 2, 2, 4, 5, 7, 6, 8]

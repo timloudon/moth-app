@@ -6,6 +6,7 @@ import { instruments } from "../../shared/scales";
 function SoundButtonContainer(props) {
 
     const { changeInstrumentSound } = props;
+    console.log(changeInstrumentSound, 'changeInstrumentSound(SoundButton)')
 
     return (
         instruments.map((item) => {

@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 function AppButton(props) {
 
     const { onClickHandler, buttonText, style } = props;
+    console.log(onClickHandler, 'onClickHandler(AppButton)')
 
     return (
         <Button
