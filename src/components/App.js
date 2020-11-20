@@ -1,3 +1,10 @@
+// NEW FEATURE: Have a practice mode where you're given a constant tone and the key/progression/cadence 
+// changes and you have to identify the tone in relation to the changes
+// PROBLEM: Need to figure out a way to make the scale and cadence patterns be affected by key changes
+// i.e. have the cadence chords defined by differences in semitones and use maths to adjust them 
+// (probably need a broader range of available notes - i.e. C2 - C4). Also have different voicings (inversions)
+// for the most realistic changes (and figure out ways of selecting them)
+
 import React, { useState } from "react";
 // React Router DOM
 import { Route, Switch } from "react-router-dom";
@@ -10,7 +17,7 @@ import Options from "./Options/Options";
 import {
   getSoundObjects,
   instruments
-} from "../shared/scales";
+} from "../shared/musicResources";
 // Styles
 import "./App.css";
 // MaterialUI
@@ -32,25 +39,22 @@ function App() {
     setInstrumentSounds(getSoundObjects(instrumentSounds));
   }
 
-  console.log((instrumentSounds[0]), 'instrumentSound state');
-  console.log(defaultNotes, 'defaultNotes(App)')
-
   // COMPONENTS
 
   const mainPage = () => (
-    <Layout>
+    <Layout title="Main Menu">
       <MainPage />
     </Layout>
   )
 
   const exerciseContainer = (props) => (
-    <Layout>
+    <Layout title={props.location.state.type}>
       <ExerciseContainer routeProps={props} instrumentSounds={instrumentSounds} defaultNotes={defaultNotes} />
     </Layout>
   )
 
   const options = () => (
-    <Layout>
+    <Layout title="Options">
       <Options changeInstrumentSound={changeInstrumentSound} />
     </Layout>
   )

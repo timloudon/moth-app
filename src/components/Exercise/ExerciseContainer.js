@@ -12,67 +12,56 @@ import IntervalButtonContainer from "./IntervalButtonContainer";
 // Arrays & Functions
 import {
     getScaleKeys,
-    instruments,
     keyboardKeyValues,
-    playSoundWithKeys
-} from "../../shared/scales";
+    playSoundWithKeys,
+    cadencePatterns,
+    scalePatterns
+} from "../../shared/musicResources";
 // MaterialUI
 import {
     // makeStyles,
     Grid,
-    Typography,
+    // Typography,
     Switch,
     FormGroup,
     FormControlLabel,
+    IconButton
 } from "@material-ui/core";
+import {
+    PlayCircleOutline,
+    MusicNote
+} from "@material-ui/icons";
 import "typeface-roboto";
+// import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 
 function ExerciseContainer(props) {
 
-    console.log(props, 'props');
-
     const { routeProps, instrumentSounds, defaultNotes } = props;
-
-    console.log(defaultNotes, 'defaultNotes')
-    console.log(routeProps, 'routeProps');
-    console.log(routeProps.location.state.pattern, 'routeProps.locatio.state.pattern')
-
-    // useEffect plays cadence and interval question tone on load and state change
-    useEffect(() => {
-        // Play the cadence after a delay
-        const cadenceTimer = setTimeout(() => {
-            const cadenceSound = new Audio(cadence);
-            cadenceSound.play();
-        }, 1000);
-        // Play the currentQuestionValue interval
-        const toneTimer = setTimeout(() => {
-            playQuizTone(currentQuestionValue);
-        }, 6000);
-        // Cleanup
-        return () => {
-            clearTimeout(cadenceTimer);
-            clearTimeout(toneTimer);
-        };
-    });
-
-    // Keyboard Toggle Switch useEffect
-    useEffect(() => {
-        // If the toggle switch is on adds keydown event listener
-        // playSoundWithKeys listens for key value and triggers the approriate sound (Wes Bos)
-        toggleSwitch.keyboardSwitch
-            ? window.addEventListener('keydown', playSoundWithKeys)
-            : window.removeEventListener('keydown', playSoundWithKeys);
-    });
-
-    // Changes the state of the toggle switch
-    const handleChange = (e) => {
-        setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
-    }
 
     // VARIABLES
 
-    // scale useState sets the note keys based on the scale tape button pressed
-    const [scale] = useState(getScaleKeys(routeProps.location.state.pattern, defaultNotes));
+    // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
+    const cadenceAndScaleType = routeProps.location.state.type;
+
+    // METHODS
+
+    // Finds the scale pattern by matching the string passed in above with the type property
+    const findScalePattern = () => {
+        // Finds the object within the array that matches the string
+        const scaleObject = scalePatterns.find(pattern => pattern.type === cadenceAndScaleType);
+        // the scale pattern within the ascociated obect
+        const scalePattern = scaleObject.pattern;
+        return scalePattern;
+    }
+
+    // Finds the cadence pattern by matching the string passed in with the type property
+    const findChordInCadencePattern = (index) => {
+        // Finds the object within the array that matches the string
+        const cadenceObject = cadencePatterns.find(pattern => pattern.type === cadenceAndScaleType);
+        // the cadence pattern that matches the index passed in (e.g. index of 0 relates to the values for a iim7 chord)
+        const cadencePattern = cadenceObject.pattern[index];
+        return cadencePattern;
+    }
 
     const createQuestions = () => {
         // create empty array that will hold the randomly generated interval questions
@@ -92,33 +81,10 @@ function ExerciseContainer(props) {
         return randomQuestionsArray;
     }
 
-    const [randomQuestions] = useState(createQuestions());
-
-    // sets the current question value (interval number)
-    const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
-    // sets the current question index number
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-
-    // plays the note from the current question value (triggered in useEffect)
-    const playQuizTone = (interval) => {
-        const intervalSound = instrumentSounds[interval];
-        intervalSound.currentTime = 0;
-        intervalSound.play();
+    // Plays each note within a chord (plays each chord from the 2D cadence pattern)
+    const playChord = (pattern) => {
+        pattern.forEach(item => playSound(item))
     }
-
-    // STATES
-
-    // score useState keeps track of the user's score
-    const [score, setScore] = useState(0);
-
-    // showScore useState displays the user's score
-    // const [showScore, setShowScore] = useState(false);
-
-    // sets the cadence to be played at the beginning of each 'question'
-    const [cadence] = useState(routeProps.location.state.cadence);
-
-    // toggleSwitch useState toggles the event listeners in useEffect
-    const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: true });
 
     // Plays the audio element where the id of the element matches the number property of the scale
     const playSound = (keyNumber) => {
@@ -153,6 +119,89 @@ function ExerciseContainer(props) {
         }
     }
 
+    // Changes the state of the toggle switch
+    const handleChange = (e) => {
+        setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
+    }
+
+    // STATES
+
+    // CONSDIER PUTTING RANDOM QUESTIONS ARRAY IS A REF SO IT ISN'T AFFECTED BY RE-RENDER
+
+    // scale useState sets the note keys based on the scale type button pressed
+    const [scale] = useState(getScaleKeys(findScalePattern(), defaultNotes));
+
+    const [randomQuestions] = useState(createQuestions());
+
+    // sets the current question value (interval number)
+    const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
+    // sets the current question index number
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+
+    // score useState keeps track of the user's score
+    const [score, setScore] = useState(0);
+
+    // showScore useState displays the user's score
+    // const [showScore, setShowScore] = useState(false);
+
+    // toggleSwitch useState toggles the event listeners in useEffect
+    const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: true });
+
+    // USEEFFECTS
+
+    // useEffect test logic:
+
+    function playCadence() {
+        setTimeout(() => {
+            // first chord (instant)
+            playChord(findChordInCadencePattern(0));
+            // second chord (1 second)
+            setTimeout(() => {
+                playChord(findChordInCadencePattern(1));
+            }, 1000);
+            // third chord (2 seconds)
+            setTimeout(() => {
+                playChord(findChordInCadencePattern(2));
+            }, 2000);
+        }, 1000);
+    }
+
+    // useEffect plays cadence and interval question tone on load and state change
+    useEffect(() => {
+        // Play the cadence after a delay (nested timeouts, waits 1 second after render)
+        // const cadenceTimer = setTimeout(() => {
+        //     // first chord (instant)
+        //     playChord(findChordInCadencePattern(0));
+        //     // second chord (1 second)
+        //     setTimeout(() => {
+        //         playChord(findChordInCadencePattern(1));
+        //     }, 1000);
+        //     // third chord (2 seconds)
+        //     setTimeout(() => {
+        //         playChord(findChordInCadencePattern(2));
+        //     }, 2000);
+        // }, 1000);
+        playCadence();
+        // Play the currentQuestionValue interval (5 seconds delay for cadence)
+        const toneTimer = setTimeout(() => {
+            playSound(currentQuestionValue);
+        }, 5000);
+        // Cleanup
+        return () => {
+            // clearTimeout(cadenceTimer);
+            clearTimeout(toneTimer);
+        };
+    });
+
+    // Keyboard Toggle Switch useEffect
+    useEffect(() => {
+        // If the toggle switch is on adds keydown event listener
+        // playSoundWithKeys listens for key value and triggers the approriate sound (Wes Bos)
+        toggleSwitch.keyboardSwitch
+            ? window.addEventListener('keydown', playSoundWithKeys)
+            : window.removeEventListener('keydown', playSoundWithKeys);
+    });
+
     return (
         <Grid container
             spacing={3}
@@ -169,23 +218,21 @@ function ExerciseContainer(props) {
                 alignItems="stretch">
 
                 <Grid item
-                    xs={12}>
-                    <Typography variant="h3" align="center">Interval Quiz</Typography>
-                </Grid>
-
-                {/* <Grid item
-                    xs={12}>
-                    <SoundButtonContainer
-                        changeInstrumentSound={changeInstrumentSound} />
-                </Grid> */}
-
-                <Grid item
                     xs={12} >
                     <IntervalButtonContainer
                         scale={scale}
                         playSound={playSound}
                         checkIntervalAnswer={checkIntervalAnswer}
                         keyboardKeyValues={keyboardKeyValues} />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <IconButton onClick={() => playCadence()}>
+                        <PlayCircleOutline />
+                    </IconButton>
+                    <IconButton onClick={() => playSound(currentQuestionValue)}>
+                        <MusicNote />
+                    </IconButton>
                 </Grid>
 
                 <Grid item
@@ -215,10 +262,10 @@ export default ExerciseContainer;
 // DEPRECIATED CODE
 
 // Changes the state of the interval buttons (it is passed the string from the scale type button)
-    // const changeScale = (scaleType) => {
-    //     setScale(getScaleKeys(scalePatterns.find(item => item.scaleType === scaleType).pattern, defaultNotes));
+    // const changeScale = (type) => {
+    //     setScale(getScaleKeys(scalePatterns.find(item => item.type === type).pattern, defaultNotes));
     //     // Sets the colour of the clicked button to a different colour to show which scale is selected
-    //     setSelectedScale(scaleType);
+    //     setSelectedScale(type);
     // }
 
 // cadenceSound.oncanplaythrough = (e) => {

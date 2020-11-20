@@ -1,16 +1,16 @@
 // Patterns of different scale types (pattern property is an array of semitone value differences between notes of the scale)
 export const scalePatterns = [
-    { scaleType: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
-    { scaleType: "Maj", pattern: [2, 2, 1, 2, 2, 2, 1, 1] },
-    { scaleType: "Min", pattern: [2, 1, 2, 2, 1, 2, 2] },
-    { scaleType: "Harm Min", pattern: [2, 1, 2, 2, 1, 3, 1] },
-    { scaleType: "Mel Min", pattern: [2, 1, 2, 2, 2, 2, 1] },
-    { scaleType: "Dor", pattern: [2, 1, 2, 2, 2, 1, 2] },
-    { scaleType: "Mixo", pattern: [2, 2, 1, 2, 2, 1, 2] },
-    { scaleType: "Ahava Raba", pattern: [3, 2, 2, 3, 2] },
-    { scaleType: "Altered", pattern: [1, 2, 1, 2, 2, 2, 2] },
-    { scaleType: "Lyd Dom", pattern: [2, 2, 2, 1, 2, 2, 1] },
-    { scaleType: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
+    { type: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
+    { type: "Major", pattern: [2, 2, 1, 2, 2, 2, 1, 1] },
+    { type: "Minor", pattern: [2, 1, 2, 2, 1, 2, 2] },
+    { type: "Harm Min", pattern: [2, 1, 2, 2, 1, 3, 1] },
+    { type: "Mel Min", pattern: [2, 1, 2, 2, 2, 2, 1] },
+    { type: "Dor", pattern: [2, 1, 2, 2, 2, 1, 2] },
+    { type: "Mixo", pattern: [2, 2, 1, 2, 2, 1, 2] },
+    { type: "Ahava Raba", pattern: [3, 2, 2, 3, 2] },
+    { type: "Altered", pattern: [1, 2, 1, 2, 2, 2, 2] },
+    { type: "Lyd Dom", pattern: [2, 2, 2, 1, 2, 2, 1] },
+    { type: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
 ]
 
 // Array of available instruments
@@ -53,12 +53,65 @@ export const instruments = [
     }
 ]
 
-export const cadenceTypes = [
-    { number: 0, name: "ii V I", sound: "/audio/piano/iiVI(C).mp3" },
-    { number: 1, name: "ii V7 i", sound: "/audio/piano/iiV7i(Cm).mp3" },
-    { number: 2, name: "ii V I", sound: "/audio/rhodes/iiVI(C).mp3" },
-    { number: 3, name: "ii V7 i", sound: "/audio/rhodes/iiV7i(Cm).mp3" }
+// export const cadenceTypes = [
+//     { number: 0, name: "ii V I", sound: "/audio/piano/iiVI(C).mp3" },
+//     { number: 1, name: "ii V7 i", sound: "/audio/piano/iiV7i(Cm).mp3" },
+//     { number: 2, name: "ii V I", sound: "/audio/rhodes/iiVI(C).mp3" },
+//     { number: 3, name: "ii V7 i", sound: "/audio/rhodes/iiV7i(Cm).mp3" }
+// ]
+
+export const cadencePatterns = [
+    { type: "Major", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
+    { type: "Minor", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
 ]
+
+// ENUMS - to be included later
+
+// export const ScaleTypes = Object.freeze({
+//     // Scale pattern is sequence of difference in semitones between each note (first index is the second note)
+//     MAJOR: {
+//         TYPE: "Major",
+//         SCALE_PATTERN: [2, 2, 1, 2, 2, 2, 1, 1]
+//     },
+//     MINOR: {
+//         TYPE: "Minor",
+//         PATTERN: [2, 1, 2, 2, 1, 2, 2]
+//     }
+// });
+
+// export const CadenceTypes = Object.freeze({
+//     // TO DO: Add in different voicings that will be chosen depending on the key
+//     MAJOR: {
+//         FOUR_FIVE_ONE: [[], [], []],
+//         TWO_FIVE_ONE: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]],
+//         SIX_TWO_FIVE_ONE: [[], [], [], []],
+//         ONE_FOUR_SIX_FIVE_ONE: [[], [], [], []],
+//         // e.g. G7, Db7, Cmaj7
+//         TRITONE_SUBSTITUTION: [[], [], []],
+//         // e.g. F-7 (IVm7), Bb7 (VII7), Cmaj7 (Imaj7)
+//         BACKDOOR: [[], [], []],
+//         // e.g. IV, I
+//         PLAGAL: [[], [], []],
+//     },
+//     MINOR: {
+//         // e.g. bII - I
+//         PHRYGIAN: [[], []],
+//         // e.g. vii˚7 - i
+//         MINOR_TYPE_ONE: [[], []],
+//         // e.g. bVII - i
+//         AEOLIAN: [[], []],
+//         // e.g. bvii6 - i 
+//         PHRYGIAN: [[], []],
+//         // e.g. iv - i
+//         MINOR_TYPE_TWO: [[], []],
+//         // e.g. IV - i
+//         DORIAN: [[], []],
+//         // e.g. iiø65 - i
+//         MINOR_TYPE_THREE: [[], []],
+//         // e.g. III6 - i
+//         DOUBLE_CHROMATIC_MEDIANT: [[], []]
+//     }
+// });
 
 // Provides the key values for keys A, S, D, F, G, H, J, K
 export const keyboardKeyValues = [65, 83, 68, 70, 71, 72, 74, 75];

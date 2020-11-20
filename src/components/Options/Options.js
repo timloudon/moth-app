@@ -12,7 +12,6 @@ import "typeface-roboto";
 function Options(props) {
 
     const { changeInstrumentSound } = props;
-    console.log(changeInstrumentSound, 'changeInstrumentSound(Options)');
 
     return (
         <Grid container

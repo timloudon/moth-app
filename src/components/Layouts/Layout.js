@@ -1,18 +1,19 @@
 import React from "react";
 // Components
 import Header from "./Header";
-import Footer from "./Footer";
 // MaterialUI
 import { Grid } from "@material-ui/core";
 
 export default function Layout(props) {
+
+    const { title } = props;
+
     return (
         <Grid item>
-            <Header title="Title"></Header>
+            <Header title={title}></Header>
             <Grid item>
-                <div>{props.children}</div>
+                <div style={{ margin: '50px', align: 'auto' }}>{props.children}</div>
             </Grid>
-            <Footer></Footer>
         </Grid>
     );
 }
