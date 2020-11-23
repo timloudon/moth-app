@@ -5,13 +5,14 @@ import {
     AppBar,
     Toolbar,
     Typography,
-    Grid
+    Grid,
+    Button
 } from '@material-ui/core';
 // import MenuIcon from '@material-ui/icons/Menu';
 
 function Header(props) {
 
-    const { title } = props
+    const { title, handleOpen } = props
 
     return (
         <AppBar position="static">
@@ -31,8 +32,8 @@ function Header(props) {
                         justify="flex-end"
                         alignItems="center">
                         {/* Link points back to routing in App component */}
-                        <Grid item><Link to={'/'}>Main Page</Link></Grid>
-                        <Grid item><Link to={`../Options/Options`}>Options</Link></Grid>
+                        <Grid item><Button><Link style={{ textDecoration: "none" }} to={'/'}>Main Page</Link></Button></Grid>
+                        <Grid item><Button onClick={() => handleOpen()}>Options</Button></Grid>
                     </Grid>
                 </Grid>
             </Toolbar>

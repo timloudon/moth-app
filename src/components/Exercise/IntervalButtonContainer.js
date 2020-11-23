@@ -7,7 +7,7 @@ function IntervalButtonContainer(props) {
     const { scale, keyboardKeyValues, playSound, checkIntervalAnswer } = props;
 
     return (
-        // maps out note buttons based on the scale prop (passed in from Exercise Container)
+        // Maps out note buttons based on the scale prop (passed in from Exercise Container)
         scale.map((item, index) => {
             return (
                 <IntervalButton

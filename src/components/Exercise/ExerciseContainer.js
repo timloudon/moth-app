@@ -8,31 +8,21 @@
 import React, { useState, useEffect } from "react";
 // Components
 // import ScaleButtonContainer from "./ScaleButtonContainer";
-import IntervalButtonContainer from "./IntervalButtonContainer";
+import QuestionContainer from "./QuestionContainer";
 // Arrays & Functions
 import {
     getScaleKeys,
-    keyboardKeyValues,
     playSoundWithKeys,
-    cadencePatterns,
     scalePatterns
 } from "../../shared/musicResources";
 // MaterialUI
 import {
-    // makeStyles,
     Grid,
-    // Typography,
     Switch,
     FormGroup,
-    FormControlLabel,
-    IconButton
+    FormControlLabel
 } from "@material-ui/core";
-import {
-    PlayCircleOutline,
-    MusicNote
-} from "@material-ui/icons";
 import "typeface-roboto";
-// import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 
 function ExerciseContainer(props) {
 
@@ -54,15 +44,6 @@ function ExerciseContainer(props) {
         return scalePattern;
     }
 
-    // Finds the cadence pattern by matching the string passed in with the type property
-    const findChordInCadencePattern = (index) => {
-        // Finds the object within the array that matches the string
-        const cadenceObject = cadencePatterns.find(pattern => pattern.type === cadenceAndScaleType);
-        // the cadence pattern that matches the index passed in (e.g. index of 0 relates to the values for a iim7 chord)
-        const cadencePattern = cadenceObject.pattern[index];
-        return cadencePattern;
-    }
-
     const createQuestions = () => {
         // create empty array that will hold the randomly generated interval questions
         const randomQuestionsArray = [];
@@ -79,20 +60,6 @@ function ExerciseContainer(props) {
             randomQuestionsArray.push(scaleTonesArray[randomNumber]);
         }
         return randomQuestionsArray;
-    }
-
-    // Plays each note within a chord (plays each chord from the 2D cadence pattern)
-    const playChord = (pattern) => {
-        pattern.forEach(item => playSound(item))
-    }
-
-    // Plays the audio element where the id of the element matches the number property of the scale
-    const playSound = (keyNumber) => {
-        // Match the keyNumber to the corresponding index of the array of audio objects
-        const sound = instrumentSounds[keyNumber];
-        // Must reset currentTime otherwise have to wait for the sample to end to replay
-        sound.currentTime = 0;
-        sound.play();
     }
 
     const checkIntervalAnswer = (answerIntervalNumber) => {
@@ -126,8 +93,6 @@ function ExerciseContainer(props) {
 
     // STATES
 
-    // CONSDIER PUTTING RANDOM QUESTIONS ARRAY IS A REF SO IT ISN'T AFFECTED BY RE-RENDER
-
     // scale useState sets the note keys based on the scale type button pressed
     const [scale] = useState(getScaleKeys(findScalePattern(), defaultNotes));
 
@@ -148,50 +113,6 @@ function ExerciseContainer(props) {
     const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: true });
 
     // USEEFFECTS
-
-    // useEffect test logic:
-
-    function playCadence() {
-        setTimeout(() => {
-            // first chord (instant)
-            playChord(findChordInCadencePattern(0));
-            // second chord (1 second)
-            setTimeout(() => {
-                playChord(findChordInCadencePattern(1));
-            }, 1000);
-            // third chord (2 seconds)
-            setTimeout(() => {
-                playChord(findChordInCadencePattern(2));
-            }, 2000);
-        }, 1000);
-    }
-
-    // useEffect plays cadence and interval question tone on load and state change
-    useEffect(() => {
-        // Play the cadence after a delay (nested timeouts, waits 1 second after render)
-        // const cadenceTimer = setTimeout(() => {
-        //     // first chord (instant)
-        //     playChord(findChordInCadencePattern(0));
-        //     // second chord (1 second)
-        //     setTimeout(() => {
-        //         playChord(findChordInCadencePattern(1));
-        //     }, 1000);
-        //     // third chord (2 seconds)
-        //     setTimeout(() => {
-        //         playChord(findChordInCadencePattern(2));
-        //     }, 2000);
-        // }, 1000);
-        playCadence();
-        // Play the currentQuestionValue interval (5 seconds delay for cadence)
-        const toneTimer = setTimeout(() => {
-            playSound(currentQuestionValue);
-        }, 5000);
-        // Cleanup
-        return () => {
-            // clearTimeout(cadenceTimer);
-            clearTimeout(toneTimer);
-        };
-    });
 
     // Keyboard Toggle Switch useEffect
     useEffect(() => {
@@ -219,20 +140,12 @@ function ExerciseContainer(props) {
 
                 <Grid item
                     xs={12} >
-                    <IntervalButtonContainer
+                    <QuestionContainer
+                        instrumentSounds={instrumentSounds}
                         scale={scale}
-                        playSound={playSound}
-                        checkIntervalAnswer={checkIntervalAnswer}
-                        keyboardKeyValues={keyboardKeyValues} />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <IconButton onClick={() => playCadence()}>
-                        <PlayCircleOutline />
-                    </IconButton>
-                    <IconButton onClick={() => playSound(currentQuestionValue)}>
-                        <MusicNote />
-                    </IconButton>
+                        cadenceAndScaleType={cadenceAndScaleType}
+                        currentQuestionValue={currentQuestionValue}
+                        checkIntervalAnswer={checkIntervalAnswer} />
                 </Grid>
 
                 <Grid item

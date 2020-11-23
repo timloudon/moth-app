@@ -12,7 +12,6 @@ import { Route, Switch } from "react-router-dom";
 import MainPage from "./MainPage/MainPage";
 import ExerciseContainer from "./Exercise/ExerciseContainer";
 import Layout from "./Layouts/Layout";
-import Options from "./Options/Options";
 // Arrays & Functions
 import {
   getSoundObjects,
@@ -34,28 +33,49 @@ function App() {
   // sets the state for the audio as an array of audio objects (currently identified by the index)
   const [instrumentSounds, setInstrumentSounds] = useState(getSoundObjects(defaultNotes));
 
+  // sets the state of the options Modal
+  const [open, setOpen] = useState(false);
+
   // Changes the state of the sound objects
   const changeInstrumentSound = (instrumentSounds) => {
     setInstrumentSounds(getSoundObjects(instrumentSounds));
   }
 
+  // Handles the opening of the Options Modal
+  const handleOpen = () => {
+    console.log('handle open function')
+    setOpen(true);
+  };
+
+  // Handles the closing of the Options Modal
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   // COMPONENTS
 
   const mainPage = () => (
-    <Layout title="Main Menu">
+    <Layout
+      title="Main Menu"
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      changeInstrumentSound={changeInstrumentSound}
+      open={open}>
       <MainPage />
     </Layout>
   )
 
   const exerciseContainer = (props) => (
-    <Layout title={props.location.state.type}>
-      <ExerciseContainer routeProps={props} instrumentSounds={instrumentSounds} defaultNotes={defaultNotes} />
-    </Layout>
-  )
-
-  const options = () => (
-    <Layout title="Options">
-      <Options changeInstrumentSound={changeInstrumentSound} />
+    <Layout
+      title={props.location.state.type}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      changeInstrumentSound={changeInstrumentSound}
+      open={open}>
+      <ExerciseContainer
+        routeProps={props}
+        instrumentSounds={instrumentSounds}
+        defaultNotes={defaultNotes} />
     </Layout>
   )
 
@@ -63,7 +83,6 @@ function App() {
     <React.Fragment>
       <Grid
         container
-        // spacing={0}
         direction="column"
         justify="flex-start"
         alignItems="stretch"
@@ -80,10 +99,6 @@ function App() {
               path="/Exercise/ExerciseContainer"
               component={exerciseContainer}
             />
-            <Route
-              exact
-              path="/Options/Options"
-              component={options} />
           </Switch>
         </Grid>
 

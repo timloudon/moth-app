@@ -1,3 +1,5 @@
+// 
+
 // Patterns of different scale types (pattern property is an array of semitone value differences between notes of the scale)
 export const scalePatterns = [
     { type: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
