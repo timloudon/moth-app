@@ -12,6 +12,8 @@ import {
 
 function Header(props) {
 
+    console.log("Header Rendered")
+
     const { title, handleOpen } = props
 
     return (

@@ -26,12 +26,15 @@ import "typeface-roboto";
 
 function ExerciseContainer(props) {
 
+    console.log('Exercise Container Render');
+
     const { routeProps, instrumentSounds, defaultNotes } = props;
 
     // VARIABLES
 
     // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
     const cadenceAndScaleType = routeProps.location.state.type;
+    let answerLog = [[]];
 
     // METHODS
 
@@ -72,18 +75,24 @@ function ExerciseContainer(props) {
             // stop the quiz after the last question in the randomQuestionsArray
             if (nextIndex >= randomQuestions.length) {
                 console.log('end');
-                return
+                return;
             }
+            // add a new empty array to the answerLog array
+            answerLog.push([]);
             // sets the new question value state to the next value
             setCurrentQuestionValue(nextQuestion);
             // sets the new question index state to the next value
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            // Add one to the score state
-            setScore(score + 1);
         } else {
             // Console log when answer is wrong
             console.log('wrong');
         }
+    }
+
+    const addAnswerToLog = (answerIntervalNumber, currentQuestionIndex) => {
+        console.log(answerLog, 'answerLog')
+        answerLog.splice(currentQuestionIndex, 0, answerIntervalNumber);
+        console.log(answerLog, 'answerLog after push')
     }
 
     // Changes the state of the toggle switch
@@ -98,16 +107,12 @@ function ExerciseContainer(props) {
 
     const [randomQuestions] = useState(createQuestions());
 
+    console.log(randomQuestions, 'randomQuestions');
+
     // sets the current question value (interval number)
     const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
     // sets the current question index number
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-
-    // score useState keeps track of the user's score
-    const [score, setScore] = useState(0);
-
-    // showScore useState displays the user's score
-    // const [showScore, setShowScore] = useState(false);
 
     // toggleSwitch useState toggles the event listeners in useEffect
     const [toggleSwitch, setToggleSwitch] = useState({ keyboardSwitch: true });
@@ -122,6 +127,8 @@ function ExerciseContainer(props) {
             ? window.addEventListener('keydown', playSoundWithKeys)
             : window.removeEventListener('keydown', playSoundWithKeys);
     });
+
+    console.log(currentQuestionValue, 'currentQuestionValue in Exercise')
 
     return (
         <Grid container
@@ -145,7 +152,8 @@ function ExerciseContainer(props) {
                         scale={scale}
                         cadenceAndScaleType={cadenceAndScaleType}
                         currentQuestionValue={currentQuestionValue}
-                        checkIntervalAnswer={checkIntervalAnswer} />
+                        checkIntervalAnswer={checkIntervalAnswer}
+                        addAnswerToLog={addAnswerToLog} />
                 </Grid>
 
                 <Grid item

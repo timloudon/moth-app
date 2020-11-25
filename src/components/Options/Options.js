@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 
 function Options(props) {
 
-    const { changeInstrumentSound, open, handleClose } = props;
+    const { changeInstrumentSound, isOpen, handleClose } = props;
 
     // useStyle classes
     const classes = useStyles();
@@ -65,7 +65,7 @@ function Options(props) {
             alignItems="stretch" >
 
             <Modal
-                open={open}
+                open={isOpen}
                 onClose={handleClose}
                 className={classes.modal}
                 aria-labelledby="simple-modal-title"

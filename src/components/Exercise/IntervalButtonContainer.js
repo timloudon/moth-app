@@ -4,7 +4,7 @@ import IntervalButton from "./IntervalButton";
 
 function IntervalButtonContainer(props) {
 
-    const { scale, keyboardKeyValues, playSound, checkIntervalAnswer } = props;
+    const { scale, keyboardKeyValues, playSound, checkIntervalAnswer, addAnswerToLog } = props;
 
     return (
         // Maps out note buttons based on the scale prop (passed in from Exercise Container)
@@ -18,6 +18,7 @@ function IntervalButtonContainer(props) {
                     onClickHandler={() => {
                         playSound(item.number);
                         checkIntervalAnswer(item.number);
+                        addAnswerToLog(item.number);
                     }}
                     dataKey={keyboardKeyValues[index]}
                     myKey={keyboardKeyValues[index]}

@@ -34,16 +34,16 @@ function App() {
   const [instrumentSounds, setInstrumentSounds] = useState(getSoundObjects(defaultNotes));
 
   // sets the state of the options Modal
-  const [open, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false);
 
   // Changes the state of the sound objects
   const changeInstrumentSound = (instrumentSounds) => {
     setInstrumentSounds(getSoundObjects(instrumentSounds));
   }
 
-  // Handles the opening of the Options Modal
+  // Handles the isOpening of the Options Modal
   const handleOpen = () => {
-    console.log('handle open function')
+    console.log('handle isOpen function');
     setOpen(true);
   };
 
@@ -60,7 +60,7 @@ function App() {
       handleOpen={handleOpen}
       handleClose={handleClose}
       changeInstrumentSound={changeInstrumentSound}
-      open={open}>
+      isOpen={isOpen}>
       <MainPage />
     </Layout>
   )
@@ -71,7 +71,7 @@ function App() {
       handleOpen={handleOpen}
       handleClose={handleClose}
       changeInstrumentSound={changeInstrumentSound}
-      open={open}>
+      isOpen={isOpen}>
       <ExerciseContainer
         routeProps={props}
         instrumentSounds={instrumentSounds}
