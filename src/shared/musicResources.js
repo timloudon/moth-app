@@ -64,7 +64,14 @@ export const instruments = [
 
 export const cadencePatterns = [
     { type: "Major", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
-    { type: "Minor", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
+    { type: "Minor", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] },
+    { type: "Major Chromatic", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
+    { type: "Minor Chromatic", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
+]
+
+// Test to use MIDI notes to determine cadences
+export const midiCadencePatterns = [
+    { type: "Major", pattern: [[63, 65, 69, 72], [63, 65, 67, 71], [60, 64, 67, 71]] }
 ]
 
 // ENUMS - to be included later
@@ -140,7 +147,11 @@ export function playSoundWithKeys(e) {
 
 // Creates an array of audio objects
 export function getSoundObjects(noteArray) {
+    console.log('GET SOUNDS');
     return noteArray.map((item) => {
-        return new Audio(item.sound);
+        console.log('LOAD SOUND');
+        const audio = new Audio(item.sound);
+        //audio.load();
+        return audio;
     })
 }

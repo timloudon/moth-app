@@ -3,6 +3,8 @@ import React from 'react';
 import AppButton from "../../shared/AppButton";
 // Arrays
 import { scalePatterns } from "../../shared/scales";
+// MaterialUI
+import { Grid } from '@material-ui/core';
 
 function ScaleButtonContainer(props) {
 
@@ -16,11 +18,13 @@ function ScaleButtonContainer(props) {
             return (
                 <>
                     {
-                        <AppButton
-                            style={{ background: buttonIsClicked === item.scaleType ? 'red' : '' }}
-                            key={item.scaleType}
-                            onClickHandler={() => { changeScale(item.scaleType) }}
-                            buttonText={item.scaleType} />
+                        <Grid item xs={1}>
+                            <AppButton
+                                style={{ background: buttonIsClicked === item.scaleType ? 'red' : '' }}
+                                key={item.scaleType}
+                                onClickHandler={() => { changeScale(item.scaleType) }}
+                                buttonText={item.scaleType} />
+                        </Grid>
                     }
                 </>
             );

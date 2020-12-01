@@ -11,6 +11,7 @@ function AppButton(props) {
     return (
         <Button
             style={style}
+            color="primary"
             variant="contained"
             onClick={onClickHandler}
         >

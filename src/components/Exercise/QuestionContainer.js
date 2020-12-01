@@ -13,10 +13,11 @@ import IntervalButtonContainer from "./IntervalButtonContainer";
 import {
     keyboardKeyValues,
     cadencePatterns,
+    midiCadencePatterns
 } from "../../shared/musicResources";
 // import { useTimeout } from "../../shared/helperFunctions";
 // MaterialUI
-import { Grid, IconButton } from "@material-ui/core";
+import { Grid, IconButton, Button } from "@material-ui/core";
 import { PlayCircleOutline, MusicNote } from "@material-ui/icons";
 import "typeface-roboto";
 
@@ -25,13 +26,10 @@ function QuestionContainer(props) {
     const {
         scale,
         instrumentSounds,
-        cadenceAndScaleType,
+        cadenceType,
         currentQuestionValue,
-        checkIntervalAnswer,
-        addAnswerToLog
+        checkIntervalAnswer
     } = props;
-
-    console.log(currentQuestionValue, 'currentQuestionValue');
 
     // state used to force refresh when play cadence button is pressed (causing useEffect to play cadence)
     const [isPlayed, setPlayed] = useState({});
@@ -40,7 +38,7 @@ function QuestionContainer(props) {
     const findChordInCadencePattern = (index) => {
         // Finds the object within the array that matches the string
         const cadenceObject = cadencePatterns.find(
-            (pattern) => pattern.type === cadenceAndScaleType
+            (pattern) => pattern.type === cadenceType
         );
         // the cadence pattern that matches the index passed in (e.g. index of 0 relates to the values for a iim7 chord)
         const cadencePattern = cadenceObject.pattern[index];
@@ -49,8 +47,17 @@ function QuestionContainer(props) {
 
     // Plays each note within a chord (plays each chord from the 2D cadence pattern)
     const playChord = (pattern) => {
-        pattern.forEach((item) => playSound(item));
+        // pattern.forEach((item) => playSound(item));
+        pattern.forEach((item) => {
+            playSound(item);
+        });
     };
+
+    // handlePlayNoteInput = (midiNumber1, midiNumber2, midiNumber3) => {
+    //     this.props.onPlayNoteInput(midiNumber);
+    //     this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: prevState.activeNotes });
+    //     this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: prevState.activeNotes });
+    // };
 
     // Plays the audio element where the id of the element matches the number property of the scale
     const playSound = (keyNumber) => {
@@ -71,8 +78,11 @@ function QuestionContainer(props) {
 
     // useEffect plays cadence and interval question tone on load and state change
     useEffect(() => {
+
+        // IDEA: Have the play cadence and tone button disabled whilst this useEffect happens
+
         // Play the cadence followed by the interval question
-        const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0)) }, 1000);
+        const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0)) }, 1000)
         const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1)) }, 2000);
         const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2)) }, 3000);
         const playTone = setTimeout(() => { playSound(currentQuestionValue) }, 5000);
@@ -84,47 +94,38 @@ function QuestionContainer(props) {
             clearTimeout(playTone);
         };
         // useEffect will only be triggered by initial render and change of isPlayed state
-    }, [isPlayed]);
+    });
 
     return (
         <Grid
             container
-            spacing={3}
+            item
+            spacing={7}
+            xs={12}
             direction="row"
             justify="flex-start"
             alignItems="stretch"
         >
-            <Grid item xs={2}></Grid>
-            <Grid
-                container
-                item
-                spacing={7}
-                xs={8}
-                direction="row"
-                justify="flex-start"
-                alignItems="stretch"
-            >
-                <Grid item xs={12}>
-                    <IntervalButtonContainer
-                        scale={scale}
-                        playSound={playSound}
-                        checkIntervalAnswer={checkIntervalAnswer}
-                        addAnswerToLog={addAnswerToLog}
-                        keyboardKeyValues={keyboardKeyValues}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <IconButton onClick={() => forceRefreshToPlayCadence()}>
-                        <PlayCircleOutline />
-                    </IconButton>
-                    <IconButton onClick={() => playSound(currentQuestionValue)}>
-                        <MusicNote />
-                    </IconButton>
-                </Grid>
+            <Grid item container xs={12} spacing={2}>
+                <IntervalButtonContainer
+                    scale={scale}
+                    playSound={playSound}
+                    checkIntervalAnswer={checkIntervalAnswer}
+                    keyboardKeyValues={keyboardKeyValues}
+                />
+                {/* <Button onClick={() => playNote(72)}>C4</Button>
+                <Button onClick={() => stopNote(72)}>Stop</Button> */}
             </Grid>
-            <Grid item xs={2}></Grid>
-        </Grid >
+
+            <Grid item xs={12}>
+                <IconButton onClick={() => forceRefreshToPlayCadence()}>
+                    <PlayCircleOutline />
+                </IconButton>
+                <IconButton onClick={() => playSound(currentQuestionValue)}>
+                    <MusicNote />
+                </IconButton>
+            </Grid>
+        </Grid>
     );
 }
 

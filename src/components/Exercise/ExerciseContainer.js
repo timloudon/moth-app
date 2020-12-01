@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 // Components
 // import ScaleButtonContainer from "./ScaleButtonContainer";
 import QuestionContainer from "./QuestionContainer";
+import SoundfontProvider from '../../shared/SoundfontProvider';
 // Arrays & Functions
 import {
     getScaleKeys,
@@ -18,6 +19,7 @@ import {
 // MaterialUI
 import {
     Grid,
+    Button,
     Switch,
     FormGroup,
     FormControlLabel
@@ -26,14 +28,16 @@ import "typeface-roboto";
 
 function ExerciseContainer(props) {
 
-    console.log('Exercise Container Render');
-
     const { routeProps, instrumentSounds, defaultNotes } = props;
 
     // VARIABLES
 
+    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
+
     // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
-    const cadenceAndScaleType = routeProps.location.state.type;
+    const scaleType = routeProps.location.state.scale.type;
+    const cadenceType = routeProps.location.state.cadence.type;
     let answerLog = [[]];
 
     // METHODS
@@ -41,7 +45,7 @@ function ExerciseContainer(props) {
     // Finds the scale pattern by matching the string passed in above with the type property
     const findScalePattern = () => {
         // Finds the object within the array that matches the string
-        const scaleObject = scalePatterns.find(pattern => pattern.type === cadenceAndScaleType);
+        const scaleObject = scalePatterns.find(pattern => pattern.type === scaleType);
         // the scale pattern within the ascociated obect
         const scalePattern = scaleObject.pattern;
         return scalePattern;
@@ -78,22 +82,23 @@ function ExerciseContainer(props) {
                 return;
             }
             // add a new empty array to the answerLog array
-            answerLog.push([]);
+            // answerLog.push([]);
             // sets the new question value state to the next value
             setCurrentQuestionValue(nextQuestion);
             // sets the new question index state to the next value
             setCurrentQuestionIndex(currentQuestionIndex + 1);
+            console.log('CORRECT!');
         } else {
             // Console log when answer is wrong
             console.log('wrong');
         }
     }
 
-    const addAnswerToLog = (answerIntervalNumber, currentQuestionIndex) => {
-        console.log(answerLog, 'answerLog')
-        answerLog.splice(currentQuestionIndex, 0, answerIntervalNumber);
-        console.log(answerLog, 'answerLog after push')
-    }
+    // const addAnswerToLog = (answerIntervalNumber, currentQuestionIndex) => {
+    //     console.log(answerLog, 'answerLog')
+    //     answerLog.splice(currentQuestionIndex, 0, answerIntervalNumber);
+    //     console.log(answerLog, 'answerLog after push')
+    // }
 
     // Changes the state of the toggle switch
     const handleChange = (e) => {
@@ -106,8 +111,6 @@ function ExerciseContainer(props) {
     const [scale] = useState(getScaleKeys(findScalePattern(), defaultNotes));
 
     const [randomQuestions] = useState(createQuestions());
-
-    console.log(randomQuestions, 'randomQuestions');
 
     // sets the current question value (interval number)
     const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
@@ -128,19 +131,15 @@ function ExerciseContainer(props) {
             : window.removeEventListener('keydown', playSoundWithKeys);
     });
 
-    console.log(currentQuestionValue, 'currentQuestionValue in Exercise')
-
     return (
         <Grid container
-            spacing={3}
+            spacing={4}
             direction="row"
             justify="flex-start"
             alignItems="stretch">
-
-            <Grid item xs={2}></Grid>
+            {/* <Grid item xs={2}></Grid> */}
             <Grid container item
-                spacing={7}
-                xs={8}
+                xs={12}
                 direction="row"
                 justify="flex-start"
                 alignItems="stretch">
@@ -150,10 +149,23 @@ function ExerciseContainer(props) {
                     <QuestionContainer
                         instrumentSounds={instrumentSounds}
                         scale={scale}
-                        cadenceAndScaleType={cadenceAndScaleType}
+                        cadenceType={cadenceType}
                         currentQuestionValue={currentQuestionValue}
-                        checkIntervalAnswer={checkIntervalAnswer}
-                        addAnswerToLog={addAnswerToLog} />
+                        checkIntervalAnswer={checkIntervalAnswer} />
+                    {/* <SoundfontProvider
+                        hostname={soundfontHostname}
+                        audioContext={audioContext}
+                        render={({ playNote, stopNote, stopAllNotes }) => (
+                            <QuestionContainer
+                                playNote={playNote}
+                                stopNote={stopNote}
+                                stopAllNotes={stopAllNotes}
+                                instrumentSounds={instrumentSounds}
+                                scale={scale}
+                                cadenceType={cadenceType}
+                                currentQuestionValue={currentQuestionValue}
+                                checkIntervalAnswer={checkIntervalAnswer} />
+                        )} /> */}
                 </Grid>
 
                 <Grid item
@@ -172,7 +184,7 @@ function ExerciseContainer(props) {
                     </FormGroup>
                 </Grid>
             </Grid>
-            <Grid item xs={2}></Grid>
+            {/* <Grid item xs={2}></Grid> */}
 
         </Grid>
     );
@@ -181,13 +193,6 @@ function ExerciseContainer(props) {
 export default ExerciseContainer;
 
 // DEPRECIATED CODE
-
-// Changes the state of the interval buttons (it is passed the string from the scale type button)
-    // const changeScale = (type) => {
-    //     setScale(getScaleKeys(scalePatterns.find(item => item.type === type).pattern, defaultNotes));
-    //     // Sets the colour of the clicked button to a different colour to show which scale is selected
-    //     setSelectedScale(type);
-    // }
 
 // cadenceSound.oncanplaythrough = (e) => {
             //     const playedPromise = cadenceSound.play();

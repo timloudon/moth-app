@@ -6,38 +6,32 @@ import {
     Toolbar,
     Typography,
     Grid,
-    Button
+    Button,
+    makeStyles
 } from '@material-ui/core';
 // import MenuIcon from '@material-ui/icons/Menu';
 
-function Header(props) {
+const useStyles = makeStyles(() => ({
+    headerStyles: {
+        boxShadow: "0px 0px 0px 0px"
+    },
+    titleStyles: {
+        flex: 1
+    }
+}));
 
-    console.log("Header Rendered")
+function Header(props) {
 
     const { title, handleOpen } = props
 
+    const classes = useStyles();
+
     return (
-        <AppBar position="static">
+        <AppBar className={classes.headerStyles} position="static">
             <Toolbar>
-                <Grid container
-                    spacing={1}
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="center">
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{title}</Typography>
-                    </Grid>
-                    <Grid container
-                        item xs={6}
-                        spacing={4}
-                        direction="row"
-                        justify="flex-end"
-                        alignItems="center">
-                        {/* Link points back to routing in App component */}
-                        <Grid item><Button><Link style={{ textDecoration: "none" }} to={'/'}>Main Page</Link></Button></Grid>
-                        <Grid item><Button onClick={() => handleOpen()}>Options</Button></Grid>
-                    </Grid>
-                </Grid>
+                <Typography variant="h6" className={classes.titleStyles}>{title}</Typography>
+                <Button component={Link} to={'/'}>Main Page</Button>
+                <Button onClick={() => handleOpen()}>Options</Button>
             </Toolbar>
         </AppBar>
     )

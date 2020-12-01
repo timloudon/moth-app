@@ -5,7 +5,7 @@
 // (probably need a broader range of available notes - i.e. C2 - C4). Also have different voicings (inversions)
 // for the most realistic changes (and figure out ways of selecting them)
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // React Router DOM
 import { Route, Switch } from "react-router-dom";
 // Components
@@ -20,10 +20,64 @@ import {
 // Styles
 import "./App.css";
 // MaterialUI
-import { Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import "typeface-roboto";
 
+/*
+  Snippets to use:
+
+  anfn: anon func
+  dar: array destr. (for useState)
+  dob: obj. destr. (for porps)
+  cmmb: comment block
+ */
+
 function App() {
+
+  let triggerSound;
+  let samples = [];
+
+  useEffect(() => {
+    // Create new audio context
+    const ctx = new AudioContext();
+    // Create a 2D array of all instrument sound file paths
+    const instrumentSounds = [...instruments.map(item => item.instrumentSounds.map(item => item.sound))];
+    console.log(instrumentSounds, 'first steplet');
+    // Merge all instrument sound file paths into a single array
+    const mergedInstrumentSounds = [].concat.apply([], instrumentSounds);
+    console.log(mergedInstrumentSounds, 'mergedArray');
+
+    async function getFile(audioContext, filePath) {
+      const response = await fetch(filePath);
+      const arrayBuffer = await response.arrayBuffer();
+      const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
+      return decodedAudio;
+    }
+
+    async function setupSamples(samplesArr) {
+      const samples = samplesArr.map(async (filePath) => {
+        return await getFile(ctx, filePath);
+      });
+      return samples;
+    }
+
+    async function playNote(note) {
+      let bufferSource = ctx.createBufferSource();
+      const fullArr = await setupSamples(mergedInstrumentSounds);
+      bufferSource.buffer = await fullArr[note];
+      bufferSource.connect(ctx.destination);
+      bufferSource.start();
+      return bufferSource;
+    }
+
+    triggerSound = async () => {
+      playNote(0);
+    };
+    triggerSound();
+
+    // Cleanup the audioConext (needed?)
+    return () => ctx.close();
+  });
 
   // Provides the all the available notes for setting the default state (from Piano)
   const defaultNotes = instruments[0].instrumentSounds;
@@ -67,7 +121,7 @@ function App() {
 
   const exerciseContainer = (props) => (
     <Layout
-      title={props.location.state.type}
+      title={props.location.state.cadence.type}
       handleOpen={handleOpen}
       handleClose={handleClose}
       changeInstrumentSound={changeInstrumentSound}
@@ -87,23 +141,19 @@ function App() {
         justify="flex-start"
         alignItems="stretch"
       >
-
-        <Grid item>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={mainPage} />
-            <Route
-              exact
-              path="/Exercise/ExerciseContainer"
-              component={exerciseContainer}
-            />
-          </Switch>
-        </Grid>
-
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={mainPage} />
+          <Route
+            exact
+            path="/Exercise/ExerciseContainer"
+            component={exerciseContainer}
+          />
+        </Switch>
       </Grid>
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 
