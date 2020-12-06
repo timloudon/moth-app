@@ -1,4 +1,4 @@
-// NEW FEATURE: Have a practice mode where you're given a constant tone and the key/progression/cadence 
+// NEW FEATURE: Have a practice mode where you're given a constant tone and the key/progresultsion/cadence 
 // changes and you have to identify the tone in relation to the changes
 // PROBLEM: Need to figure out a way to make the scale and cadence patterns be affected by key changes
 // i.e. have the cadence chords defined by differences in semitones and use maths to adjust them 
@@ -34,50 +34,67 @@ import "typeface-roboto";
 
 function App() {
 
-  let triggerSound;
-  let samples = [];
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  // Create a 2D array of all instrument sound file paths
+  const allTheInstrumentSounds = [...instruments.map(item => item.instrumentSounds.map(item => item.sound))];
+  // Merge all instrument sound file paths into a single array
+  const mergedInstrumentSounds = [].concat.apply([], allTheInstrumentSounds);
+
+  const [samples, setSamples] = useState();
+
+  const getFile = async (audioContext, filePath) => {
+    const resultponse = await fetch(filePath);
+    const arrayBuffer = await resultponse.arrayBuffer();
+    const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
+    return decodedAudio;
+  }
+
+  const setupSamples = async (samplesArr) => {
+    // const fetchFile = await getFile(ctx, samplesArr[0]);
+    const allSamples = await samplesArr.map(async (filePath) => {
+      return await getFile(ctx, filePath);
+    });
+    console.log(allSamples, 'allSamples');
+    return allSamples;
+  }
+
+  /**
+   * To Do (5/12/20):
+   * 
+   * i) Sort out how the samples are loaded (accessesing the samples in the 'instruments' object in musicResources)
+   * ii) Change the logo to take size variables (rem) so it can be used for different sizings
+   * 
+   */
 
   useEffect(() => {
-    // Create new audio context
-    const ctx = new AudioContext();
-    // Create a 2D array of all instrument sound file paths
-    const instrumentSounds = [...instruments.map(item => item.instrumentSounds.map(item => item.sound))];
-    console.log(instrumentSounds, 'first steplet');
-    // Merge all instrument sound file paths into a single array
-    const mergedInstrumentSounds = [].concat.apply([], instrumentSounds);
-    console.log(mergedInstrumentSounds, 'mergedArray');
 
-    async function getFile(audioContext, filePath) {
-      const response = await fetch(filePath);
-      const arrayBuffer = await response.arrayBuffer();
-      const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
-      return decodedAudio;
-    }
+    const samplesArr = [];
 
-    async function setupSamples(samplesArr) {
-      const samples = samplesArr.map(async (filePath) => {
-        return await getFile(ctx, filePath);
-      });
-      return samples;
-    }
-
-    async function playNote(note) {
-      let bufferSource = ctx.createBufferSource();
-      const fullArr = await setupSamples(mergedInstrumentSounds);
-      bufferSource.buffer = await fullArr[note];
-      bufferSource.connect(ctx.destination);
-      bufferSource.start();
-      return bufferSource;
-    }
-
-    triggerSound = async () => {
-      playNote(0);
-    };
-    triggerSound();
+    setupSamples(mergedInstrumentSounds)
+      .then(result => {
+        result.forEach(item => {
+          item
+            .then(promiseResult => {
+              samplesArr.push(promiseResult);
+            })
+        });
+        setSamples(samplesArr);
+      })
+      .catch(err => console.log(err, 'err'));
 
     // Cleanup the audioConext (needed?)
     return () => ctx.close();
-  });
+  }, []);
+
+  function playNote(index) {
+    let bufferSource = ctx.createBufferSource();
+    console.log(samples[index], 'samplesInPlayNote[index]');
+    bufferSource.buffer = samples[index];
+    // bufferSource.buffer = await fullArr[note];
+    bufferSource.connect(ctx.destination);
+    bufferSource.start();
+    return bufferSource;
+  }
 
   // Provides the all the available notes for setting the default state (from Piano)
   const defaultNotes = instruments[0].instrumentSounds;
@@ -129,7 +146,8 @@ function App() {
       <ExerciseContainer
         routeProps={props}
         instrumentSounds={instrumentSounds}
-        defaultNotes={defaultNotes} />
+        defaultNotes={defaultNotes}
+        playNote={playNote} />
     </Layout>
   )
 
@@ -152,6 +170,8 @@ function App() {
             component={exerciseContainer}
           />
         </Switch>
+        {/* <Button onClick={() => playNote(2)}>Play Note</Button>
+        <Button onClick={() => console.log(samples)}>Console Samples</Button> */}
       </Grid>
     </React.Fragment >
   );

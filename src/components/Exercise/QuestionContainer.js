@@ -28,7 +28,8 @@ function QuestionContainer(props) {
         instrumentSounds,
         cadenceType,
         currentQuestionValue,
-        checkIntervalAnswer
+        checkIntervalAnswer,
+        playNote
     } = props;
 
     // state used to force refresh when play cadence button is pressed (causing useEffect to play cadence)
@@ -42,6 +43,7 @@ function QuestionContainer(props) {
         );
         // the cadence pattern that matches the index passed in (e.g. index of 0 relates to the values for a iim7 chord)
         const cadencePattern = cadenceObject.pattern[index];
+        console.log(cadencePattern, 'cadencePattern')
         return cadencePattern;
     };
 
@@ -49,7 +51,9 @@ function QuestionContainer(props) {
     const playChord = (pattern) => {
         // pattern.forEach((item) => playSound(item));
         pattern.forEach((item) => {
-            playSound(item);
+            console.log(item, 'playChord item');
+            playNote(item);
+            // playSound(item);
         });
     };
 
@@ -110,6 +114,7 @@ function QuestionContainer(props) {
                 <IntervalButtonContainer
                     scale={scale}
                     playSound={playSound}
+                    playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
                     keyboardKeyValues={keyboardKeyValues}
                 />

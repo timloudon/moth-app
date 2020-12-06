@@ -28,7 +28,7 @@ import "typeface-roboto";
 
 function ExerciseContainer(props) {
 
-    const { routeProps, instrumentSounds, defaultNotes } = props;
+    const { routeProps, instrumentSounds, defaultNotes, playNote } = props;
 
     // VARIABLES
 
@@ -151,7 +151,8 @@ function ExerciseContainer(props) {
                         scale={scale}
                         cadenceType={cadenceType}
                         currentQuestionValue={currentQuestionValue}
-                        checkIntervalAnswer={checkIntervalAnswer} />
+                        checkIntervalAnswer={checkIntervalAnswer}
+                        playNote={playNote} />
                     {/* <SoundfontProvider
                         hostname={soundfontHostname}
                         audioContext={audioContext}
