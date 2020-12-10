@@ -6,23 +6,19 @@ import { Grid } from "@material-ui/core";
 
 function IntervalButtonContainer(props) {
 
-    const { scale, keyboardKeyValues, playSound, checkIntervalAnswer, playNote } = props;
+    const { scale, keyboardKeyValues, checkIntervalAnswer, playNote } = props;
 
     return (
-        // Maps out note buttons based on the scale prop (passed in from Exercise Container)
         scale.map((item, index) => {
             return (
-                <Grid key={item.number} item xs={3}>
+                <Grid key={item.midiNumber} item xs={3}>
                     <IntervalButton
-                        name={item.name}
-                        intervalValue={item.intervalValue}
-                        sound={item.sound}
+                        buttonText={item.noteName}
                         onClickHandler={() => {
-                            playNote(item.number);
-                            checkIntervalAnswer(item.number);
+                            playNote(item.midiNumber);
+                            checkIntervalAnswer(item.midiNumber);
                         }}
                         dataKey={keyboardKeyValues[index]}
-                        myKey={keyboardKeyValues[index]}
                     />
                 </Grid>
             );

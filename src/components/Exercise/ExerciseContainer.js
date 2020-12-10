@@ -1,25 +1,11 @@
-// Considerations:
-// i) Create a more complex event listener:
-// a) Keyup or mouseup triggering a new sample of the tail end of the note (the sample of the key in NI) 
-// ii) Use styling rules to dynamically change the colour of the buttons on click:
-// a) Current scale type (stays until another is clicked)
-// b) Interval button changes colour on keydown and reverts on keyup
-
 import React, { useState, useEffect } from "react";
 // Components
-// import ScaleButtonContainer from "./ScaleButtonContainer";
 import QuestionContainer from "./QuestionContainer";
-import SoundfontProvider from '../../shared/SoundfontProvider';
 // Arrays & Functions
-import {
-    getScaleKeys,
-    playSoundWithKeys,
-    scalePatterns
-} from "../../shared/musicResources";
+import { playSoundWithKeys, scalePatterns } from "../../shared/musicResources";
 // MaterialUI
 import {
     Grid,
-    Button,
     Switch,
     FormGroup,
     FormControlLabel
@@ -28,19 +14,39 @@ import "typeface-roboto";
 
 function ExerciseContainer(props) {
 
-    const { routeProps, instrumentSounds, defaultNotes, playNote } = props;
+    const { routeProps, instrumentSounds, defaultNotes, ctx } = props;
 
     // VARIABLES
-
-    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    // const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 
     // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
     const scaleType = routeProps.location.state.scale.type;
     const cadenceType = routeProps.location.state.cadence.type;
-    let answerLog = [[]];
 
     // METHODS
+
+    function getScaleKeys(scalePattern, allNotes) {
+        // Array that will contain all the notes of the passed in scale
+        let scaleNotes = [];
+        // Declare the lowest available note and push into array (this will be passed in in the future)
+        let firstNote = allNotes[0];
+        scaleNotes.push(firstNote);
+        // Setup variables
+        let currentMidiNumber;
+        // (nextMidiNumber is defined so that the expression in the loop is true when i=0)
+        let nextMidiNumber = firstNote.midiNumber;
+        let lastAvailableMidiNumber = allNotes[allNotes.length - 1].midiNumber;
+        // Ends when the next midi note is greater than the last available
+        for (let i = 0; nextMidiNumber < lastAvailableMidiNumber; i++) {
+            let patternIndex = i % (scalePattern.length);
+            let increment = scalePattern[patternIndex];
+            currentMidiNumber = scaleNotes[i].midiNumber;
+            nextMidiNumber = currentMidiNumber + increment;
+            // find the next note that matches the next note value
+            let nextNote = allNotes.find(note => note.midiNumber === nextMidiNumber);
+            scaleNotes.push(nextNote);
+        }
+        return scaleNotes;
+    }
 
     // Finds the scale pattern by matching the string passed in above with the type property
     const findScalePattern = () => {
@@ -53,68 +59,58 @@ function ExerciseContainer(props) {
 
     const createQuestions = () => {
         // create empty array that will hold the randomly generated interval questions
-        const randomQuestionsArray = [];
-        // create a list of available scale tones (based on the scale state)
-        const scaleTonesArray = [];
-        // populate the scaleTonesArray
-        scale.forEach(element => scaleTonesArray.push(element.number));
-        // creates an array of 10 questions
+        const randomQuestions = [];
+        const availableNotes = scale.map(item => item.midiNumber);
+        // creates an array of 10 questions - (customise with optional variable for question length?)
         for (let i = 0; i < 10; i++) {
-            // generate random number between 0 and scaleTonesArray.length
+            // select random note numbers from available notes
             const generateNumberBetweenMinAndMax = (min, max) => Math.round((Math.random() * (max - min) + min));
-            const randomNumber = generateNumberBetweenMinAndMax(0, (scaleTonesArray.length - 1));
-            // populate the randomQuestionsArray by selecting a note from scaleTonesArray using a random index number
-            randomQuestionsArray.push(scaleTonesArray[randomNumber]);
+            const randomIndex = generateNumberBetweenMinAndMax(0, availableNotes.length - 1);
+            randomQuestions.push(availableNotes[randomIndex]);
         }
-        return randomQuestionsArray;
+        return randomQuestions;
     }
 
     const checkIntervalAnswer = (answerIntervalNumber) => {
         // Check if the interval number of the pressed button is equal to the current question
         if (answerIntervalNumber === currentQuestionValue) {
-            // new index value to be one higher than the current
             const nextIndex = currentQuestionIndex + 1;
-            // next question value to be the next index
             const nextQuestion = randomQuestions[nextIndex];
-            // stop the quiz after the last question in the randomQuestionsArray
+            // stop the quiz after the last question in the randomQuestions
             if (nextIndex >= randomQuestions.length) {
                 console.log('end');
                 return;
             }
-            // add a new empty array to the answerLog array
-            // answerLog.push([]);
             // sets the new question value state to the next value
             setCurrentQuestionValue(nextQuestion);
             // sets the new question index state to the next value
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            console.log('CORRECT!');
         } else {
-            // Console log when answer is wrong
-            console.log('wrong');
+            console.log('Wrong answer');
         }
     }
-
-    // const addAnswerToLog = (answerIntervalNumber, currentQuestionIndex) => {
-    //     console.log(answerLog, 'answerLog')
-    //     answerLog.splice(currentQuestionIndex, 0, answerIntervalNumber);
-    //     console.log(answerLog, 'answerLog after push')
-    // }
 
     // Changes the state of the toggle switch
     const handleChange = (e) => {
         setToggleSwitch({ ...toggleSwitch, [e.target.name]: e.target.checked });
     }
 
+    // Create a bufferSource for chosen singular audio sample
+    function playNote(number) {
+        const note = scale.find(note => (note.midiNumber === number));
+        let bufferSource = ctx.createBufferSource();
+        bufferSource.buffer = note.audioBuffer;
+        bufferSource.connect(ctx.destination);
+        bufferSource.start();
+        bufferSource.onended = () => console.log('ended');
+    }
+
     // STATES
 
     // scale useState sets the note keys based on the scale type button pressed
     const [scale] = useState(getScaleKeys(findScalePattern(), defaultNotes));
-
     const [randomQuestions] = useState(createQuestions());
-
-    // sets the current question value (interval number)
     const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
-    // sets the current question index number
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
     // toggleSwitch useState toggles the event listeners in useEffect
@@ -124,8 +120,6 @@ function ExerciseContainer(props) {
 
     // Keyboard Toggle Switch useEffect
     useEffect(() => {
-        // If the toggle switch is on adds keydown event listener
-        // playSoundWithKeys listens for key value and triggers the approriate sound (Wes Bos)
         toggleSwitch.keyboardSwitch
             ? window.addEventListener('keydown', playSoundWithKeys)
             : window.removeEventListener('keydown', playSoundWithKeys);
@@ -153,20 +147,6 @@ function ExerciseContainer(props) {
                         currentQuestionValue={currentQuestionValue}
                         checkIntervalAnswer={checkIntervalAnswer}
                         playNote={playNote} />
-                    {/* <SoundfontProvider
-                        hostname={soundfontHostname}
-                        audioContext={audioContext}
-                        render={({ playNote, stopNote, stopAllNotes }) => (
-                            <QuestionContainer
-                                playNote={playNote}
-                                stopNote={stopNote}
-                                stopAllNotes={stopAllNotes}
-                                instrumentSounds={instrumentSounds}
-                                scale={scale}
-                                cadenceType={cadenceType}
-                                currentQuestionValue={currentQuestionValue}
-                                checkIntervalAnswer={checkIntervalAnswer} />
-                        )} /> */}
                 </Grid>
 
                 <Grid item
@@ -192,20 +172,3 @@ function ExerciseContainer(props) {
 }
 
 export default ExerciseContainer;
-
-// DEPRECIATED CODE
-
-// cadenceSound.oncanplaythrough = (e) => {
-            //     const playedPromise = cadenceSound.play();
-            //     if (playedPromise) {
-            //         playedPromise.catch((e) => {
-            //             console.log(e, 'e');
-            //             if (e.name === 'NotAllowedError' || e.name === 'NotSupportedError') {
-            //                 console.log(e.name, 'e.name');
-            //             }
-            //         }).then(() => {
-            //             console.log('playing sound');
-            //         }
-            //         )
-            //     }
-            // }

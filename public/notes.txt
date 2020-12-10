@@ -1,0 +1,106 @@
+To Do (10/12/20):
+
+- Completely re-organise folder structure (by recipe)
+- Organise components accordingly
+- Re-do Figma design more thoroughly
+- Fix the instrument sound change (make rhodes work)
+- Draw out the process for playing a note:
+(does the playNote function need to deal with all samples not scale (minor cadence problem), if so,
+what's the point in filtering out the scale? Why not just do it with numbers?)
+    - How should I deal with the question tones and number and range of interval buttons?
+    - How can I impliment the playNote function so a note is stopped when another is pressed?
+        - using the arguments for the start() method when a note is passed?
+- Introduce the functionality to change the key of the cadence for each question (based 
+on an array of values - i.e. cycle of 5ths)
+- Introduce disabling of interval buttons while a cadence is being played
+- Change the css for the Moth logo so that it can be resized as needed
+
+----------------
+
+ExerciseContainer:
+
+Considerations:
+i) Create a more complex event listener:
+a) Keyup or mouseup triggering a new sample of the tail end of the note (the sample of the key in NI) 
+ii) Use styling rules to dynamically change the colour of the buttons on click:
+a) Current scale type (stays until another is clicked)
+b) Interval button changes colour on keydown and reverts on keyup
+
+----------------
+
+Process for finding the notes for the scale (across the whole sample range):
+ 
+i) find the 'key' state (which key is the cadence in?)
+ii) map over all notes upward starting from the lowest
+ii) map out a specific range for the interval selection button
+
+Different approach:
+
+1) take the starting note
+2) add 12 as many times as possible (all the 'c's e.g.)
+3) add these to the array
+4) add the first scale pattern difference value to the first note
+5) repeat steps 2) and 3) (all the 'd's e.g.)
+6) do the same for the rest of the pattern
+7) sort the new array by note number
+
+Current:
+
+1) Take the starting note
+2) Loop over the scale pattern for each octave
+3) From the starting note add the scale pattern differences
+4) Put each of these notes into the scaleNotes array
+
+To Do (9th Dec 2020):
+
+i) Have the logic dictate that the loop stops at the last available midiNote value
+ii) Find a mathamatical approach from the lowest available note
+
+----------------
+
+NEW FEATURE: Have a practice mode where you're given a constant tone and the key/progresultsion/cadence 
+changes and you have to identify the tone in relation to the changes
+PROBLEM: Need to figure out a way to make the scale and cadence patterns be affected by key changes
+i.e. have the cadence chords defined by differences in semitones and use maths to adjust them 
+(probably need a broader range of available notes - i.e. C2 - C4). Also have different voicings (inversions)
+for the most realistic changes (and figure out ways of selecting them)
+
+----------------
+
+Future Code:
+
+ENUM values for cadences:
+
+export const CadenceTypes = Object.freeze({
+    // TO DO: Add in different voicings that will be chosen depending on the key
+    MAJOR: {
+        FOUR_FIVE_ONE: [[], [], []],
+        TWO_FIVE_ONE: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]],
+        SIX_TWO_FIVE_ONE: [[], [], [], []],
+        ONE_FOUR_SIX_FIVE_ONE: [[], [], [], []],
+        // e.g. G7, Db7, Cmaj7
+        TRITONE_SUBSTITUTION: [[], [], []],
+        // e.g. F-7 (IVm7), Bb7 (VII7), Cmaj7 (Imaj7)
+        BACKDOOR: [[], [], []],
+        // e.g. IV, I
+        PLAGAL: [[], [], []],
+    },
+    MINOR: {
+        // e.g. bII - I
+        PHRYGIAN: [[], []],
+        // e.g. vii˚7 - i
+        MINOR_TYPE_ONE: [[], []],
+        // e.g. bVII - i
+        AEOLIAN: [[], []],
+        // e.g. bvii6 - i 
+        PHRYGIAN: [[], []],
+        // e.g. iv - i
+        MINOR_TYPE_TWO: [[], []],
+        // e.g. IV - i
+        DORIAN: [[], []],
+        // e.g. iiø65 - i
+        MINOR_TYPE_THREE: [[], []],
+        // e.g. III6 - i
+        DOUBLE_CHROMATIC_MEDIANT: [[], []]
+    }
+});

@@ -2,12 +2,7 @@ import React from "react";
 // Components
 import SoundButtonContainer from "../Exercise/SoundButtonContainer";
 // MaterialUI
-import {
-    makeStyles,
-    Grid,
-    Typography,
-    Modal
-} from "@material-ui/core";
+import { makeStyles, Grid, Typography, Modal } from "@material-ui/core";
 import "typeface-roboto";
 
 // Modal useStyles
@@ -29,10 +24,8 @@ function Options(props) {
 
     const { changeInstrumentSound, isOpen, handleClose } = props;
 
-    // useStyle classes
     const classes = useStyles();
 
-    // JSX for the modal
     const modalBody = (
         <Grid container item
             spacing={7}

@@ -1,15 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 // MaterialUI
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Grid,
-    Button,
-    makeStyles
-} from '@material-ui/core';
-// import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Toolbar, Typography, Button, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
     headerStyles: {

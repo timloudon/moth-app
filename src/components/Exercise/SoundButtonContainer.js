@@ -9,11 +9,12 @@ function SoundButtonContainer(props) {
 
     return (
         instruments.map((item) => {
+            console.log('item.instrumentName: ', item.instrumentName);
             return (
                 <AppButton
                     key={item.instrumentName}
                     buttonText={item.instrumentName}
-                    onClickHandler={() => { changeInstrumentSound(item.instrumentSounds) }} />
+                    onClickHandler={() => { changeInstrumentSound(item.instrumentName) }} />
             )
         })
     )

@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 
 function IntervalButton(props) {
 
-    const { intervalValue, onClickHandler } = props;
+    const { buttonText, onClickHandler } = props;
 
     return (
         <>
@@ -13,7 +13,7 @@ function IntervalButton(props) {
                 style={{ textTransform: 'lowercase' }}
                 className="key"
                 onClick={onClickHandler}>
-                {intervalValue}
+                {buttonText}
             </Button>
         </>
     );
