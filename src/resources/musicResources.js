@@ -1,4 +1,10 @@
-// Patterns of different scale types (pattern property is an array of semitone value differences between notes of the scale)
+export const cadencePatterns = [
+    { type: "Major", pattern: [[62, 65, 69, 72], [62, 65, 67, 71], [60, 64, 67, 71]] },
+    { type: "Minor", pattern: [[62, 65, 68, 72], [62, 65, 67, 71], [60, 63, 67, 72]] },
+    { type: "Major Chromatic", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
+    { type: "Minor Chromatic", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
+]
+
 export const scalePatterns = [
     { type: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
     { type: "Major", pattern: [2, 2, 1, 2, 2, 2, 1] },
@@ -13,7 +19,6 @@ export const scalePatterns = [
     { type: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
 ]
 
-// Array of available instruments
 export const instruments = [
     {
         instrumentName: "Piano",
@@ -162,20 +167,3 @@ export const instruments = [
         ]
     }
 ]
-
-export const cadencePatterns = [
-    { type: "Major", pattern: [[62, 65, 69, 72], [62, 65, 67, 71], [60, 64, 67, 71]] },
-    { type: "Minor", pattern: [[62, 65, 68, 72], [62, 65, 67, 71], [60, 63, 67, 72]] },
-    { type: "Major Chromatic", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
-    { type: "Minor Chromatic", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
-]
-
-// Provides the key values for keys A, S, D, F, G, H, J, K
-export const keyboardKeyValues = [65, 83, 68, 70, 71, 72, 74, 75];
-
-// Matches the button with the keydown value and clicks the button
-export function playSoundWithKeys(e) {
-    const scaleButton = document.querySelector(`button.key[data-key="${e.keyCode}"]`);
-    if (!scaleButton) return;
-    scaleButton.click();
-}

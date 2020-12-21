@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/App';
+import App from './app/layout/App';
 // import Store from './context/Store';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { theme } from './components/theme';
+import { theme } from './themes/theme';
 
 ReactDOM.render(
   <BrowserRouter>

@@ -1,7 +1,9 @@
 To Do (10/12/20):
 
-- Completely re-organise folder structure (by recipe)
-- Organise components accordingly
+- Find a way to make the browser only load the samples once
+    - i.e. once the piano samples are loaded, don't reload them again when you go out and into the exercise again
+- Create custom hooks for some of the functionality
+    - useScale(scaleType, samples): determine the scale
 - Re-do Figma design more thoroughly
 - Fix the instrument sound change (make rhodes work)
 - Draw out the process for playing a note:

@@ -1,6 +1,6 @@
 import React from "react";
 // Components
-import SoundButtonContainer from "../Exercise/SoundButtonContainer";
+import instrumentTypeButton from "../Options/InstrumentTypeButton";
 // MaterialUI
 import { makeStyles, Grid, Typography, Modal } from "@material-ui/core";
 import "typeface-roboto";
@@ -20,9 +20,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function Options(props) {
-
-    const { changeInstrumentSound, isOpen, handleClose } = props;
+function Options({ changeInstrumentSound, isOpen, handleClose }) {
 
     const classes = useStyles();
 
@@ -42,7 +40,7 @@ function Options(props) {
 
             <Grid item
                 xs={12}>
-                <SoundButtonContainer
+                <instrumentTypeButton
                     changeInstrumentSound={changeInstrumentSound} />
             </Grid>
 

@@ -1,33 +1,21 @@
 import React, { useState, useEffect } from "react";
-// Components
-import IntervalButtonContainer from "./IntervalButtonContainer";
-// Arrays & Functions
-import { keyboardKeyValues, cadencePatterns } from "../../shared/musicResources";
-// MaterialUI
+import IntervalButtons from "../common/IntervalButtons";
+import { cadencePatterns } from "../../resources/musicResources";
 import { Grid, IconButton } from "@material-ui/core";
 import { PlayCircleOutline, MusicNote } from "@material-ui/icons";
 import "typeface-roboto";
 
-function QuestionContainer(props) {
+function QuestionContainer({ scale, availableNotes, cadenceType, currentQuestionValue, checkIntervalAnswer, playNote, isLoading }) {
 
-    const {
-        scale,
-        cadenceType,
-        currentQuestionValue,
-        checkIntervalAnswer,
-        playNote
-    } = props;
-
-    // state used to force refresh when play cadence button is pressed (causing useEffect to play cadence)
+    // force refresh when play cadence button is pressed
     const [isPlayed, setPlayed] = useState({});
+    const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
+    console.log('isFinishedQuestion: ', isFinishedQuestion);
     // state to determine the key of the exercise (may change for each question)
     // const [questionKey, setQuestionKey] = useState('C');
 
-    // Finds the cadence pattern by matching the string passed in with the type property
     const findChordInCadencePattern = (index) => {
-        // Finds the object within the array that matches the string
         const cadenceObject = cadencePatterns.find((pattern) => pattern.type === cadenceType);
-        // the cadence pattern that matches the index passed in (e.g. index of 0 relates to the values for a iim7 chord)
         const cadencePattern = cadenceObject.pattern[index];
         return cadencePattern;
     };
@@ -42,21 +30,26 @@ function QuestionContainer(props) {
         setPlayed({});
     };
 
-    // USEEFFECTS
-
-    // useEffect plays cadence and interval question tone
     useEffect(() => {
-        const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0)) }, 1000)
-        const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1)) }, 2000);
-        const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2)) }, 3000);
-        const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 5000);
-        return () => {
-            clearTimeout(playChordOne);
-            clearTimeout(playChordTwo);
-            clearTimeout(playChordThree);
-            clearTimeout(playTone);
-        };
-    });
+        setIsFinishedQuestion(false);
+        if (!isLoading) {
+            // debugger;
+            const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0)) }, 1000);
+            const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1)) }, 2000);
+            const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2)) }, 3000);
+            const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 5000);
+            const finishedQuestion = setTimeout(() => {
+                setIsFinishedQuestion(true);
+            }, 6000);
+            return () => {
+                clearTimeout(playChordOne);
+                clearTimeout(playChordTwo);
+                clearTimeout(playChordThree);
+                clearTimeout(playTone);
+            };
+        }
+
+    }, [isPlayed, currentQuestionValue, isLoading]);
 
     return (
         <Grid
@@ -68,12 +61,13 @@ function QuestionContainer(props) {
             justify="flex-start"
             alignItems="stretch"
         >
-            <Grid item container xs={12} spacing={2}>
-                <IntervalButtonContainer
+            <Grid item container xs={12} spacing={2} justify="center" alignItems="center">
+                <IntervalButtons
                     scale={scale}
+                    availableNotes={availableNotes}
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
-                    keyboardKeyValues={keyboardKeyValues}
+                    isFinishedQuestion={isFinishedQuestion}
                 />
             </Grid>
 

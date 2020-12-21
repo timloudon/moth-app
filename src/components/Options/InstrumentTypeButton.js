@@ -1,12 +1,9 @@
 import React from 'react';
 // Components
-import AppButton from "../../shared/AppButton";
-import { instruments } from "../../shared/musicResources";
+import AppButton from "../common/AppButton";
+import { instruments } from "../../resources/musicResources";
 
-function SoundButtonContainer(props) {
-
-    const { changeInstrumentSound } = props;
-
+function SoundButtonContainer({ changeInstrumentSound }) {
     return (
         instruments.map((item) => {
             console.log('item.instrumentName: ', item.instrumentName);

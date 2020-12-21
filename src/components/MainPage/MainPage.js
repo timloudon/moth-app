@@ -1,15 +1,19 @@
-import { Button } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MothLogo from '../../shared/logos/MothLogo';
-import { Grid, Typography } from '@material-ui/core';
+import MothLogo from '../common/MothLogo';
+import { Grid, Typography, Button, ButtonBase, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    // menuButton: {
+    //     '&:hover': 
+    // }
+}));
 
 export default function MainPage() {
     return (
         <Grid container spacing={4}>
             <Grid item container xs={12}>
-                <Button
-                    fullWidth
+                <ButtonBase
                     disableRipple={true}
                     component={Link}
                     to={{
@@ -19,20 +23,16 @@ export default function MainPage() {
                             cadence: { type: "Major" }
                         }
                     }}>
-                    <Grid item xs={5} style={{ flex: 1 }}>
+                    <Grid item>
                         <MothLogo />
                     </Grid>
-                    <Grid item xs={7}>
-                        <Grid item xs={8}>
-                            <Typography variant="h2">MAJOR</Typography>
-                        </Grid>
-                        <Grid item xs={4} />
+                    <Grid item>
+                        <Typography variant="button">MAJOR</Typography>
                     </Grid>
-                </Button>
+                </ButtonBase>
             </Grid>
             <Grid item xs={12}>
-                <Button
-                    fullWidth
+                <ButtonBase
                     disableRipple={true}
                     component={Link}
                     to={{
@@ -42,20 +42,16 @@ export default function MainPage() {
                             cadence: { type: "Minor" }
                         }
                     }}>
-                    <Grid item xs={5} style={{ flex: 1 }}>
+                    <Grid item>
                         <MothLogo />
                     </Grid>
-                    <Grid item xs={7}>
-                        <Grid item xs={8}>
-                            <Typography variant="h2">MINOR</Typography>
-                        </Grid>
-                        <Grid item xs={4} />
+                    <Grid item>
+                        <Typography variant="button">MINOR</Typography>
                     </Grid>
-                </Button>
+                </ButtonBase>
             </Grid>
             <Grid item xs={12}>
-                <Button
-                    fullWidth
+                <ButtonBase
                     disableRipple={true}
                     component={Link}
                     to={{
@@ -65,20 +61,16 @@ export default function MainPage() {
                             cadence: { type: "Major" }
                         }
                     }}>
-                    <Grid item xs={5} style={{ flex: 1 }}>
+                    <Grid item>
                         <MothLogo />
                     </Grid>
-                    <Grid item xs={7}>
-                        <Grid item xs={8}>
-                            <Typography variant="h2">MAJOR CHROMATIC</Typography>
-                        </Grid>
-                        <Grid item xs={4} />
+                    <Grid item>
+                        <Typography variant="button">MAJOR CHROMATIC</Typography>
                     </Grid>
-                </Button>
+                </ButtonBase>
             </Grid>
             <Grid item xs={12}>
-                <Button
-                    fullWidth
+                <ButtonBase
                     disableRipple={true}
                     component={Link}
                     to={{
@@ -88,16 +80,13 @@ export default function MainPage() {
                             cadence: { type: "Minor" }
                         }
                     }}>
-                    <Grid item xs={5} style={{ flex: 1 }}>
+                    <Grid item>
                         <MothLogo />
                     </Grid>
-                    <Grid item xs={7}>
-                        <Grid item xs={8}>
-                            <Typography variant="h2">MINOR CHROMATIC</Typography>
-                        </Grid>
-                        <Grid item xs={4} />
+                    <Grid item>
+                        <Typography variant="button">MINOR CHROMATIC</Typography>
                     </Grid>
-                </Button>
+                </ButtonBase>
             </Grid>
         </Grid >
     )
