@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 
 function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorrectAnswer, scale }) {
@@ -61,12 +61,14 @@ function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorr
     const classes = useStyles(isFinishedQuestion);
 
     return (
-        <div className={isCorrectAnswer ? classes.correctAnswer : classes.incorrectAnswer}>
-            <Typography className={classes.text} variant="button">{isCorrectAnswer ? iconText : '?'}</Typography>
-            <div className={classes.logo}>
-                <MothLogo widthAndHeight={widthAndHeight} />
+        <Grid item>
+            <div className={isCorrectAnswer ? classes.correctAnswer : classes.incorrectAnswer}>
+                <Typography className={classes.text} variant="button">{isCorrectAnswer ? iconText : '?'}</Typography>
+                <div className={classes.logo}>
+                    <MothLogo widthAndHeight={widthAndHeight} />
+                </div>
             </div>
-        </div>
+        </Grid>
     )
 }
 

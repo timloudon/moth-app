@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import IntervalButtons from "../common/IntervalButtons";
-import Footer from '../common/Footer'
+
 import { cadencePatterns } from "../../resources/musicResources";
 import { Grid, IconButton } from "@material-ui/core";
 
-function QuestionContainer({
+function ScaleTones({
     scale,
     availableNotes,
     cadenceType,
@@ -14,8 +14,6 @@ function QuestionContainer({
     playNote,
     isLoading
 }) {
-
-    console.log("Questions rendered");
 
     // force refresh when play cadence button is pressed
     const [isPlayed, setPlayed] = useState({});
@@ -73,15 +71,8 @@ function QuestionContainer({
                     isFinishedQuestion={isFinishedQuestion}
                 />
             </Grid>
-            {/* Want to move the footer outside of the grid above (window height sizing issue) */}
-            <Grid item>
-                <Footer
-                    forceRefreshToPlayCadence={forceRefreshToPlayCadence}
-                    playNote={playNote}
-                    currentQuestionValue={currentQuestionValue} />
-            </Grid>
         </>
     );
 }
 
-export default QuestionContainer;
+export default ScaleTones;
