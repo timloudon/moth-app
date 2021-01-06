@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**As a** a member of [the development team](http://scrumguides.org/scrum-guide.html#team-dev),
-**I want** clear context and goals **so that** I can work efficiently.
+**As a** ,
+**I want**  **so that** I .
 
 Scattering information in emails and other places makes it difficult to work collaboratively,
 so I need all the relevant information within the relevant issue.
