@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useTimeout } from "../../resources/useTimeout";
-import Questions from "./Questions";
 import ProgressBar from "./ProgressBar";
+import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from '../common/IntervalQuestionIcon';
+import ScaleTones from "./ScaleTones";
+import Footer from '../common/Footer';
 import { scalePatterns } from "../../resources/musicResources";
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { Grid makeStyles } from "@material-ui/core";
 import "typeface-roboto";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-    },
-    cadenceItem: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        maxWidth: "60px",
-        minWidth: "60px",
-        color: theme.palette.text.primary,
     },
 }));
 
@@ -115,23 +110,9 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
     return (
         <Grid item container direction="column" justify="space-between" alignItems="center" style={{ height: '75vh' }}>
             <ProgressBar randomQuestions={randomQuestions} currentQuestionIndex={currentQuestionIndex} />
-            <Grid item container
-                direction="row"
-                justify="center"
-                alignItems="center"
-                spacing={2}>
-                <Grid item xs></Grid>
-                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">ii</Typography></Grid>
-                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
-                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">V</Typography></Grid>
-                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
-                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">I</Typography></Grid>
-                <Grid item xs></Grid>
-            </Grid>
-            <Grid item>
-                <IntervalQuestionIcon scale={scale} currentQuestionValue={currentQuestionValue} isCorrectAnswer={isCorrectAnswer} />
-            </Grid>
-            <Questions
+            <CadenceSymbols />
+            <IntervalQuestionIcon scale={scale} currentQuestionValue={currentQuestionValue} isCorrectAnswer={isCorrectAnswer} />
+            <ScaleTones
                 isLoading={isLoading}
                 noteRange={noteRange}
                 scale={scale}
@@ -141,6 +122,11 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
                 currentQuestionIndex={currentQuestionIndex}
                 checkIntervalAnswer={checkIntervalAnswer}
                 playNote={playNote} />
+            <Footer
+            // forceRefreshToPlayCadence={forceRefreshToPlayCadence}
+            // playNote={playNote}
+            // currentQuestionValue={currentQuestionValue} 
+            />
         </Grid>
     );
 }
