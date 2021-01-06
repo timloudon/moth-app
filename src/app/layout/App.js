@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import MainPage from "../../components/MainPage/MainPage";
-import Exercise from "../../components/Exercises/Exercise";
-import Footer from '../../components/common/Footer';
 import Layout from "./Layout"
 import { instruments } from "../../resources/musicResources";
 import "./App.css";
@@ -41,7 +39,7 @@ function App() {
   const exercise = (props) => (
     <>
       <Layout
-        title={"SCALE TONES - " + (props.location.state.cadence.type)}
+        title={props.location.state.cadence.type}
         handleOpen={handleOpen}
         handleClose={handleClose}
         changeInstrumentSound={changeInstrumentSound}
@@ -51,32 +49,34 @@ function App() {
           instrumentType={instrumentType}
           ctx={ctx} />
       </Layout>
-      <Footer />
     </>
   )
 
+  // const options = () => (
+  //   <Layout
+  //     title="MOTH"
+  //     handleOpen={handleOpen}
+  //     handleClose={handleClose}
+  //     changeInstrumentSound={changeInstrumentSound}
+  //     isOpen={isOpen}>
+  //     <Options />
+  //   </Layout>
+  // )
+
   return (
-    <React.Fragment>
-      <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="stretch"
-        spacing={0}
-      >
-        <Switch>
-          <Route
-            exact
-            path="/"
-            component={mainPage} />
-          <Route
-            exact
-            path="/Exercise/ExerciseContainer"
-            component={exercise}
-          />
-        </Switch>
-      </Grid>
-    </React.Fragment >
+    <Grid container direction="row" style={{ overflowX: "hidden" }}>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          component={mainPage} />
+        <Route
+          exact
+          path="/Exercise/ExerciseContainer"
+          component={exercise}
+        />
+      </Switch>
+    </Grid>
   );
 }
 

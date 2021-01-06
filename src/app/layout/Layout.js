@@ -9,16 +9,12 @@ export default function Layout(props) {
 
     return (
         <>
-            <Grid item container>
-                <Header title={title} handleOpen={handleOpen}></Header>
-                <Options
-                    changeInstrumentSound={changeInstrumentSound}
-                    isOpen={isOpen}
-                    handleClose={handleClose} />
-                <Grid item xs={12}>
-                    <div>{props.children}</div>
-                </Grid>
-            </Grid>
+            <Header title={title} handleOpen={handleOpen}></Header>
+            {/* <Options
+                changeInstrumentSound={changeInstrumentSound}
+                isOpen={isOpen}
+                handleClose={handleClose} /> */}
+            {props.children}
         </>
     );
 }

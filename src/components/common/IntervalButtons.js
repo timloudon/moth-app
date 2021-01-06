@@ -1,13 +1,13 @@
 import React from 'react';
-import IntervalButton from "./IntervalButton";
+import MothButton from "./MothButton";
 import { Grid } from "@material-ui/core";
 
-function IntervalButtons({ isFinishedQuestion, scale, availableNotes, checkIntervalAnswer, playNote }) {
+function IntervalButtons({ isFinishedQuestion, availableNotes, checkIntervalAnswer, playNote }) {
     return (
         availableNotes.map((item) => {
             return (
-                <Grid key={item.midiNumber} item xs={6} md={3} lg='auto'>
-                    <IntervalButton
+                <Grid key={item.midiNumber} item>
+                    <MothButton
                         buttonText={item.noteName}
                         onClickHandler={() => {
                             playNote(item.midiNumber);

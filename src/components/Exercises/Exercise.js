@@ -1,15 +1,28 @@
-import React, { useState } from "react";
-import useSamples from '../../resources/useSamples';
-import { instruments } from "../../resources/musicResources";
+import React, { useState, useEffect } from "react";
+import { useTimeout } from "../../resources/useTimeout";
 import Questions from "./Questions";
 import ProgressBar from "./ProgressBar";
+import IntervalQuestionIcon from '../common/IntervalQuestionIcon';
 import { scalePatterns } from "../../resources/musicResources";
-import { Grid, Switch, FormGroup, FormControlLabel } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import "typeface-roboto";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    cadenceItem: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        maxWidth: "60px",
+        minWidth: "60px",
+        color: theme.palette.text.primary,
+    },
+}));
 
 function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
 
-    console.log('Exercise rendered');
+    const classes = useStyles();
 
     // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
     const scaleType = routeProps.location.state.scale.type;
@@ -62,9 +75,15 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
                 console.log('end');
                 return;
             }
-            setCurrentQuestionValue(nextQuestion);
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setIsCorrectAnswer(true);
+            // consider different way to do this using useEffect?
+            setTimeout(() => {
+                setCurrentQuestionValue(nextQuestion);
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
+                setIsCorrectAnswer(false);
+            }, 2000);
         } else {
+            setIsCorrectAnswer(false);
             console.log('Wrong answer');
         }
     }
@@ -83,40 +102,46 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
     const [randomQuestions] = useState(createQuestions(noteRange));
     const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+
+    console.log('isCorrectAnswer: ', isCorrectAnswer);
+    console.log('questions: ', randomQuestions);
+
+    useEffect(() => {
+        console.log('useEffect');
+        setIsCorrectAnswer(false);
+    }, [currentQuestionIndex])
 
     return (
-        <>
+        <Grid item container direction="column" justify="space-between" alignItems="center" style={{ height: '75vh' }}>
             <ProgressBar randomQuestions={randomQuestions} currentQuestionIndex={currentQuestionIndex} />
-            {/* <Grid item xs={false} sm={1} />  */}
-            <Grid container
-                spacing={0}
+            <Grid item container
                 direction="row"
-                justify="flex-start"
-                alignItems="stretch">
-                <Grid container item
-                    xs={12}
-                    sm={10}
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center"
-                    alignItems="stretch">
-
-                    <Grid item
-                        xs={12} >
-                        <Questions
-                            isLoading={isLoading}
-                            noteRange={noteRange}
-                            scale={scale}
-                            availableNotes={availableNotes}
-                            cadenceType={cadenceType}
-                            currentQuestionValue={currentQuestionValue}
-                            checkIntervalAnswer={checkIntervalAnswer}
-                            playNote={playNote} />
-                    </Grid>
-                </Grid>
+                justify="center"
+                alignItems="center"
+                spacing={2}>
+                <Grid item xs></Grid>
+                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">ii</Typography></Grid>
+                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
+                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">V</Typography></Grid>
+                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
+                <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">I</Typography></Grid>
+                <Grid item xs></Grid>
             </Grid>
-            {/* <Grid item xs={false} sm={1} /> */}
-        </>
+            <Grid item>
+                <IntervalQuestionIcon scale={scale} currentQuestionValue={currentQuestionValue} isCorrectAnswer={isCorrectAnswer} />
+            </Grid>
+            <Questions
+                isLoading={isLoading}
+                noteRange={noteRange}
+                scale={scale}
+                availableNotes={availableNotes}
+                cadenceType={cadenceType}
+                currentQuestionValue={currentQuestionValue}
+                currentQuestionIndex={currentQuestionIndex}
+                checkIntervalAnswer={checkIntervalAnswer}
+                playNote={playNote} />
+        </Grid>
     );
 }
 

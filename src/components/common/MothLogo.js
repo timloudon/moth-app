@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 
-function MothLogo({ buttonText, isFinishedQuestion }) {
+function MothLogo({ widthAndHeight, isFinishedQuestion }) {
 
-    const width = 85;
-    const height = 85;
+    const width = widthAndHeight || 85;
+    const height = widthAndHeight || 85;
     const innerWidth = Math.round(width / 1.235294); // 68
     const innerHeight = Math.round(height / 2.4285714286); // 35
     const edgeWidth = Math.round(width / 28.28); // 
@@ -14,15 +14,14 @@ function MothLogo({ buttonText, isFinishedQuestion }) {
             display: 'grid',
             zIndex: '0',
             gridTemplateRows: `${edgeWidth}px 1fr 1fr ${edgeWidth}px`,
-            gridTemplateColumns: `${height}`,
+            gridTemplateColumns: `${height}px`,
             padding: "0",
             width: `${width}px`,
             height: `${height}px`,
-            background: isFinishedQuestion => (isFinishedQuestion ? null : theme.palette.secondary.main),
             border: `${edgeWidth}px solid #000000`,
             borderRadius: "50%",
             transform: "rotate(45deg)",
-            boxShadow: "0px 2.6704px 2.6704px rgba(0,0,0,.25)"
+            // boxShadow: "0px 2.6704px 2.6704px rgba(0,0,0,.25)",
         },
         container: {
             left: "50%",
@@ -50,7 +49,6 @@ function MothLogo({ buttonText, isFinishedQuestion }) {
             zIndex: '1'
         },
         backgroundCircle: {
-            // gridArea: '1 / 2 / 1 / 3',
             gridRowStart: '2',
             gridRowEnd: '4',
             alignSelf: 'center',

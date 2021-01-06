@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import IntervalButtons from "../common/IntervalButtons";
+import Footer from '../common/Footer'
 import { cadencePatterns } from "../../resources/musicResources";
 import { Grid, IconButton } from "@material-ui/core";
-import { PlayCircleOutline, MusicNote } from "@material-ui/icons";
-import "typeface-roboto";
 
-function QuestionContainer({ scale, availableNotes, cadenceType, currentQuestionValue, checkIntervalAnswer, playNote, isLoading }) {
+function QuestionContainer({
+    scale,
+    availableNotes,
+    cadenceType,
+    currentQuestionValue,
+    currentQuestionIndex,
+    checkIntervalAnswer,
+    playNote,
+    isLoading
+}) {
+
+    console.log("Questions rendered");
 
     // force refresh when play cadence button is pressed
     const [isPlayed, setPlayed] = useState({});
     const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
-    console.log('isFinishedQuestion: ', isFinishedQuestion);
     // state to determine the key of the exercise (may change for each question)
     // const [questionKey, setQuestionKey] = useState('C');
 
@@ -46,40 +55,32 @@ function QuestionContainer({ scale, availableNotes, cadenceType, currentQuestion
                 clearTimeout(playChordTwo);
                 clearTimeout(playChordThree);
                 clearTimeout(playTone);
+                clearTimeout(finishedQuestion);
             };
         }
 
-    }, [isPlayed, currentQuestionValue, isLoading]);
+    }, [isPlayed, currentQuestionIndex, isLoading]);
 
     return (
-        <Grid
-            container
-            item
-            spacing={7}
-            xs={12}
-            direction="row"
-            justify="flex-start"
-            alignItems="stretch"
-        >
-            <Grid item container xs={12} spacing={2} justify="center" alignItems="center">
+        <>
+            <Grid item container justify="center" alignItems="center" spacing={2}>
                 <IntervalButtons
                     scale={scale}
                     availableNotes={availableNotes}
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
+                    currentQuestionValue={currentQuestionValue}
                     isFinishedQuestion={isFinishedQuestion}
                 />
             </Grid>
-
-            <Grid item xs={12}>
-                <IconButton onClick={() => forceRefreshToPlayCadence()}>
-                    <PlayCircleOutline />
-                </IconButton>
-                <IconButton onClick={() => playNote(currentQuestionValue)}>
-                    <MusicNote />
-                </IconButton>
+            {/* Want to move the footer outside of the grid above (window height sizing issue) */}
+            <Grid item>
+                <Footer
+                    forceRefreshToPlayCadence={forceRefreshToPlayCadence}
+                    playNote={playNote}
+                    currentQuestionValue={currentQuestionValue} />
             </Grid>
-        </Grid>
+        </>
     );
 }
 
