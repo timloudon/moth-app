@@ -5,7 +5,7 @@ import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
 import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
-import { scalePatterns } from "../../resources/musicResources";
+import { getScaleNotes, findScalePattern } from "../../resources/helperFunctions";
 import { Grid, makeStyles } from "@material-ui/core";
 import "typeface-roboto";
 
@@ -23,33 +23,12 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
   const cadenceType = routeProps.location.state.cadence.type;
   const noteRange = [60, 72];
 
-  function getScaleNotes(scalePattern, allNotes) {
-    let scaleNotes = [];
-    let firstNote = allNotes[0];
-    scaleNotes.push(firstNote);
-    let currentMidiNumber;
-    let nextMidiNumber = firstNote.midiNumber;
-    let lastAvailableMidiNumber = allNotes[allNotes.length - 1].midiNumber;
-    for (let i = 0; nextMidiNumber < lastAvailableMidiNumber; i++) {
-      let patternIndex = i % scalePattern.length;
-      let increment = scalePattern[patternIndex];
-      currentMidiNumber = scaleNotes[i].midiNumber;
-      nextMidiNumber = currentMidiNumber + increment;
-      let nextNote = allNotes.find(
-        (note) => note.midiNumber === nextMidiNumber
-      );
-      scaleNotes.push(nextNote);
-    }
-    return scaleNotes;
-  }
-
-  const findScalePattern = () => {
-    const scaleObject = scalePatterns.find(
-      (pattern) => pattern.type === scaleType
-    );
-    const scalePattern = scaleObject.pattern;
-    return scalePattern;
-  };
+  const [scale] = useState(getScaleNotes(findScalePattern(scaleType), samples));
+  const [availableNotes, setAvailableNotes] = useState(filterAvailableNotes(noteRange));
+  const [randomQuestions] = useState(createQuestions(noteRange));
+  const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   const filterAvailableNotes = (noteRange) => {
     return scale.filter(
@@ -100,17 +79,6 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
     bufferSource.connect(ctx.destination);
     bufferSource.start();
   }
-
-  const [scale] = useState(getScaleNotes(findScalePattern(), samples));
-  const [availableNotes, setAvailableNotes] = useState(
-    filterAvailableNotes(noteRange)
-  );
-  const [randomQuestions] = useState(createQuestions(noteRange));
-  const [currentQuestionValue, setCurrentQuestionValue] = useState(
-    randomQuestions[0]
-  );
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   useEffect(() => {
     setIsCorrectAnswer(false);

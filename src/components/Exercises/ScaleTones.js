@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IntervalButtons from "../common/IntervalButtons";
-
 import { cadencePatterns } from "../../resources/musicResources";
-import { Grid, IconButton } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 function ScaleTones({
     scale,

@@ -3,9 +3,6 @@ import { makeStyles, Grid, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 
 function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorrectAnswer, scale }) {
-
-    console.log('IntervalQuestionIcon rendered');
-
     const findNoteNameFromMidiNumber = (midiNumber) => {
         return scale.filter(item => item.midiNumber === midiNumber)[0];
     }
