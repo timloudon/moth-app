@@ -11,7 +11,12 @@ function SamplesProvider({ routeProps, instrumentType, ctx }) {
         <>
             {isLoading
                 ? <SpinnerLogo />
-                : (<Exercise routeProps={routeProps} ctx={ctx} instrumentType={instrumentType} samples={samples} isLoading={isLoading} />)
+                : (<Exercise
+                    routeProps={routeProps}
+                    ctx={ctx}
+                    instrumentType={instrumentType}
+                    samples={samples}
+                    isLoading={isLoading} />)
             }
         </>
     )

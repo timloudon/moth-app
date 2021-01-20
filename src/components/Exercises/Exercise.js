@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useTimeout } from "../../resources/useTimeout";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+// import { useTimeout } from "../../resources/useTimeout";
 import ProgressBar from "./ProgressBar";
 import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
 import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
-import { getScaleNotes, findScalePattern } from "../../resources/helperFunctions";
+import { getScaleNotes, findScalePattern, findChordInCadencePattern } from "../../resources/helperFunctions";
 import { Grid, makeStyles } from "@material-ui/core";
 import "typeface-roboto";
 
@@ -15,20 +15,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
+function Exercise({ isLoading, routeProps, ctx, samples }) {
+  console.log('exercise rendered');
+
   const classes = useStyles();
 
   // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
   const scaleType = routeProps.location.state.scale.type;
   const cadenceType = routeProps.location.state.cadence.type;
   const noteRange = [60, 72];
-
-  const [scale] = useState(getScaleNotes(findScalePattern(scaleType), samples));
-  const [availableNotes, setAvailableNotes] = useState(filterAvailableNotes(noteRange));
-  const [randomQuestions] = useState(createQuestions(noteRange));
-  const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   const filterAvailableNotes = (noteRange) => {
     return scale.filter(
@@ -72,6 +67,10 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
     }
   };
 
+  const forceRefreshToPlayCadence = () => {
+    setPlayed({});
+  };
+
   function playNote(number) {
     const note = samples.find((note) => note.midiNumber === number);
     let bufferSource = ctx.createBufferSource();
@@ -80,9 +79,46 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
     bufferSource.start();
   }
 
+  const playChord = (pattern) => {
+    pattern.forEach((number) => {
+      playNote(number);
+      console.log('playChord: ', number);
+    });
+  };
+
+  const [scale] = useState(getScaleNotes(findScalePattern(scaleType), samples));
+  const [availableNotes, setAvailableNotes] = useState(filterAvailableNotes(noteRange));
+  const [randomQuestions] = useState(createQuestions(noteRange));
+  const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [isPlayed, setPlayed] = useState();
+  const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
+
   useEffect(() => {
     setIsCorrectAnswer(false);
   }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsFinishedQuestion(false);
+      console.log('cadence started');
+      const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0, cadenceType)) }, 1000);
+      const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1, cadenceType)) }, 2000);
+      const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2, cadenceType)) }, 3000);
+      const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 5000);
+      const finishedQuestion = setTimeout(() => {
+        setIsFinishedQuestion(true);
+      }, 6000);
+      return () => {
+        clearTimeout(playChordOne);
+        clearTimeout(playChordTwo);
+        clearTimeout(playChordThree);
+        clearTimeout(playTone);
+        clearTimeout(finishedQuestion);
+      }
+    }
+  }, [isPlayed, currentQuestionIndex, isLoading]);
 
   return (
     <Grid
@@ -104,20 +140,19 @@ function Exercise({ isLoading, routeProps, instrumentType, ctx, samples }) {
         isCorrectAnswer={isCorrectAnswer}
       />
       <ScaleTones
-        isLoading={isLoading}
         noteRange={noteRange}
         scale={scale}
         availableNotes={availableNotes}
-        cadenceType={cadenceType}
         currentQuestionValue={currentQuestionValue}
-        currentQuestionIndex={currentQuestionIndex}
+        isFinishedQuestion={isFinishedQuestion}
         checkIntervalAnswer={checkIntervalAnswer}
         playNote={playNote}
       />
       <Footer
-      // forceRefreshToPlayCadence={forceRefreshToPlayCadence}
-      // playNote={playNote}
-      // currentQuestionValue={currentQuestionValue}
+        forceRefreshToPlayCadence={forceRefreshToPlayCadence}
+        playNote={playNote}
+        currentQuestionValue={currentQuestionValue}
+        isFinishedQuestion={isFinishedQuestion}
       />
     </Grid>
   );
