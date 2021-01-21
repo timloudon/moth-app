@@ -1,9 +1,16 @@
 Current App Issues
 
-- SamplesProvider renders Exercise component before samples have finished loading in the browser
-    therefor the beginning cadence is missed
+- create a gitignore file that doesn't include the sound files and logic file in the repo
 - Abstract out the css animation from the MothButton component so it can be used on the 'replay question' 
     button for the dissabled property
 - Have the question icon change color according to whether the scale tone pressed is the correct answer (have the
     logic change the classes on the component)
--  
+- Develop the options/settings page:
+    - Be able to choose the instrument sound
+        (initally outside of the exercise, but then have the ability to change sounds within the exercise)
+    - Be able to choose the cadence type and have this affect the cadence title
+- User login and data storage
+- Smart questions:
+    takes user data about past performance and chooses musical questions based on strengths and weaknesses
+- ML creation of music for exercises
+    develop ML so that chord progressions and melodies are not pooled from a static list

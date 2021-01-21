@@ -12,7 +12,6 @@ function useSamples(instruments, instrumentType, ctx) {
         bufferSource.buffer = note.audioBuffer;
         bufferSource.connect(ctx.destination);
         bufferSource.start();
-        console.log('note played in special place')
     }
 
     // Augments each note object in the instruments array by adding the audioBuffer property with each audioBuffer value
@@ -24,42 +23,23 @@ function useSamples(instruments, instrumentType, ctx) {
         const audio = Promise.all(noteFilePaths.map(filePath =>
             fetch(filePath)
                 .then(result => result.arrayBuffer())
-                .then(buffer => {
-                    const decodedBuffer = ctx.decodeAudioData(buffer);
-                    console.log('decoded buffer; ', decodedBuffer);
-                    return decodedBuffer;
-                })
+                .then(buffer => ctx.decodeAudioData(buffer))
         ));
 
         await audio;
 
-        instrument.instrumentSounds.forEach((note, i) => {
-            audio.then(buffers => {
-                note.audioBuffer = buffers[i];
-                console.log('buffers: ', buffers);
-            });
-        });
+        instrument.instrumentSounds.forEach((note, i) => audio.then(buffers => note.audioBuffer = buffers[i]));
         return instrument.instrumentSounds;
     }
-
-    // https://stackoverflow.com/questions/63213549/warning-cant-perform-a-react-state-update-on-an-unmounted-component-in-a-func
-    // const isMountedRef = useRef(true);
-    // useEffect(() => () => { isMountedRef.current = false }, []);
 
     useEffect(() => {
         setupSamples(instruments)
             .then(result => {
-                console.log('samples resolved');
                 setSamples(result);
-                // if (isMountedRef.current) {
-                // }
             })
-            // PROBLEM: the loading state is changing after the audio promise is resolved but before the buffers are processed
-            // .then(() => setIsLoading(false))
             .catch(err => {
                 console.log('catch error: ', err);
             })
-            // isLoading not waiting for resolve of promises and decoding
             .finally(() => setIsLoading(false));
     }, []);
 
