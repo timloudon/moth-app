@@ -1,0 +1,9 @@
+Current App Issues
+
+- SamplesProvider renders Exercise component before samples have finished loading in the browser
+    therefor the beginning cadence is missed
+- Abstract out the css animation from the MothButton component so it can be used on the 'replay question' 
+    button for the dissabled property
+- Have the question icon change color according to whether the scale tone pressed is the correct answer (have the
+    logic change the classes on the component)
+-  

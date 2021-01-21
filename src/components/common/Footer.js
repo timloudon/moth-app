@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, AppBar, Toolbar, Typography, makeStyles, IconButton, Button } from '@material-ui/core';
 import { PlayCircleOutline, MusicNote } from "@material-ui/icons";
 
@@ -13,13 +13,12 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.grey[900]
     },
     button: {
-        // padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.primary,
     },
 }));
 
-function Footer({ forceRefreshToPlayCadence, playNote, currentQuestionValue }) {
+function Footer({ forceRefreshToPlayCadence, playNote, currentQuestionValue, isFinishedQuestion }) {
 
     const classes = useStyles();
 
@@ -34,6 +33,7 @@ function Footer({ forceRefreshToPlayCadence, playNote, currentQuestionValue }) {
                     <Grid item xs></Grid>
                     <Grid item xs className={classes.button}>
                         <Button
+                            disabled={!isFinishedQuestion}
                             variant="text"
                             onClick={() => forceRefreshToPlayCadence()}
                             startIcon={<PlayCircleOutline />}>

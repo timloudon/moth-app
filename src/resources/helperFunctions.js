@@ -1,4 +1,4 @@
-import { scalePatterns } from "./musicResources";
+import { scalePatterns, cadencePatterns } from "./musicResources";
 
 export function getScaleNotes(scalePattern, allNotes) {
     let scaleNotes = [];
@@ -26,4 +26,10 @@ export const findScalePattern = (scaleType) => {
     );
     const scalePattern = scaleObject.pattern;
     return scalePattern;
+};
+
+export const findChordInCadencePattern = (index, cadenceType) => {
+    const cadenceObject = cadencePatterns.find((pattern) => pattern.type === cadenceType);
+    const cadencePattern = cadenceObject.pattern[index];
+    return cadencePattern;
 };
