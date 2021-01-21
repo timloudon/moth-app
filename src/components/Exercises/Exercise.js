@@ -99,14 +99,14 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
     setIsCorrectAnswer(false);
   }, [currentQuestionIndex]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isLoading) {
       setIsFinishedQuestion(false);
       console.log('cadence started');
-      const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0, cadenceType)) }, 1000);
-      const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1, cadenceType)) }, 2000);
-      const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2, cadenceType)) }, 3000);
-      const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 5000);
+      const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0, cadenceType)) }, 0);
+      const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1, cadenceType)) }, 1000);
+      const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2, cadenceType)) }, 2000);
+      const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 4000);
       const finishedQuestion = setTimeout(() => {
         setIsFinishedQuestion(true);
       }, 6000);

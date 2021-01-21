@@ -31,11 +31,12 @@ function useSamples(instruments, instrumentType, ctx) {
                 })
         ));
 
-        console.log('Promise.all done', audio);
+        await audio;
 
         instrument.instrumentSounds.forEach((note, i) => {
             audio.then(buffers => {
                 note.audioBuffer = buffers[i];
+                console.log('buffers: ', buffers);
             });
         });
         return instrument.instrumentSounds;
@@ -50,14 +51,16 @@ function useSamples(instruments, instrumentType, ctx) {
             .then(result => {
                 console.log('samples resolved');
                 setSamples(result);
-                playNote(60, result);
                 // if (isMountedRef.current) {
                 // }
             })
-            .then(() => setIsLoading(false))
+            // PROBLEM: the loading state is changing after the audio promise is resolved but before the buffers are processed
+            // .then(() => setIsLoading(false))
             .catch(err => {
                 console.log('catch error: ', err);
             })
+            // isLoading not waiting for resolve of promises and decoding
+            .finally(() => setIsLoading(false));
     }, []);
 
     return [isLoading, samples];

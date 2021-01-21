@@ -9,7 +9,8 @@ function SamplesProvider({ routeProps, instrumentType, ctx }) {
 
     return (
         <>
-            {isLoading
+            {console.log('isLoading conditional: ', isLoading)}
+            {(isLoading)
                 ? <SpinnerLogo />
                 : (<Exercise
                     routeProps={routeProps}
