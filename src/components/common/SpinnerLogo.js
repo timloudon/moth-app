@@ -1,27 +1,34 @@
 import React from 'react';
-import LoadingSpinner from '../../icons/LoadingSpinner.png';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Grid } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Footer from "../common/Footer";
 
-const useStyles = makeStyles({
-    animatedItem: {
-        position: 'absolute',
-        background: 'transparent',
-        animation: '$spin 1s linear infinite',
-        // boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > * + *': {
+            marginLeft: theme.spacing(1),
+        },
+        minHeight: '85vh',
     },
-    '@keyframes spin': {
-        '100%': {
-            transform: 'rotate(360deg)'
-        }
-    }
-});
+}));
 
-function SpinnerLogo() {
+function SpinnerLogo({ isLoading }) {
 
     const classes = useStyles();
 
     return (
-        <img className={classes.animatedItem} src={LoadingSpinner} alt="Loading spinner" />
+        <>
+            <Grid container item
+                direction="row"
+                justify="center"
+                alignItems="center"
+                className={classes.root}
+            >
+                <CircularProgress />
+            </Grid>
+            <Footer isLoading={isLoading} />
+        </>
     )
 }
 

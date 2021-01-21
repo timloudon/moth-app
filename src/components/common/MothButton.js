@@ -19,6 +19,7 @@ function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
                 // Maybe remove for accesability?
                 outline: "none",
                 transform: isFinishedQuestion ? null : 'scale(0.98, 0.98)',
+                opacity: isFinishedQuestion ? '1' : '0.5',
                 boxShadow: isFinishedQuestion ? "0px 2.6704px 2.6704px rgba(0,0,0,.25)" : "0px 1.6704px 1.6704px rgba(0,0,0,.25)",
                 transitionDuration: "0.4s",
                 cursor: isFinishedQuestion ? 'pointer' : 'default',
@@ -29,15 +30,19 @@ function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
                     }
             }
         },
-        text: {
-            gridColumnStart: '1',
-            gridColumnEnd: '2',
-            gridRowStart: '1',
-            gridRowEnd: '2',
-            zIndex: '3',
-            justifySelf: 'center',
-            alignSelf: 'center',
-            color: '#ffffff',
+        text: isFinishedQuestion => {
+            return {
+                gridColumnStart: '1',
+                gridColumnEnd: '2',
+                gridRowStart: '1',
+                gridRowEnd: '2',
+                zIndex: '3',
+                justifySelf: 'center',
+                alignSelf: 'center',
+                color: '#ffffff',
+                transform: isFinishedQuestion ? 'scale(1, 1)' : 'scale(0.98, 0.98)',
+                opacity: isFinishedQuestion ? '1' : '0.5',
+            }
         },
         logo: {
             gridColumnStart: '1',

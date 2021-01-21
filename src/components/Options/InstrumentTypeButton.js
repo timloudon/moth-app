@@ -6,7 +6,6 @@ import { instruments } from "../../resources/musicResources";
 function SoundButtonContainer({ changeInstrumentSound }) {
     return (
         instruments.map((item) => {
-            console.log('item.instrumentName: ', item.instrumentName);
             return (
                 <AppButton
                     key={item.instrumentName}
