@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Exercise({ isLoading, routeProps, ctx, samples }) {
-  console.log('exercise rendered');
-
   const classes = useStyles();
 
   // The string value passed in as a prop from the Main Menu component (string: e.g. "Major")
@@ -51,7 +49,7 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
       const nextIndex = currentQuestionIndex + 1;
       const nextQuestion = randomQuestions[nextIndex];
       if (nextIndex >= randomQuestions.length) {
-        console.log("end");
+        console.log("questions ended");
         return;
       }
       setIsCorrectAnswer(true);
@@ -71,18 +69,17 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
     setPlayed({});
   };
 
-  function playNote(number) {
+  function playNote(number, when, offset, duration) {
     const note = samples.find((note) => note.midiNumber === number);
     let bufferSource = ctx.createBufferSource();
     bufferSource.buffer = note.audioBuffer;
     bufferSource.connect(ctx.destination);
-    bufferSource.start();
+    bufferSource.start(when, offset, duration);
   }
 
-  const playChord = (pattern) => {
+  const playChord = (pattern, when) => {
     pattern.forEach((number) => {
-      playNote(number);
-      console.log('playChord: ', number);
+      playNote(number, when);
     });
   };
 
@@ -102,19 +99,14 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
   useLayoutEffect(() => {
     if (!isLoading) {
       setIsFinishedQuestion(false);
-      console.log('cadence started');
-      const playChordOne = setTimeout(() => { playChord(findChordInCadencePattern(0, cadenceType)) }, 0);
-      const playChordTwo = setTimeout(() => { playChord(findChordInCadencePattern(1, cadenceType)) }, 1000);
-      const playChordThree = setTimeout(() => { playChord(findChordInCadencePattern(2, cadenceType)) }, 2000);
-      const playTone = setTimeout(() => { playNote(currentQuestionValue) }, 4000);
+      playChord(findChordInCadencePattern(0, cadenceType), ctx.currentTime);
+      playChord(findChordInCadencePattern(1, cadenceType), ctx.currentTime + 1);
+      playChord(findChordInCadencePattern(2, cadenceType), ctx.currentTime + 2);
+      playNote(currentQuestionValue, ctx.currentTime + 4);
       const finishedQuestion = setTimeout(() => {
         setIsFinishedQuestion(true);
-      }, 6000);
+      }, 5000);
       return () => {
-        clearTimeout(playChordOne);
-        clearTimeout(playChordTwo);
-        clearTimeout(playChordThree);
-        clearTimeout(playTone);
         clearTimeout(finishedQuestion);
       }
     }
