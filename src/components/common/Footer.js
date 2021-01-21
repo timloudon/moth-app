@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Footer({ forceRefreshToPlayCadence, playNote, currentQuestionValue, isFinishedQuestion }) {
+function Footer({ isLoading, forceRefreshToPlayCadence, playNote, currentQuestionValue, isFinishedQuestion }) {
 
     const classes = useStyles();
 
@@ -32,21 +32,25 @@ function Footer({ forceRefreshToPlayCadence, playNote, currentQuestionValue, isF
                     spacing={2}>
                     <Grid item xs></Grid>
                     <Grid item xs className={classes.button}>
-                        <Button
-                            disabled={!isFinishedQuestion}
-                            variant="text"
-                            onClick={() => forceRefreshToPlayCadence()}
-                            startIcon={<PlayCircleOutline />}>
-                            <Typography variant="button" noWrap>REPLAY QUESTION</Typography>
-                        </Button>
+                        {isLoading
+                            ? <></>
+                            : <Button
+                                disabled={!isFinishedQuestion}
+                                variant="text"
+                                onClick={() => forceRefreshToPlayCadence()}
+                                startIcon={<PlayCircleOutline />}>
+                                <Typography variant="button" noWrap>REPLAY QUESTION</Typography>
+                            </Button>}
                     </Grid>
                     <Grid item xs className={classes.button}>
-                        <Button
-                            variant="text"
-                            onClick={() => playNote(currentQuestionValue)}
-                            startIcon={<MusicNote />}>
-                            <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
-                        </Button>
+                        {isLoading
+                            ? <></>
+                            : <Button
+                                variant="text"
+                                onClick={() => playNote(currentQuestionValue)}
+                                startIcon={<MusicNote />}>
+                                <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
+                            </Button>}
                     </Grid>
                     <Grid item xs></Grid>
                 </Grid>

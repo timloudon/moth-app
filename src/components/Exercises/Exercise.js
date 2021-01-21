@@ -141,6 +141,7 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         playNote={playNote}
       />
       <Footer
+        isLoading={isLoading}
         forceRefreshToPlayCadence={forceRefreshToPlayCadence}
         playNote={playNote}
         currentQuestionValue={currentQuestionValue}

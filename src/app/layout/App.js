@@ -4,7 +4,7 @@ import MainPage from "../../components/MainPage/MainPage";
 import Layout from "./Layout"
 import { instruments } from "../../resources/musicResources";
 import "./App.css";
-import { Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import SamplesProvider from "../../components/Exercises/SamplesProvider";
 
 function App() {
