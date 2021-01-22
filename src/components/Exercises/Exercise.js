@@ -61,9 +61,17 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
       }, 2000);
     } else {
       setIsCorrectAnswer(false);
-      console.log("Wrong answer");
     }
   };
+
+  const checkIsWrongAnswer = (answerIntervalNumber) => {
+    if (answerIntervalNumber !== currentQuestionValue) {
+      setIsWrongAnswer(true);
+      setTimeout(() => {
+        setIsWrongAnswer(false);
+      }, 2000);
+    }
+  }
 
   const forceRefreshToPlayCadence = () => {
     setPlayed({});
@@ -89,14 +97,20 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
   const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [isWrongAnswer, setIsWrongAnswer] = useState(false);
   const [isPlayed, setPlayed] = useState();
   const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
 
-  useEffect(() => {
-    setIsCorrectAnswer(false);
-  }, [currentQuestionIndex]);
+  // useEffect(() => {
+  //   setIsCorrectAnswer(false);
+  // }, [currentQuestionIndex]);
 
-  useLayoutEffect(() => {
+  // useEffect(() => {
+  //   setIsWrongAnswer(false);
+  //   console.log('isWrongAnswer is now false');
+  // }, [isWrongAnswer]);
+
+  useEffect(() => {
     if (!isLoading) {
       setIsFinishedQuestion(false);
       playChord(findChordInCadencePattern(0, cadenceType), ctx.currentTime);
@@ -130,6 +144,7 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         scale={scale}
         currentQuestionValue={currentQuestionValue}
         isCorrectAnswer={isCorrectAnswer}
+        isWrongAnswer={isWrongAnswer}
       />
       <ScaleTones
         noteRange={noteRange}
@@ -138,6 +153,8 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         currentQuestionValue={currentQuestionValue}
         isFinishedQuestion={isFinishedQuestion}
         checkIntervalAnswer={checkIntervalAnswer}
+        checkIsWrongAnswer={checkIsWrongAnswer}
+        isWrongAnswer={isWrongAnswer}
         playNote={playNote}
       />
       <Footer

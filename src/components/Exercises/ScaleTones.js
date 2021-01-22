@@ -8,6 +8,8 @@ function ScaleTones({
     availableNotes,
     currentQuestionValue,
     checkIntervalAnswer,
+    checkIsWrongAnswer,
+    isWrongAnswer,
     playNote,
     isFinishedQuestion
 }) {
@@ -21,6 +23,8 @@ function ScaleTones({
                     availableNotes={availableNotes}
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
+                    checkIsWrongAnswer={checkIsWrongAnswer}
+                    isWrongAnswer={isWrongAnswer}
                     currentQuestionValue={currentQuestionValue}
                     isFinishedQuestion={isFinishedQuestion}
                 />

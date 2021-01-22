@@ -3,9 +3,11 @@ import { makeStyles, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 import { scalePatterns } from '../../resources/musicResources';
 
-function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
+function MothButton({ buttonText, isFinishedQuestion, isWrongAnswer, onClickHandler }) {
 
     const widthAndHeight = 85;
+
+    console.log('isAnswerWrong: ', isWrongAnswer)
 
     const useStyles = makeStyles((theme) => ({
         button: isFinishedQuestion => {
@@ -27,10 +29,10 @@ function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
                     backgroundColor: theme.palette.secondary.main,
                 } : {
                         backgroundColor: "#ffffff",
-                    }
+                    },
             }
         },
-        text: isFinishedQuestion => {
+        text: (isFinishedQuestion) => {
             return {
                 gridColumnStart: '1',
                 gridColumnEnd: '2',
