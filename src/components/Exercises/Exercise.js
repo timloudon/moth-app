@@ -86,7 +86,7 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
   };
 
   const [scale] = useState(getScaleNotes(findScalePattern(scaleType), samples));
-  const [availableNotes, setAvailableNotes] = useState(filterAvailableNotes(noteRange));
+  const [availableNotes] = useState(filterAvailableNotes(noteRange));
   const [randomQuestions] = useState(createQuestions(noteRange));
   const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
