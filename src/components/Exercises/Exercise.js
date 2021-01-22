@@ -53,7 +53,6 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         return;
       }
       setIsCorrectAnswer(true);
-      console.log('answer state now correct');
       // consider different way to do this using useEffect?
       setTimeout(() => {
         setCurrentQuestionValue(nextQuestion);
@@ -96,10 +95,7 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
   const [isPlayed, setPlayed] = useState();
   const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
 
-  console.log('isWrongAnswer: ', isWrongAnswer);
-
   let answerRef = useRef(isWrongAnswer);
-  console.log('answerRef: ', answerRef);
 
   useEffect(() => {
     if (!isLoading) {
@@ -130,7 +126,6 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         randomQuestions={randomQuestions}
         currentQuestionIndex={currentQuestionIndex}
       />
-      <span>{isWrongAnswer.toString()}</span>
       <CadenceSymbols />
       <IntervalQuestionIcon
         scale={scale}

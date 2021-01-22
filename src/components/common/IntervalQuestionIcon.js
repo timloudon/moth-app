@@ -35,11 +35,11 @@ const IntervalQuestionIcon = React.forwardRef((
             backgroundColor: theme.palette.secondary.main,
         },
         incorrectBackground: {
-            animation: '$fade-wrong 200ms ease-out',
+            animation: '$fade-wrong 1s ease-out',
             backgroundColor: theme.palette.secondary.main
         },
         correctBackground: {
-            animation: '$fade-correct 1s ease-out',
+            animation: '$fade-correct 400ms ease-out',
             backgroundColor: theme.palette.primary.main,
         },
         text: {
