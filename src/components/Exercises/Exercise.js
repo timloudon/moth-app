@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-// import { useTimeout } from "../../resources/useTimeout";
+import React, { useState, useEffect, useRef } from "react";
 import ProgressBar from "./ProgressBar";
 import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
@@ -7,7 +6,6 @@ import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
 import { getScaleNotes, findScalePattern, findChordInCadencePattern } from "../../resources/helperFunctions";
 import { Grid, makeStyles } from "@material-ui/core";
-import "typeface-roboto";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +44,8 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
 
   const checkIntervalAnswer = (answerIntervalNumber) => {
     if (answerIntervalNumber === currentQuestionValue) {
+      setIsFinishedQuestion(false);
+      answerRef.current -= answerRef.current;
       const nextIndex = currentQuestionIndex + 1;
       const nextQuestion = randomQuestions[nextIndex];
       if (nextIndex >= randomQuestions.length) {
@@ -53,25 +53,20 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         return;
       }
       setIsCorrectAnswer(true);
+      console.log('answer state now correct');
       // consider different way to do this using useEffect?
       setTimeout(() => {
         setCurrentQuestionValue(nextQuestion);
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setIsCorrectAnswer(false);
+        setIsWrongAnswer(0);
+        answerRef = 0;
       }, 2000);
-    } else {
-      setIsCorrectAnswer(false);
+    } else if (answerIntervalNumber !== currentQuestionValue) {
+      answerRef.current += 1;
+      setIsWrongAnswer(isWrongAnswer + 1);
     }
   };
-
-  const checkIsWrongAnswer = (answerIntervalNumber) => {
-    if (answerIntervalNumber !== currentQuestionValue) {
-      setIsWrongAnswer(true);
-      setTimeout(() => {
-        setIsWrongAnswer(false);
-      }, 2000);
-    }
-  }
 
   const forceRefreshToPlayCadence = () => {
     setPlayed({});
@@ -97,18 +92,14 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
   const [currentQuestionValue, setCurrentQuestionValue] = useState(randomQuestions[0]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
-  const [isWrongAnswer, setIsWrongAnswer] = useState(false);
+  const [isWrongAnswer, setIsWrongAnswer] = useState(0);
   const [isPlayed, setPlayed] = useState();
   const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
 
-  // useEffect(() => {
-  //   setIsCorrectAnswer(false);
-  // }, [currentQuestionIndex]);
+  console.log('isWrongAnswer: ', isWrongAnswer);
 
-  // useEffect(() => {
-  //   setIsWrongAnswer(false);
-  //   console.log('isWrongAnswer is now false');
-  // }, [isWrongAnswer]);
+  let answerRef = useRef(isWrongAnswer);
+  console.log('answerRef: ', answerRef);
 
   useEffect(() => {
     if (!isLoading) {
@@ -139,12 +130,14 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         randomQuestions={randomQuestions}
         currentQuestionIndex={currentQuestionIndex}
       />
+      <span>{isWrongAnswer.toString()}</span>
       <CadenceSymbols />
       <IntervalQuestionIcon
         scale={scale}
         currentQuestionValue={currentQuestionValue}
         isCorrectAnswer={isCorrectAnswer}
         isWrongAnswer={isWrongAnswer}
+        ref={answerRef}
       />
       <ScaleTones
         noteRange={noteRange}
@@ -153,7 +146,6 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         currentQuestionValue={currentQuestionValue}
         isFinishedQuestion={isFinishedQuestion}
         checkIntervalAnswer={checkIntervalAnswer}
-        checkIsWrongAnswer={checkIsWrongAnswer}
         isWrongAnswer={isWrongAnswer}
         playNote={playNote}
       />

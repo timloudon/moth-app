@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 
-function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorrectAnswer, isWrongAnswer, scale }) {
+const IntervalQuestionIcon = React.forwardRef((
+    { currentQuestionValue, isFinishedQuestion, isCorrectAnswer, isWrongAnswer, scale },
+    ref) => {
     const findNoteNameFromMidiNumber = (midiNumber) => {
         return scale.filter(item => item.midiNumber === midiNumber)[0];
     }
@@ -12,42 +14,32 @@ function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorr
     const widthAndHeight = 85;
 
     const useStyles = makeStyles((theme) => ({
-        incorrectScaleTone: {
+        scaleTone: {
             display: 'grid',
             gridTemplateColumns: '1fr',
             gridTemplateRows: '1fr',
             borderRadius: "50%",
             padding: '0',
             border: 'none',
-            // Add in fade background when question is finished
-            animation: 'fade 2s linear',
-            backgroundColor: isWrongAnswer ? theme.palette.error.main : theme.palette.secondary.main,
         },
-        '@keyframes fade': {
-            '0%': { opacity: 0 },
-            '50%': { opacity: 1 },
-            '100%': { opacity: 0 },
+        '@keyframes fade-wrong': {
+            '0%': { backgroundColor: theme.palette.secondary.main },
+            '50%': { backgroundColor: theme.palette.error.main },
+            '100%': { backgroundColor: theme.palette.secondary.main },
         },
-        incorrectAnswer: {
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gridTemplateRows: '1fr',
-            borderRadius: "50%",
-            padding: '0',
-            border: 'none',
-            // Add in fade background when question is finished
-            transition: "backgroundColor 1s ease-in",
+        '@keyframes fade-correct': {
+            '0%': { backgroundColor: theme.palette.secondary.main },
+            '100%': { backgroundColor: theme.palette.primary.main },
+        },
+        questionBackground: {
             backgroundColor: theme.palette.secondary.main,
         },
-        correctAnswer: {
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gridTemplateRows: '1fr',
-            borderRadius: "50%",
-            padding: '0',
-            border: 'none',
-            // Add in fade background when question is finished
-            transition: "backgroundColor 1s ease-in",
+        incorrectBackground: {
+            animation: '$fade-wrong 200ms ease-out',
+            backgroundColor: theme.palette.secondary.main
+        },
+        correctBackground: {
+            animation: '$fade-correct 1s ease-out',
             backgroundColor: theme.palette.primary.main,
         },
         text: {
@@ -72,10 +64,12 @@ function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorr
     }));
 
     const classes = useStyles(isFinishedQuestion, isWrongAnswer);
-
     return (
         <Grid item>
-            <div className={isCorrectAnswer ? classes.correctAnswer : isWrongAnswer ? classes.incorrectScaleTone : classes.incorrectAnswer}>
+            <div className={`${classes.scaleTone} 
+                ${(isWrongAnswer === ref.current && isWrongAnswer !== 0) ? classes.incorrectBackground
+                    : isCorrectAnswer ? classes.correctBackground
+                        : classes.questionBackground}`}>
                 <Typography className={classes.text} variant="button">{isCorrectAnswer ? iconText : '?'}</Typography>
                 <div className={classes.logo}>
                     <MothLogo widthAndHeight={widthAndHeight} />
@@ -83,6 +77,6 @@ function IntervalQuestionIcon({ currentQuestionValue, isFinishedQuestion, isCorr
             </div>
         </Grid>
     )
-}
+});
 
 export default IntervalQuestionIcon

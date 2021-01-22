@@ -7,8 +7,6 @@ function MothButton({ buttonText, isFinishedQuestion, isWrongAnswer, onClickHand
 
     const widthAndHeight = 85;
 
-    console.log('isAnswerWrong: ', isWrongAnswer)
-
     const useStyles = makeStyles((theme) => ({
         button: isFinishedQuestion => {
             return {
