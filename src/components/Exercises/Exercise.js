@@ -141,7 +141,6 @@ function Exercise({ isLoading, routeProps, ctx, samples }) {
         currentQuestionValue={currentQuestionValue}
         isFinishedQuestion={isFinishedQuestion}
         checkIntervalAnswer={checkIntervalAnswer}
-        isWrongAnswer={isWrongAnswer}
         playNote={playNote}
       />
       <Footer

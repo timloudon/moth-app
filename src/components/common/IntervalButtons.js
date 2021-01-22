@@ -6,7 +6,6 @@ function IntervalButtons({
     isFinishedQuestion,
     availableNotes,
     checkIntervalAnswer,
-    isWrongAnswer,
     playNote
 }) {
     return (
@@ -19,7 +18,6 @@ function IntervalButtons({
                             playNote(item.midiNumber);
                             checkIntervalAnswer(item.midiNumber);
                         }}
-                        isWrongAnswer={isWrongAnswer}
                         isFinishedQuestion={isFinishedQuestion}
                     />
                 </Grid>

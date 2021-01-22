@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import IntervalButtons from "../common/IntervalButtons";
-import { cadencePatterns } from "../../resources/musicResources";
 import { Grid } from "@material-ui/core";
 
 function ScaleTones({
@@ -8,7 +7,6 @@ function ScaleTones({
     availableNotes,
     currentQuestionValue,
     checkIntervalAnswer,
-    isWrongAnswer,
     playNote,
     isFinishedQuestion
 }) {
@@ -22,7 +20,6 @@ function ScaleTones({
                     availableNotes={availableNotes}
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
-                    isWrongAnswer={isWrongAnswer}
                     currentQuestionValue={currentQuestionValue}
                     isFinishedQuestion={isFinishedQuestion}
                 />

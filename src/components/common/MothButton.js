@@ -1,9 +1,8 @@
 import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
-import { scalePatterns } from '../../resources/musicResources';
 
-function MothButton({ buttonText, isFinishedQuestion, isWrongAnswer, onClickHandler }) {
+function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
 
     const widthAndHeight = 85;
 
@@ -16,10 +15,9 @@ function MothButton({ buttonText, isFinishedQuestion, isWrongAnswer, onClickHand
                 borderRadius: "50%",
                 padding: '0',
                 border: 'none',
-                // Maybe remove for accesability?
                 outline: "none",
                 transform: isFinishedQuestion ? null : 'scale(0.98, 0.98)',
-                opacity: isFinishedQuestion ? '1' : '0.5',
+                opacity: isFinishedQuestion ? '1' : '0.8',
                 boxShadow: isFinishedQuestion ? "0px 2.6704px 2.6704px rgba(0,0,0,.25)" : "0px 1.6704px 1.6704px rgba(0,0,0,.25)",
                 transitionDuration: "0.4s",
                 cursor: isFinishedQuestion ? 'pointer' : 'default',
