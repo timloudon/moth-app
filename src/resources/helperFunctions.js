@@ -1,20 +1,12 @@
 import { scalePatterns, cadencePatterns } from "./musicResources";
 
-export function getScaleNotes(scalePattern, allNotes) {
+export function getScaleMidiNumbers(scalePattern, lowestMidiNoteInKey, noteRange) {
+    // use noteRange?
     let scaleNotes = [];
-    let firstNote = allNotes[0];
-    let currentMidiNumber;
-    let nextMidiNumber = firstNote.midiNumber;
-    let lastAvailableMidiNumber = allNotes[allNotes.length - 1].midiNumber;
-
+    let firstNote = lowestMidiNoteInKey;
     scaleNotes.push(firstNote);
-
-    for (let i = 0; nextMidiNumber < lastAvailableMidiNumber; i++) {
-        let patternIndex = i % scalePattern.length;
-        let increment = scalePattern[patternIndex];
-        currentMidiNumber = scaleNotes[i].midiNumber;
-        nextMidiNumber = currentMidiNumber + increment;
-        let nextNote = allNotes.find((note) => note.midiNumber === nextMidiNumber);
+    for (let i = 0; i < scalePattern.length; i++) {
+        const nextNote = scaleNotes[i] + scalePattern[i];
         scaleNotes.push(nextNote);
     }
     return scaleNotes;

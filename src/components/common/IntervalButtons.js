@@ -3,20 +3,21 @@ import MothButton from "./MothButton";
 import { Grid } from "@material-ui/core";
 
 function IntervalButtons({
+    currentQuestionMidiNumberScale,
+    currentQuestionNoteNameScale,
     isFinishedQuestion,
-    availableNotes,
     checkIntervalAnswer,
     playNote
 }) {
     return (
-        availableNotes.map((item) => {
+        currentQuestionMidiNumberScale.map((item) => {
             return (
                 <Grid key={item.midiNumber} item>
                     <MothButton
-                        buttonText={item.noteName}
+                        buttonText={item}
                         onClickHandler={() => {
-                            playNote(item.midiNumber);
-                            checkIntervalAnswer(item.midiNumber);
+                            playNote(item);
+                            checkIntervalAnswer(item);
                         }}
                         isFinishedQuestion={isFinishedQuestion}
                     />
