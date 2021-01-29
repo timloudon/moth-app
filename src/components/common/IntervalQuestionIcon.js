@@ -3,7 +3,7 @@ import { makeStyles, Grid, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 
 const IntervalQuestionIcon = React.forwardRef((
-    { currentQuestionValue, currentQuestionNoteName, isFinishedQuestion, isCorrectAnswer, isWrongAnswer, instrument, exerciseKeys },
+    { randomQuestions, currentQuestionIndex, isFinishedQuestion, isCorrectAnswer, isWrongAnswer },
     ref) => {
     // const findNoteNameFromMidiNumber = (midiNumber) => {
     //     return instrument.instrumentSounds.filter(item => item.midiNumber === midiNumber)[0];
@@ -69,7 +69,7 @@ const IntervalQuestionIcon = React.forwardRef((
                 ${(isWrongAnswer === ref.current && isWrongAnswer !== 0) ? classes.incorrectBackground
                     : isCorrectAnswer ? classes.correctBackground
                         : classes.questionBackground}`}>
-                <Typography className={classes.text} variant="button">{isCorrectAnswer ? currentQuestionNoteName : '?'}</Typography>
+                <Typography className={classes.text} variant="button">{isCorrectAnswer ? randomQuestions[currentQuestionIndex].noteName : '?'}</Typography>
                 <div className={classes.logo}>
                     <MothLogo widthAndHeight={widthAndHeight} />
                 </div>

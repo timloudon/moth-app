@@ -25,3 +25,5 @@ export const findChordInCadencePattern = (index, cadenceType) => {
     const cadencePattern = cadenceObject.pattern[index];
     return cadencePattern;
 };
+
+export const generateNumberBetweenMinAndMax = (min, max) => Math.round(Math.random() * (max - min) + min);
