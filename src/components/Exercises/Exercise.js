@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys }) {
+function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys, exerciseLength }) {
 
   class Question {
     constructor(key, midiNumber, noteName, keyScale) {
@@ -30,74 +30,62 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   const scaleType = routeProps.location.state.scale.type;
   const cadenceType = routeProps.location.state.cadence.type;
 
-  const createQuestions = (exerciseKeys) => {
+  const createQuestion = (exerciseKeys) => {
     // const generateNumberBetweenMinAndMax = (min, max) => Math.round(Math.random() * (max - min) + min);
-    const randomQuestions = [];
     const lowestNoteInQuestionsRange = questionsNoteRange[0];
     const highestNoteInQuestionsRange = questionsNoteRange[1];
     const noteRange = highestNoteInQuestionsRange - lowestNoteInQuestionsRange;
-
-    for (let i = 0; i < 10; i++) {
-      // 1) Generate random key from available exerciseKeys
-      const randomKeyIndex = generateNumberBetweenMinAndMax(0, exerciseKeys.length - 1);
-      const questionKey = exerciseKeys[randomKeyIndex].keyName;
-      // 2) Find lowest tonic note in note range for the key
-      const instrumentNotesInRange = instrument.instrumentSounds.filter((note) => note.midiNumber >= lowestNoteInQuestionsRange && note.midiNumber <= highestNoteInQuestionsRange);
-      // finds the first element in instrumentNotesInRange - without [0] at the end it returns all notes that match (e.g. two C notes)
-      const lowestNoteInKey = instrumentNotesInRange.filter((note) => note.noteName.find((noteName) => noteName === questionKey))[0];
-      const lowestMidiNumberInKey = lowestNoteInKey.midiNumber;
-
-      // 3) Generate midi number scale using the lowest tonic note (key centre)
-      const keyMidiNumberScale = getScaleMidiNumbers(scalePattern, lowestMidiNumberInKey, noteRange);
-
-      // 4) Generate random midiNumber from scale
-      const randomNoteIndex = generateNumberBetweenMinAndMax(0, keyMidiNumberScale.length - 1);
-      const midiNumber = keyMidiNumberScale[randomNoteIndex];
-
-      // 5) Generate noteName scale
-      const exerciseKey = exerciseKeys.filter((key) => key.keyName === questionKey)[0];
-      // fix to make sure the final note on the scale is the tonic, no matter the length of the original array
-      if (exerciseKey.scale[exerciseKey.scale.length - 1] !== exerciseKey.scale[0]) {
-        exerciseKey.scale.push(questionKey);
-      }
-      const keyNoteNameScale = exerciseKey.scale;
-
-      // 6) Generate noteName for question
-      const noteName = exerciseKey.scale[randomNoteIndex];
-
-      // 7) Generate 2D array of keyScale
-      let keyScale = [];
-      for (let j = 0; j < keyMidiNumberScale.length; j++) {
-        keyScale.push([keyMidiNumberScale[j], keyNoteNameScale[j]]);
-      }
-
-      randomQuestions.push(new Question(questionKey, midiNumber, noteName, keyScale));
+    // 1) Generate random key from available exerciseKeys
+    const randomKeyIndex = generateNumberBetweenMinAndMax(0, exerciseKeys.length - 1);
+    const questionKey = exerciseKeys[randomKeyIndex].keyName;
+    // 2) Find lowest tonic note in note range for the key
+    const instrumentNotesInRange = instrument.instrumentSounds.filter((note) => note.midiNumber >= lowestNoteInQuestionsRange && note.midiNumber <= highestNoteInQuestionsRange);
+    // finds the first element in instrumentNotesInRange - without [0] at the end it returns all notes that match (e.g. two C notes)
+    const lowestNoteInKey = instrumentNotesInRange.filter((note) => note.noteName.find((noteName) => noteName === questionKey))[0];
+    const lowestMidiNumberInKey = lowestNoteInKey.midiNumber;
+    // 3) Generate midi number scale using the lowest tonic note (key centre)
+    const keyMidiNumberScale = getScaleMidiNumbers(scalePattern, lowestMidiNumberInKey, noteRange);
+    // 4) Generate random midiNumber from scale
+    const randomNoteIndex = generateNumberBetweenMinAndMax(0, keyMidiNumberScale.length - 1);
+    const midiNumber = keyMidiNumberScale[randomNoteIndex];
+    // 5) Generate noteName scale
+    const exerciseKey = exerciseKeys.filter((key) => key.keyName === questionKey)[0];
+    // fix to make sure the final note on the scale is the tonic, no matter the length of the original array
+    if (exerciseKey.scale[exerciseKey.scale.length - 1] !== exerciseKey.scale[0]) {
+      exerciseKey.scale.push(questionKey);
     }
-    return randomQuestions;
+    const keyNoteNameScale = exerciseKey.scale;
+    // 6) Generate noteName for question
+    const noteName = exerciseKey.scale[randomNoteIndex];
+    // 7) Generate 2D array of keyScale
+    let keyScale = [];
+
+    for (let i = 0; i < keyMidiNumberScale.length; i++) {
+      keyScale.push([keyMidiNumberScale[i], keyNoteNameScale[i]]);
+    }
+
+    return new Question(questionKey, midiNumber, noteName, keyScale);
   };
 
   const checkIntervalAnswer = (answerIntervalNumber) => {
-    if (answerIntervalNumber === randomQuestions[currentQuestionIndex].midiNumber) {
+    if (answerIntervalNumber === randomQuestion.midiNumber) {
       setIsFinishedQuestion(false);
       answerRef.current -= answerRef.current;
-      const nextIndex = currentQuestionIndex + 1;
-      const nextQuestion = randomQuestions[nextIndex];
-      console.log(`nextQuestion: `, nextQuestion);
-      // const nextQuestionKey = ;
-      if (nextIndex >= randomQuestions.length) {
-        console.log("questions ended");
+      setIsCorrectAnswer(true);
+      if (dataLogRef.current.ctxTimeOnCorrect.length === exerciseLength) {
+        console.log('exercise finished');
+        console.log('dataLogRef.current.ctxTimeOnCorrect: ', dataLogRef.current.ctxTimeOnCorrect)
         return;
       }
-      setIsCorrectAnswer(true);
       // consider different way to do this using useEffect?
       setTimeout(() => {
-        // set the currentQuestionKey to the nextQuestionKey
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
         setIsCorrectAnswer(false);
         setIsWrongAnswer(0);
         answerRef = 0;
+        dataLogRef.current.ctxTimeOnCorrect.push(ctx.currentTime);
+        setRandomQuestion(() => createQuestion(exerciseKeys));
       }, 2000);
-    } else if (answerIntervalNumber !== randomQuestions[currentQuestionIndex].midiNumber) {
+    } else if (answerIntervalNumber !== randomQuestion.midiNumber) {
       answerRef.current += 1;
       setIsWrongAnswer(isWrongAnswer + 1);
     }
@@ -108,7 +96,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   };
 
   function playNote(number, when, offset, duration) {
-    console.log(`number: `, number);
     const note = instrument.instrumentSounds.find((note) => note.midiNumber === number);
     let bufferSource = ctx.createBufferSource();
     bufferSource.buffer = note.audioBuffer;
@@ -118,20 +105,20 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   const playChord = (pattern, when) => {
     pattern.forEach((number) => {
-      playNote((number + randomQuestions[currentQuestionIndex].keyScale[currentQuestionIndex][0]), when);
+      playNote((number + randomQuestion.keyScale[0][0]), when);
     });
   };
 
   const [scalePattern] = useState(findScalePattern(scaleType));
-  const [randomQuestions] = useState(createQuestions(exerciseKeys));
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [randomQuestion, setRandomQuestion] = useState(createQuestion(exerciseKeys));
+  // add in state that holds user data
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isWrongAnswer, setIsWrongAnswer] = useState(0);
   const [isPlayed, setPlayed] = useState();
   const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
-  console.log('randomQuestions: ', randomQuestions);
 
   let answerRef = useRef(isWrongAnswer);
+  let dataLogRef = useRef({ ctxTimeOnCorrect: [] });
 
   useEffect(() => {
     if (!isLoading) {
@@ -139,7 +126,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
       playChord(findChordInCadencePattern(0, cadenceType), ctx.currentTime + 2);
       playChord(findChordInCadencePattern(1, cadenceType), ctx.currentTime + 3);
       playChord(findChordInCadencePattern(2, cadenceType), ctx.currentTime + 4);
-      playNote(randomQuestions[currentQuestionIndex].midiNumber, ctx.currentTime + 6);
+      playNote(randomQuestion.midiNumber, ctx.currentTime + 6);
       const finishedQuestion = setTimeout(() => {
         setIsFinishedQuestion(true);
       }, 5000);
@@ -147,7 +134,11 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
         clearTimeout(finishedQuestion);
       }
     }
-  }, [isPlayed, currentQuestionIndex, isLoading]);
+  }, [isPlayed, isLoading, randomQuestion]);
+
+  useEffect(() => {
+    console.log('dataLogReg: ', dataLogRef);
+  }, [randomQuestion])
 
   return (
     <Grid
@@ -159,28 +150,26 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
       style={{ height: "75vh" }}
     >
       <ProgressBar
-        randomQuestions={randomQuestions}
-        currentQuestionIndex={currentQuestionIndex}
+        randomQuestion={randomQuestion}
+        exerciseLength={exerciseLength}
+        dataLogRef={dataLogRef}
       />
       <CadenceSymbols />
       <IntervalQuestionIcon
-        randomQuestions={randomQuestions}
-        currentQuestionIndex={currentQuestionIndex}
+        randomQuestion={randomQuestion}
         isFinishedQuestion={isFinishedQuestion}
         isCorrectAnswer={isCorrectAnswer}
         isWrongAnswer={isWrongAnswer}
         ref={answerRef}
       />
       <ScaleTones
-        randomQuestions={randomQuestions}
-        currentQuestionIndex={currentQuestionIndex}
+        randomQuestion={randomQuestion}
         isFinishedQuestion={isFinishedQuestion}
         checkIntervalAnswer={checkIntervalAnswer}
         playNote={playNote}
       />
       <Footer
-        randomQuestions={randomQuestions}
-        currentQuestionIndex={currentQuestionIndex}
+        randomQuestion={randomQuestion}
         isLoading={isLoading}
         forceRefreshToPlayCadence={forceRefreshToPlayCadence}
         playNote={playNote}

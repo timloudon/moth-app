@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Footer({ randomQuestions, currentQuestionIndex, isLoading, forceRefreshToPlayCadence, playNote, isFinishedQuestion }) {
+function Footer({ randomQuestion, isLoading, forceRefreshToPlayCadence, playNote, isFinishedQuestion }) {
 
     const classes = useStyles();
 
@@ -47,7 +47,7 @@ function Footer({ randomQuestions, currentQuestionIndex, isLoading, forceRefresh
                             ? <></>
                             : <Button
                                 variant="text"
-                                onClick={() => playNote(randomQuestions[currentQuestionIndex].midiNumber)}
+                                onClick={() => playNote(randomQuestion.midiNumber)}
                                 startIcon={<MusicNote />}>
                                 <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
                             </Button>}

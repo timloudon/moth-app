@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 import { makeStyles, LinearProgress } from '@material-ui/core';
 
-function ProgressBar({ randomQuestions, currentQuestionIndex }) {
+function ProgressBar({ dataLogRef, exerciseLength }) {
 
-    const max = randomQuestions.length - 1;
+    const max = exerciseLength + 1;
     const min = 0;
 
     const normalize = value => (value - min) * 100 / (max - min);
 
-    const progressCount = currentQuestionIndex;
+    const progressCount = dataLogRef.current.ctxTimeOnCorrect.length;
+    console.log(`progressCount: `, progressCount);
     const prevProgressRef = useRef();
     useEffect(() => {
         prevProgressRef.current = progressCount;

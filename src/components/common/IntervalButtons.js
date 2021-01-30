@@ -3,14 +3,13 @@ import MothButton from "./MothButton";
 import { Grid } from "@material-ui/core";
 
 function IntervalButtons({
-    randomQuestions,
-    currentQuestionIndex,
+    randomQuestion,
     isFinishedQuestion,
     checkIntervalAnswer,
     playNote
 }) {
     return (
-        randomQuestions[currentQuestionIndex].keyScale.map((item) => {
+        randomQuestion.keyScale.map((item) => {
             return (
                 <Grid key={item[0]} item>
                     <MothButton

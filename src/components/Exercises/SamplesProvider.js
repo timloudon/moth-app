@@ -104,7 +104,8 @@ function SamplesProvider({ routeProps, instrumentType, ctx }) {
 
     const [samplesNoteRange, setNoteRange] = useState([42, 84]);
     const [questionsNoteRange, setQuestionsNoteRange] = useState([60, 72]);
-    const [questionKeySignatures, setQuestionKeySignatures] = useState(["F#", "Gb", "D", "C", "Eb"])
+    const [questionKeySignatures, setQuestionKeySignatures] = useState(["F#", "Gb", "D", "C", "Eb"]);
+    const [exerciseLength, setExerciseLength] = useState(3);
     const [instrument, setInstrument] = useState(new Instrument(instrumentType, samplesNoteRange));
     const [isLoading] = useSamples(instrument, ctx);
     const [exerciseKeys, setKeys] = useState(getScalesOfKeySignatures(scaleType, questionKeySignatures));
@@ -119,6 +120,7 @@ function SamplesProvider({ routeProps, instrumentType, ctx }) {
                     instrument={instrument}
                     instrumentType={instrumentType}
                     questionsNoteRange={questionsNoteRange}
+                    exerciseLength={exerciseLength}
                     exerciseKeys={exerciseKeys}
                     isLoading={isLoading}
                 />)

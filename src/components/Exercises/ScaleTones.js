@@ -3,8 +3,7 @@ import IntervalButtons from "../common/IntervalButtons";
 import { Grid } from "@material-ui/core";
 
 function ScaleTones({
-    randomQuestions,
-    currentQuestionIndex,
+    randomQuestion,
     checkIntervalAnswer,
     playNote,
     isFinishedQuestion
@@ -17,8 +16,7 @@ function ScaleTones({
                 <IntervalButtons
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
-                    randomQuestions={randomQuestions}
-                    currentQuestionIndex={currentQuestionIndex}
+                    randomQuestion={randomQuestion}
                     isFinishedQuestion={isFinishedQuestion}
                 />
             </Grid>
