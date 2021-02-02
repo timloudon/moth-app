@@ -40,6 +40,7 @@ function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
                 color: '#ffffff',
                 transform: isFinishedQuestion ? 'scale(1, 1)' : 'scale(0.98, 0.98)',
                 opacity: isFinishedQuestion ? '1' : '0.5',
+                textTransform: 'none',
             }
         },
         logo: {

@@ -21,11 +21,11 @@ function CadenceSymbols() {
             alignItems="center"
             spacing={2}>
             <Grid item xs></Grid>
-            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">ii</Typography></Grid>
-            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
-            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">V</Typography></Grid>
-            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1"> - </Typography></Grid>
-            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1">I</Typography></Grid>
+            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center">ii</Typography></Grid>
+            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center"> - </Typography></Grid>
+            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center">V</Typography></Grid>
+            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center"> - </Typography></Grid>
+            <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center">I</Typography></Grid>
             <Grid item xs></Grid>
         </Grid>
     )

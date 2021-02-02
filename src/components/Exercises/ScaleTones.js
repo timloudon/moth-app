@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import IntervalButtons from "../common/IntervalButtons";
 import { Grid } from "@material-ui/core";
 
 function ScaleTones({
-    scale,
-    availableNotes,
-    currentQuestionValue,
+    randomQuestion,
     checkIntervalAnswer,
     playNote,
     isFinishedQuestion
@@ -16,11 +14,9 @@ function ScaleTones({
         <>
             <Grid item container justify="center" alignItems="center" spacing={2}>
                 <IntervalButtons
-                    scale={scale}
-                    availableNotes={availableNotes}
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}
-                    currentQuestionValue={currentQuestionValue}
+                    randomQuestion={randomQuestion}
                     isFinishedQuestion={isFinishedQuestion}
                 />
             </Grid>

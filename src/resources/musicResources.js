@@ -1,9 +1,17 @@
+// Need to rewrite cadence patterns with values relative from root notes:
 export const cadencePatterns = [
-    { type: "Major", pattern: [[62, 65, 69, 72], [62, 65, 67, 71], [60, 64, 67, 71]] },
-    { type: "Minor", pattern: [[62, 65, 68, 72], [62, 65, 67, 71], [60, 63, 67, 72]] },
+    { type: "Major", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
+    { type: "Minor", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] },
     { type: "Major Chromatic", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
     { type: "Minor Chromatic", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
 ]
+
+// export const cadencePatterns = [
+//     { type: "Major", pattern: [[62, 65, 69, 72], [62, 65, 67, 71], [60, 64, 67, 71]] },
+//     { type: "Minor", pattern: [[62, 65, 68, 72], [62, 65, 67, 71], [60, 63, 67, 72]] },
+//     { type: "Major Chromatic", pattern: [[2, 5, 9, 12], [2, 5, 7, 11], [0, 4, 7, 11]] },
+//     { type: "Minor Chromatic", pattern: [[2, 5, 8, 12], [2, 5, 7, 11], [0, 3, 7, 12]] }
+// ]
 
 export const scalePatterns = [
     { type: "Chromatic", pattern: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
@@ -19,6 +27,54 @@ export const scalePatterns = [
     { type: "Locrian", pattern: [1, 2, 2, 1, 2, 2, 2] }
 ]
 
+export const allNoteNames = ["C", "C#", "Db", "D", "D#", "Eb", "E", "E#", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B", "Cb"];
+
+export const keyMaps = [
+    {
+        tonality: "Major",
+        keys: [
+            { keyName: "C", noteNameIndexMap: [0, 3, 6, 8, 11, 14, 17] },
+            { keyName: "D", noteNameIndexMap: [1, 3, 6, 9, 11, 14, 17] },
+            { keyName: "Eb", noteNameIndexMap: [0, 3, 5, 8, 11, 13, 16] },
+            { keyName: "E", noteNameIndexMap: [1, 4, 6, 9, 12, 14, 17] },
+            { keyName: "F", noteNameIndexMap: [0, 3, 6, 8, 11, 14, 16] },
+            { keyName: "Gb", noteNameIndexMap: [2, 5, 8, 10, 13, 16, 18] },
+            { keyName: "F#", noteNameIndexMap: [1, 4, 7, 9, 12, 15, 17] },
+            { keyName: "G", noteNameIndexMap: [0, 3, 6, 9, 11, 14, 17] },
+            { keyName: "Ab", noteNameIndexMap: [0, 2, 5, 8, 11, 13, 16] },
+            { keyName: "A", noteNameIndexMap: [1, 3, 6, 9, 12, 14, 17] },
+            { keyName: "Bb", noteNameIndexMap: [0, 3, 5, 8, 11, 14, 16] },
+            { keyName: "B", noteNameIndexMap: [1, 4, 6, 9, 12, 16, 17] },
+        ]
+    },
+    // const allNoteNames = [0"C", 1"C#", 2"Db", 3"D", 4"D#", 5"Eb", 6"E", 7"E#", 8"F", 9"F#", 
+    //                     10"Gb", 11"G", 12"G#", 13"Ab", 14"A", 15"A#", 16"Bb", 17"B", 18"Cb"];
+
+    // Am Em Bm F#m C#m
+    // Dm Gm Cm Fm
+    // Bb/A#m Eb/D#m Ab/G#m
+    {
+        tonality: "Minor",
+        keys: [
+            { keyName: "C", noteNameIndexMap: [0, 3, 5, 8, 11, 13, 16] },
+            { keyName: "D", noteNameIndexMap: [0, 3, 6, 8, 11, 14, 16] },
+            { keyName: "D#", noteNameIndexMap: [1, 4, 7, 9, 12, 15, 17] },
+            { keyName: "Eb", noteNameIndexMap: [2, 5, 8, 10, 13, 16, 18] },
+            { keyName: "E", noteNameIndexMap: [] },
+            { keyName: "F", noteNameIndexMap: [] },
+            { keyName: "F#", noteNameIndexMap: [] },
+            { keyName: "G", noteNameIndexMap: [] },
+            { keyName: "Gb", noteNameIndexMap: [] },
+            { keyName: "Ab", noteNameIndexMap: [] },
+            { keyName: "A", noteNameIndexMap: [] },
+            { keyName: "A", noteNameIndexMap: [] },
+            { keyName: "Bb", noteNameIndexMap: [] },
+            { keyName: "B", noteNameIndexMap: [] },
+        ]
+    }
+]
+
+// depreciated:
 export const instruments = [
     {
         instrumentName: "Piano",
@@ -70,7 +126,7 @@ export const instruments = [
             { midiNumber: 80, midiOctave: "5", noteName: "G#/Ab", filePath: "/audio/piano/80.m4a" },
             { midiNumber: 81, midiOctave: "5", noteName: "A5", filePath: "/audio/piano/81.m4a" },
             { midiNumber: 82, midiOctave: "5", noteName: "A#/Bb", filePath: "/audio/piano/82.m4a" },
-            { midiNumber: 83, midiOctave: "3", noteName: "B", filePath: "/audio/piano/83.m4a" },
+            { midiNumber: 83, midiOctave: "5", noteName: "B", filePath: "/audio/piano/83.m4a" },
             { midiNumber: 84, midiOctave: "6", noteName: "C", filePath: "/audio/piano/84.m4a" },
             { midiNumber: 85, midiOctave: "6", noteName: "C#/Db", filePath: "/audio/piano/85.m4a" },
             { midiNumber: 86, midiOctave: "6", noteName: "D", filePath: "/audio/piano/86.m4a" },

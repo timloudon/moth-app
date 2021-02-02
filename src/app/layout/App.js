@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import MainPage from "../../components/MainPage/MainPage";
 import Layout from "./Layout"
@@ -9,6 +9,7 @@ import SamplesProvider from "../../components/Exercises/SamplesProvider";
 
 function App() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  console.log(`ctx: `, ctx);
 
   const [isOpen, setOpen] = useState(false);
   const [instrumentType, setInstrumentType] = useState(instruments[0].instrumentName);
