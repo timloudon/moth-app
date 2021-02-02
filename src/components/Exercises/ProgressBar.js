@@ -19,7 +19,8 @@ function ProgressBar({ randomQuestions, currentQuestionIndex }) {
         root: {
             width: '100%',
             height: '10px',
-        }
+            backgroundColor: theme.palette.secondary.light
+        },
     }))
 
     const classes = useStyles();

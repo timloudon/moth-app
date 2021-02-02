@@ -25,7 +25,7 @@ function SpinnerLogo({ isLoading }) {
                 alignItems="center"
                 className={classes.root}
             >
-                <CircularProgress />
+                <CircularProgress color="secondary" />
             </Grid>
             <Footer isLoading={isLoading} />
         </>
