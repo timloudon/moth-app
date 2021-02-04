@@ -5,7 +5,7 @@ import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
 import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
 import { getScaleMidiNumbers, findScalePattern, findChordInCadencePattern, generateNumberBetweenMinAndMax } from "../../resources/helperFunctions";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { CSSTransition } from "react-transition-group";
 import "./Exercise.css";
 
@@ -73,15 +73,16 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     if (answerIntervalNumber === randomQuestion.midiNumber) {
       setIsFinishedQuestion(false);
       answerRef.current -= answerRef.current;
-      if (dataLogRef.current.ctxTimeOnCorrect.length === exerciseLength) {
-        console.log('exercise finished');
-        console.log('dataLogRef.current.ctxTimeOnCorrect: ', dataLogRef.current.ctxTimeOnCorrect)
-        return;
-      }
       setIsWrongAnswer(0);
       answerRef = 0;
       dataLogRef.current.ctxTimeOnCorrect.push(ctx.currentTime);
       setIsCorrectAnswer(true);
+      if (dataLogRef.current.ctxTimeOnCorrect.length === exerciseLength) {
+        console.log('exercise finished');
+        console.log('dataLogRef.current.ctxTimeOnCorrect: ', dataLogRef.current.ctxTimeOnCorrect)
+        setIsFinishedExercise(true);
+        return;
+      }
     } else if (answerIntervalNumber !== randomQuestion.midiNumber) {
       answerRef.current += 1;
       setIsWrongAnswer(isWrongAnswer + 1);
@@ -100,6 +101,10 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     bufferSource.start(when, offset, duration);
   }
 
+  function stopNotes() {
+    ctx.audioBuffer.stop();
+  }
+
   const playChord = (pattern, when) => {
     pattern.forEach((number) => {
       playNote((number + randomQuestion.keyScale[0][0]), when);
@@ -113,6 +118,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   const [isWrongAnswer, setIsWrongAnswer] = useState(0);
   const [isPlayed, setPlayed] = useState();
   const [isFinishedQuestion, setIsFinishedQuestion] = useState(false);
+  const [isFinishedExercise, setIsFinishedExercise] = useState(false);
 
   let answerRef = useRef(isWrongAnswer);
   let dataLogRef = useRef({ ctxTimeOnCorrect: [] });
@@ -141,60 +147,77 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   return (
     <>
-      <ProgressBar
-        randomQuestion={randomQuestion}
-        exerciseLength={exerciseLength}
-        dataLogRef={dataLogRef}
-      />
-      <CSSTransition
-        in={!isCorrectAnswer}
-        appear={true}
-        enter={true}
-        exit={true}
-        onExited={() => {
-          setIsCorrectAnswer(false);
-          setRandomQuestion(() => createQuestion(exerciseKeys));
-        }}
-        timeout={{
-          appear: 1000,
-          enter: 1000,
-          exit: 2000
-        }}
-        classNames="transition-"
-        ref={nodeRef}
-      >
-        <Grid
-          item
-          container
-          direction="column"
-          justify="space-between"
-          alignItems="center"
-          style={{ height: "75vh" }}
-        >
+      { isFinishedExercise
+        ? (<>
+          <Grid
+            item
+            container
+            direction="column"
+            justify="space-between"
+            alignItems="center"
+            style={{ height: "75vh" }}
+          >
+            <Typography>Done</Typography>
+          </Grid>
+        </>)
+        : (<>
+          <ProgressBar
+            randomQuestion={randomQuestion}
+            exerciseLength={exerciseLength}
+            dataLogRef={dataLogRef}
+          />
+          <button onClick={() => stopNotes}>stop notes</button>
+          <CSSTransition
+            in={!isCorrectAnswer}
+            appear={true}
+            enter={true}
+            exit={true}
+            onExited={() => {
+              setIsCorrectAnswer(false);
+              setRandomQuestion(() => createQuestion(exerciseKeys));
+            }}
+            timeout={{
+              appear: 1000,
+              enter: 1000,
+              exit: 2000
+            }}
+            classNames="transition-"
+            ref={nodeRef}
+          >
+            <Grid
+              item
+              container
+              direction="column"
+              justify="space-between"
+              alignItems="center"
+              style={{ height: "75vh" }}
+            >
 
-          <CadenceSymbols />
-          <IntervalQuestionIcon
+              <CadenceSymbols />
+              <IntervalQuestionIcon
+                randomQuestion={randomQuestion}
+                isFinishedQuestion={isFinishedQuestion}
+                isCorrectAnswer={isCorrectAnswer}
+                isWrongAnswer={isWrongAnswer}
+                ref={answerRef}
+              />
+              <ScaleTones
+                randomQuestion={randomQuestion}
+                isFinishedQuestion={isFinishedQuestion}
+                checkIntervalAnswer={checkIntervalAnswer}
+                playNote={playNote}
+              />
+            </Grid>
+          </CSSTransition>
+          <Footer
             randomQuestion={randomQuestion}
-            isFinishedQuestion={isFinishedQuestion}
-            isCorrectAnswer={isCorrectAnswer}
-            isWrongAnswer={isWrongAnswer}
-            ref={answerRef}
-          />
-          <ScaleTones
-            randomQuestion={randomQuestion}
-            isFinishedQuestion={isFinishedQuestion}
-            checkIntervalAnswer={checkIntervalAnswer}
+            isLoading={isLoading}
+            forceRefreshToPlayCadence={forceRefreshToPlayCadence}
             playNote={playNote}
+            isFinishedQuestion={isFinishedQuestion}
           />
-        </Grid>
-      </CSSTransition>
-      <Footer
-        randomQuestion={randomQuestion}
-        isLoading={isLoading}
-        forceRefreshToPlayCadence={forceRefreshToPlayCadence}
-        playNote={playNote}
-        isFinishedQuestion={isFinishedQuestion}
-      />
+        </>)
+      }
     </>
   );
 }
