@@ -6,6 +6,8 @@ import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
 import { getScaleMidiNumbers, findScalePattern, findChordInCadencePattern, generateNumberBetweenMinAndMax } from "../../resources/helperFunctions";
 import { Grid, makeStyles } from "@material-ui/core";
+import { CSSTransition } from "react-transition-group";
+import "./Exercise.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,20 +73,15 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     if (answerIntervalNumber === randomQuestion.midiNumber) {
       setIsFinishedQuestion(false);
       answerRef.current -= answerRef.current;
-      setIsCorrectAnswer(true);
       if (dataLogRef.current.ctxTimeOnCorrect.length === exerciseLength) {
         console.log('exercise finished');
         console.log('dataLogRef.current.ctxTimeOnCorrect: ', dataLogRef.current.ctxTimeOnCorrect)
         return;
       }
-      // consider different way to do this using useEffect?
-      setTimeout(() => {
-        setIsCorrectAnswer(false);
-        setIsWrongAnswer(0);
-        answerRef = 0;
-        dataLogRef.current.ctxTimeOnCorrect.push(ctx.currentTime);
-        setRandomQuestion(() => createQuestion(exerciseKeys));
-      }, 2000);
+      setIsWrongAnswer(0);
+      answerRef = 0;
+      dataLogRef.current.ctxTimeOnCorrect.push(ctx.currentTime);
+      setIsCorrectAnswer(true);
     } else if (answerIntervalNumber !== randomQuestion.midiNumber) {
       answerRef.current += 1;
       setIsWrongAnswer(isWrongAnswer + 1);
@@ -119,6 +116,8 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   let answerRef = useRef(isWrongAnswer);
   let dataLogRef = useRef({ ctxTimeOnCorrect: [] });
+  let nodeRef = useRef(null);
+
 
   useEffect(() => {
     if (!isLoading) {
@@ -129,7 +128,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
       playNote(randomQuestion.midiNumber, ctx.currentTime + 6);
       const finishedQuestion = setTimeout(() => {
         setIsFinishedQuestion(true);
-      }, 5000);
+      }, 6000);
       return () => {
         clearTimeout(finishedQuestion);
       }
@@ -141,33 +140,54 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   }, [randomQuestion])
 
   return (
-    <Grid
-      item
-      container
-      direction="column"
-      justify="space-between"
-      alignItems="center"
-      style={{ height: "75vh" }}
-    >
+    <>
       <ProgressBar
         randomQuestion={randomQuestion}
         exerciseLength={exerciseLength}
         dataLogRef={dataLogRef}
       />
-      <CadenceSymbols />
-      <IntervalQuestionIcon
-        randomQuestion={randomQuestion}
-        isFinishedQuestion={isFinishedQuestion}
-        isCorrectAnswer={isCorrectAnswer}
-        isWrongAnswer={isWrongAnswer}
-        ref={answerRef}
-      />
-      <ScaleTones
-        randomQuestion={randomQuestion}
-        isFinishedQuestion={isFinishedQuestion}
-        checkIntervalAnswer={checkIntervalAnswer}
-        playNote={playNote}
-      />
+      <CSSTransition
+        in={!isCorrectAnswer}
+        appear={true}
+        enter={true}
+        exit={true}
+        onExited={() => {
+          setIsCorrectAnswer(false);
+          setRandomQuestion(() => createQuestion(exerciseKeys));
+        }}
+        timeout={{
+          appear: 1000,
+          enter: 1000,
+          exit: 2000
+        }}
+        classNames="transition-"
+        nodeRef={nodeRef}
+      >
+        <Grid
+          item
+          container
+          direction="column"
+          justify="space-between"
+          alignItems="center"
+          style={{ height: "75vh" }}
+        >
+
+          <CadenceSymbols />
+          <IntervalQuestionIcon
+            randomQuestion={randomQuestion}
+            isFinishedQuestion={isFinishedQuestion}
+            isCorrectAnswer={isCorrectAnswer}
+            isWrongAnswer={isWrongAnswer}
+            ref={answerRef}
+          />
+          <ScaleTones
+            randomQuestion={randomQuestion}
+            isFinishedQuestion={isFinishedQuestion}
+            checkIntervalAnswer={checkIntervalAnswer}
+            playNote={playNote}
+          />
+        </Grid>
+      </CSSTransition>
       <Footer
         randomQuestion={randomQuestion}
         isLoading={isLoading}
@@ -175,7 +195,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
         playNote={playNote}
         isFinishedQuestion={isFinishedQuestion}
       />
-    </Grid>
+    </>
   );
 }
 
