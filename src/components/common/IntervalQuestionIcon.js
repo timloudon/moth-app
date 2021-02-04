@@ -5,9 +5,6 @@ import MothLogo from './MothLogo';
 const IntervalQuestionIcon = React.forwardRef((
     { randomQuestion, isFinishedQuestion, isCorrectAnswer, isWrongAnswer },
     ref) => {
-    // const findNoteNameFromMidiNumber = (midiNumber) => {
-    //     return instrument.instrumentSounds.filter(item => item.midiNumber === midiNumber)[0];
-    // }
 
     const widthAndHeight = 85;
 

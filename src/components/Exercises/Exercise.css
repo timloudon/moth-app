@@ -1,0 +1,71 @@
+.transition--appear {
+  opacity: 0;
+  transform: translateX(5px);
+}
+.transition--appear.transition--appear-active {
+  opacity: 0;
+  transform: translateX(5px);
+  animation: questionAppear 1000ms;
+}
+.transition--appear-done {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.transition--enter {
+  opacity: 0;
+  transform: translateX(5px);
+}
+.transition--enter.transition--enter-active {
+  opacity: 0;
+  transform: translateX(5px);
+  animation: questionAppear 1000ms;
+}
+.transition--enter-done {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes questionAppear {
+  0% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+  66% {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.transition--exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.transition--exit-active {
+  opacity: 1;
+  transform: translateX(0);
+  animation: correctAnswer 2s;
+}
+.transition--exit-done {
+  opacity: 0;
+  transform: translateX(-5px);
+}
+
+@keyframes correctAnswer {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+}
