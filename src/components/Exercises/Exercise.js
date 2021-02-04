@@ -161,7 +161,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
           exit: 2000
         }}
         classNames="transition-"
-        nodeRef={nodeRef}
+        ref={nodeRef}
       >
         <Grid
           item
