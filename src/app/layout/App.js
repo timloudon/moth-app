@@ -4,12 +4,24 @@ import MainPage from "../../components/MainPage/MainPage";
 import Layout from "./Layout"
 import { instruments } from "../../resources/musicResources";
 import "./App.css";
-import { Box, Grid } from "@material-ui/core";
 import SamplesProvider from "../../components/Exercises/SamplesProvider";
+import { Container, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    minWidth: "100vw",
+    padding: 0,
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  console.log(`ctx: `, ctx);
 
   const [isOpen, setOpen] = useState(false);
   const [instrumentType, setInstrumentType] = useState(instruments[0].instrumentName);
@@ -38,19 +50,17 @@ function App() {
   )
 
   const exercise = (props) => (
-    <>
-      <Layout
-        title={props.location.state.cadence.type}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        changeInstrumentSound={changeInstrumentSound}
-        isOpen={isOpen}>
-        <SamplesProvider
-          routeProps={props}
-          instrumentType={instrumentType}
-          ctx={ctx} />
-      </Layout>
-    </>
+    <Layout
+      title={props.location.state.cadence.type}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      changeInstrumentSound={changeInstrumentSound}
+      isOpen={isOpen}>
+      <SamplesProvider
+        routeProps={props}
+        instrumentType={instrumentType}
+        ctx={ctx} />
+    </Layout>
   )
 
   // const options = () => (
@@ -65,7 +75,7 @@ function App() {
   // )
 
   return (
-    <Grid container direction="row" style={{ overflowX: "hidden" }}>
+    <div className={classes.root}>
       <Switch>
         <Route
           exact
@@ -77,7 +87,7 @@ function App() {
           component={exercise}
         />
       </Switch>
-    </Grid>
+    </div>
   );
 }
 

@@ -12,7 +12,12 @@ import "./Exercise.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    padding: theme.spacing(2),
   },
+  container: {
+    margin: 0,
+    // height: 'min-content',
+  }
 }));
 
 function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys, exerciseLength }) {
@@ -155,7 +160,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
             direction="column"
             justify="space-between"
             alignItems="center"
-            style={{ height: "75vh" }}
           >
             <Typography>Done</Typography>
           </Grid>
@@ -166,7 +170,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
             exerciseLength={exerciseLength}
             dataLogRef={dataLogRef}
           />
-          <button onClick={() => stopNotes}>stop notes</button>
           <CSSTransition
             in={!isCorrectAnswer}
             appear={true}
@@ -185,28 +188,31 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
             ref={nodeRef}
           >
             <Grid
-              item
               container
-              direction="column"
-              justify="space-between"
               alignItems="center"
-              style={{ height: "75vh" }}
+              className={classes.root}
             >
-
-              <CadenceSymbols />
-              <IntervalQuestionIcon
-                randomQuestion={randomQuestion}
-                isFinishedQuestion={isFinishedQuestion}
-                isCorrectAnswer={isCorrectAnswer}
-                isWrongAnswer={isWrongAnswer}
-                ref={answerRef}
-              />
-              <ScaleTones
-                randomQuestion={randomQuestion}
-                isFinishedQuestion={isFinishedQuestion}
-                checkIntervalAnswer={checkIntervalAnswer}
-                playNote={playNote}
-              />
+              <Grid container item
+                direction="column"
+                justify="space-evenly"
+                alignItems="center"
+                spacing={10}
+                className={classes.container}>
+                <CadenceSymbols />
+                <IntervalQuestionIcon
+                  randomQuestion={randomQuestion}
+                  isFinishedQuestion={isFinishedQuestion}
+                  isCorrectAnswer={isCorrectAnswer}
+                  isWrongAnswer={isWrongAnswer}
+                  ref={answerRef}
+                />
+                <ScaleTones
+                  randomQuestion={randomQuestion}
+                  isFinishedQuestion={isFinishedQuestion}
+                  checkIntervalAnswer={checkIntervalAnswer}
+                  playNote={playNote}
+                />
+              </Grid>
             </Grid>
           </CSSTransition>
           <Footer

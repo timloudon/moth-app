@@ -12,7 +12,7 @@ function ScaleTones({
 
     return (
         <>
-            <Grid item container justify="center" alignItems="center" spacing={2}>
+            <Grid item container direction="row" justify="center" alignItems="center" spacing={1}>
                 <IntervalButtons
                     playNote={playNote}
                     checkIntervalAnswer={checkIntervalAnswer}

@@ -16,6 +16,8 @@ function MothButton({ buttonText, isFinishedQuestion, onClickHandler }) {
                 padding: '0',
                 border: 'none',
                 outline: "none",
+                // height: `${widthAndHeight + 2}px`,
+                // width: `${widthAndHeight + 2}px`,
                 transform: isFinishedQuestion ? null : 'scale(0.98, 0.98)',
                 opacity: isFinishedQuestion ? '1' : '0.8',
                 boxShadow: isFinishedQuestion ? "0px 2.6704px 2.6704px rgba(0,0,0,.25)" : "0px 1.6704px 1.6704px rgba(0,0,0,.25)",

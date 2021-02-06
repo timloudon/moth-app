@@ -3,10 +3,17 @@ import { Link } from 'react-router-dom';
 import MothLogo from '../common/MothLogo';
 import MothButton from '../common/MothLogo';
 import { Grid, Typography, Button, ButtonBase, makeStyles } from '@material-ui/core';
+import Footer from '../common/Footer';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        padding: theme.spacing(2),
+    },
+    container: {
+    },
     buttonBase: {
-        '&:hover': {}
+        '&:hover': {},
     }
 }));
 
@@ -16,78 +23,88 @@ export default function MainPage() {
 
     return (
         <>
-            <Grid item xs={false} sm={3}></Grid>
-            <Grid item container
-                xs={12}
-                sm={6}
+            <Grid
+                container
                 direction="column"
-                justify="space-evenly"
-                alignItems="flex-start"
-                spacing={4}
-                style={{ height: "85vh" }}>
-                <Grid item>
-                    <ButtonBase
-                        className={classes.buttonBase}
-                        disableRipple={true}
-                        component={Link}
-                        to={{
-                            pathname: "../Exercise/ExerciseContainer",
-                            state: {
-                                scale: { type: "Major" },
-                                cadence: { type: "Major" }
-                            }
-                        }}>
-                        <MothLogo />
-                        <Typography variant="button" style={{ paddingLeft: "15px" }}>MAJOR</Typography>
-                    </ButtonBase>
-                </Grid>
-                <Grid item>
-                    <ButtonBase
-                        disableRipple={true}
-                        component={Link}
-                        to={{
-                            pathname: "../Exercise/ExerciseContainer",
-                            state: {
-                                scale: { type: "Minor" },
-                                cadence: { type: "Minor" }
-                            }
-                        }}>
-                        <MothLogo />
-                        <Typography variant="button" style={{ paddingLeft: "15px" }}>MINOR</Typography>
-                    </ButtonBase>
-                </Grid>
-                <Grid item>
-                    <ButtonBase
-                        disableRipple={true}
-                        component={Link}
-                        to={{
-                            pathname: "../Exercise/ExerciseContainer",
-                            state: {
-                                scale: { type: "Chromatic" },
-                                cadence: { type: "Major" }
-                            }
-                        }}>
-                        <MothLogo />
-                        <Typography variant="button" style={{ paddingLeft: "15px" }} noWrap>MAJOR CHROMATIC</Typography>
-                    </ButtonBase>
-                </Grid>
-                <Grid item>
-                    <ButtonBase
-                        disableRipple={true}
-                        component={Link}
-                        to={{
-                            pathname: "../Exercise/ExerciseContainer",
-                            state: {
-                                scale: { type: "Chromatic" },
-                                cadence: { type: "Minor" }
-                            }
-                        }}>
-                        <MothLogo />
-                        <Typography variant="button" style={{ paddingLeft: "15px" }} noWrap>MINOR CHROMATIC</Typography>
-                    </ButtonBase>
+                justify="center"
+                alignItems="center"
+                className={classes.root}
+            >
+                <Grid container item
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
+                    spacing={3}
+                    xs={12}
+                    className={classes.container}
+                >
+                    <Grid container item xs={6}>
+                        <ButtonBase
+                            className={classes.buttonBase}
+                            disableRipple={true}
+                            component={Link}
+                            to={{
+                                pathname: "../Exercise/ExerciseContainer",
+                                state: {
+                                    scale: { type: "Major" },
+                                    cadence: { type: "Major" }
+                                }
+                            }}>
+                            <MothLogo />
+                            <Typography variant="button">MAJOR</Typography>
+                        </ButtonBase>
+                    </Grid>
+                    <Grid container item xs={6}>
+                        <ButtonBase
+                            className={classes.buttonBase}
+                            disableRipple={true}
+                            component={Link}
+                            to={{
+                                pathname: "../Exercise/ExerciseContainer",
+                                state: {
+                                    scale: { type: "Minor" },
+                                    cadence: { type: "Minor" }
+                                }
+                            }}>
+                            <MothLogo />
+                            <Typography variant="button">MINOR</Typography>
+                        </ButtonBase>
+                    </Grid>
+                    <Grid container item xs={6}>
+                        <ButtonBase
+                            className={classes.buttonBase}
+                            disableRipple={true}
+                            component={Link}
+                            to={{
+                                pathname: "../Exercise/ExerciseContainer",
+                                state: {
+                                    scale: { type: "Chromatic" },
+                                    cadence: { type: "Major" }
+                                }
+                            }}>
+                            <MothLogo />
+                            <Typography variant="button">MAJOR CHROMATIC</Typography>
+                        </ButtonBase>
+                    </Grid>
+                    <Grid container item xs={6}>
+                        <ButtonBase
+                            className={classes.buttonBase}
+                            disableRipple={true}
+                            component={Link}
+                            to={{
+                                pathname: "../Exercise/ExerciseContainer",
+                                state: {
+                                    scale: { type: "Chromatic" },
+                                    cadence: { type: "Minor" }
+                                }
+                            }}>
+                            <MothLogo />
+                            <Typography variant="button">MINOR CHROMATIC</Typography>
+                        </ButtonBase>
+                    </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={false} sm={3}></Grid>
+            <Footer />
         </>
     )
 }

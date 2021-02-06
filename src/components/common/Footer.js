@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.grey[700],
         boxShadow: "0px 0px 0px 0px",
-        top: 'auto',
+        // top: 'auto',
         bottom: '0'
     },
     titleStyles: {
@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         color: theme.palette.text.primary,
     },
+    footer: {
+        // padding: theme.spacing(0, 2),
+        margin: "auto 0 0 0",
+        backgroundColor: theme.palette.grey[700],
+    },
 }));
 
 function Footer({ randomQuestion, isLoading, forceRefreshToPlayCadence, playNote, isFinishedQuestion }) {
@@ -23,39 +28,36 @@ function Footer({ randomQuestion, isLoading, forceRefreshToPlayCadence, playNote
     const classes = useStyles();
 
     return (
-        <AppBar position="fixed" className={classes.root}>
-            <Toolbar>
-                <Grid item container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    spacing={2}>
-                    <Grid item xs></Grid>
-                    <Grid item xs className={classes.button}>
-                        {isLoading
-                            ? <></>
-                            : <Button
-                                disabled={!isFinishedQuestion}
-                                variant="text"
-                                onClick={() => forceRefreshToPlayCadence()}
-                                startIcon={<PlayCircleOutline />}>
-                                <Typography variant="button" noWrap>REPLAY QUESTION</Typography>
-                            </Button>}
-                    </Grid>
-                    <Grid item xs className={classes.button}>
-                        {isLoading
-                            ? <></>
-                            : <Button
-                                variant="text"
-                                onClick={() => playNote(randomQuestion.midiNumber)}
-                                startIcon={<MusicNote />}>
-                                <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
-                            </Button>}
-                    </Grid>
-                    <Grid item xs></Grid>
+        <footer className={classes.footer}>
+            <Grid item container
+                direction="row"
+                justify="center"
+                alignItems="center"
+                spacing={2}
+            >
+                <Grid item xs className={classes.button}>
+                    {isLoading
+                        ? <></>
+                        : <Button
+                            disabled={!isFinishedQuestion}
+                            variant="text"
+                            onClick={() => forceRefreshToPlayCadence()}
+                            startIcon={<PlayCircleOutline />}>
+                            <Typography variant="button" noWrap>REPLAY QUESTION</Typography>
+                        </Button>}
                 </Grid>
-            </Toolbar>
-        </AppBar>
+                <Grid item xs className={classes.button}>
+                    {isLoading
+                        ? <></>
+                        : <Button
+                            variant="text"
+                            onClick={() => playNote(randomQuestion.midiNumber)}
+                            startIcon={<MusicNote />}>
+                            <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
+                        </Button>}
+                </Grid>
+            </Grid>
+        </footer>
     )
 }
 
