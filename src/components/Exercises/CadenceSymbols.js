@@ -3,7 +3,6 @@ import { makeStyles, Grid, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     cadenceItem: {
-        padding: theme.spacing(2),
         textAlign: 'center',
         maxWidth: "60px",
         minWidth: "60px",
@@ -19,7 +18,7 @@ function CadenceSymbols() {
             direction="row"
             justify="center"
             alignItems="center"
-            spacing={2}>
+        >
             <Grid item xs></Grid>
             <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center">ii</Typography></Grid>
             <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center"> - </Typography></Grid>
@@ -27,7 +26,7 @@ function CadenceSymbols() {
             <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center"> - </Typography></Grid>
             <Grid item className={classes.cadenceItem} xs={1}><Typography variant="h1" align="center">I</Typography></Grid>
             <Grid item xs></Grid>
-        </Grid>
+        </Grid >
     )
 }
 

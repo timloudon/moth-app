@@ -16,6 +16,8 @@ const IntervalQuestionIcon = React.forwardRef((
             borderRadius: "50%",
             padding: '0',
             border: 'none',
+            // height: `${widthAndHeight}px`,
+            width: `${widthAndHeight + 6}px`,
         },
         '@keyframes fade-wrong': {
             '0%': { backgroundColor: theme.palette.secondary.main },
@@ -28,6 +30,8 @@ const IntervalQuestionIcon = React.forwardRef((
         },
         questionBackground: {
             backgroundColor: theme.palette.secondary.main,
+            height: `${widthAndHeight}`,
+            width: `${widthAndHeight}`,
         },
         incorrectBackground: {
             animation: '$fade-wrong 1s ease-out',
@@ -61,17 +65,15 @@ const IntervalQuestionIcon = React.forwardRef((
 
     const classes = useStyles(isFinishedQuestion, isWrongAnswer);
     return (
-        <Grid item>
-            <div className={`${classes.scaleTone} 
+        <div className={`${classes.scaleTone} 
                 ${(isWrongAnswer === ref.current && isWrongAnswer !== 0) ? classes.incorrectBackground
-                    : isCorrectAnswer ? classes.correctBackground
-                        : classes.questionBackground}`}>
-                <Typography className={classes.text} variant="button">{isCorrectAnswer ? randomQuestion.noteName : '?'}</Typography>
-                <div className={classes.logo}>
-                    <MothLogo widthAndHeight={widthAndHeight} />
-                </div>
+                : isCorrectAnswer ? classes.correctBackground
+                    : classes.questionBackground}`}>
+            <Typography className={classes.text} variant="button">{isCorrectAnswer ? randomQuestion.noteName : '?'}</Typography>
+            <div className={classes.logo}>
+                <MothLogo widthAndHeight={widthAndHeight} />
             </div>
-        </Grid>
+        </div>
     )
 });
 

@@ -5,11 +5,7 @@ import Footer from "../common/Footer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        '& > * + *': {
-            marginLeft: theme.spacing(1),
-        },
-        minHeight: '85vh',
+        flexGrow: 1,
     },
 }));
 
@@ -20,14 +16,14 @@ function SpinnerLogo({ isLoading }) {
     return (
         <>
             <Grid container item
-                direction="row"
+                direction="column"
                 justify="center"
                 alignItems="center"
                 className={classes.root}
             >
                 <CircularProgress color="secondary" />
             </Grid>
-            <Footer isLoading={isLoading} />
+            <Footer />
         </>
     )
 }
