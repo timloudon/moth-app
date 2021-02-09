@@ -1,31 +1,44 @@
-import React, { useEffect } from 'react'
-import { Grid, AppBar, Toolbar, Typography, makeStyles, IconButton, Button } from '@material-ui/core';
-import { PlayCircleOutline, MusicNote } from "@material-ui/icons";
+import React from 'react';
+import { Grid, makeStyles } from '@material-ui/core';
+import ExerciseFooterButtons from '../Exercises/ExerciseFooterButtons';
+import Exercise from '../Exercises/Exercise';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.grey[700],
         boxShadow: "0px 0px 0px 0px",
         // top: 'auto',
-        bottom: '0'
-    },
-    titleStyles: {
-        color: theme.palette.grey[900]
-    },
-    button: {
-        textAlign: 'center',
-        color: theme.palette.text.primary,
+        bottom: '0',
     },
     footer: {
         // padding: theme.spacing(0, 2),
         margin: "auto 0 0 0",
         backgroundColor: theme.palette.grey[700],
+        height: '54px',
     },
 }));
 
 function Footer({ randomQuestion, isLoading, forceRefreshToPlayCadence, playNote, isFinishedQuestion }) {
-
     const classes = useStyles();
+
+    const page = 'dashboard';
+
+    function renderSwitch(page) {
+        switch (page) {
+            case 'dashboard':
+                return <></>
+            case 'exercise':
+                return <ExerciseFooterButtons
+                    randomQuestion={randomQuestion}
+                    isLoading={isLoading}
+                    forceRefreshToPlayCadence={forceRefreshToPlayCadence}
+                    playNote={playNote}
+                    isFinishedQuestion={isFinishedQuestion}
+                />
+            case 'options':
+                return <></>
+        }
+    }
 
     return (
         <footer className={classes.footer}>
@@ -35,27 +48,7 @@ function Footer({ randomQuestion, isLoading, forceRefreshToPlayCadence, playNote
                 alignItems="center"
                 spacing={2}
             >
-                <Grid item xs className={classes.button}>
-                    {isLoading
-                        ? <></>
-                        : <Button
-                            disabled={!isFinishedQuestion}
-                            variant="text"
-                            onClick={() => forceRefreshToPlayCadence()}
-                            startIcon={<PlayCircleOutline />}>
-                            <Typography variant="button" noWrap>REPLAY QUESTION</Typography>
-                        </Button>}
-                </Grid>
-                <Grid item xs className={classes.button}>
-                    {isLoading
-                        ? <></>
-                        : <Button
-                            variant="text"
-                            onClick={() => playNote(randomQuestion.midiNumber)}
-                            startIcon={<MusicNote />}>
-                            <Typography variant="button" noWrap>REPLAY SCALE TONE</Typography>
-                        </Button>}
-                </Grid>
+                {renderSwitch(page)}
             </Grid>
         </footer>
     )
