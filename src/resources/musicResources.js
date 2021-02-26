@@ -28,10 +28,12 @@ export const scalePatterns = [
 ]
 
 export const allNoteNames = ["C", "C#", "Db", "D", "D#", "Eb", "E", "E#", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B", "Cb"];
+export const allScaleTones = ["1", "b2", "2", "b3", "3", "4", "#4", "b5", "5", "b6", "6", "b7", "7", "8"];
 
 export const keyMaps = [
     {
         tonality: "Major",
+        scaleTonesIndexMap: [0, 2, 4, 5, 8, 10, 12, 13],
         keys: [
             { keyName: "C", noteNameIndexMap: [0, 3, 6, 8, 11, 14, 17] },
             { keyName: "Db", noteNameIndexMap: [0, 2, 5, 8, 10, 13, 16] },
@@ -54,8 +56,11 @@ export const keyMaps = [
     // Am Em Bm F#m C#m
     // Dm Gm Cm Fm
     // Bb/A#m Eb/D#m Ab/G#m
+
+    // [0"1", 1"b2", 2"2", 3"b3", 4"3", 5"4", 6"#4", 7"b5", 8"5", 9"b6", 10"6", 11"b7", 12"7", 13"8"]
     {
         tonality: "Minor",
+        scaleTonesIndexMap: [0, 2, 3, 5, 8, 9, 11, 13],
         keys: [
             { keyName: "Eb", relativeMinor: "Cm", noteNameIndexMap: [0, 3, 5, 8, 11, 13, 16] },
             { keyName: "E", relativeMinor: "C#m", noteNameIndexMap: [1, 4, 6, 9, 12, 14, 17] },

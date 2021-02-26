@@ -11,16 +11,16 @@ function IntervalButtons({
     return (
         randomQuestion.keyScale.map((item) => {
             return (
-                <Grid key={item[0]} item>
+                <Grid key={item.midiNumber} item >
                     <MothButton
-                        buttonText={item[1]}
+                        buttonText={item.scaleTone}
                         onClickHandler={() => {
-                            playNote(item[0]);
-                            checkIntervalAnswer(item[0]);
+                            playNote(item.midiNumber);
+                            checkIntervalAnswer(item.midiNumber);
                         }}
                         isFinishedQuestion={isFinishedQuestion}
                     />
-                </Grid>
+                </Grid >
             );
         })
     )

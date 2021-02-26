@@ -86,9 +86,9 @@ function SamplesProvider({ ctx, routeProps, instrumentType, cadenceType, keySign
     const getScalesOfKeySignatures = (scaleType, questionKeySignatures) => {
         const getTonality = keyMaps.find(keyType => keyType.tonality === scaleType);
         const getKeys = getTonality.keys.filter(key => questionKeySignatures.includes(key.keyName));
-        getKeys.forEach((key) => {
-            key.unsortedScale = key.noteNameIndexMap.map((val) => allNoteNames[val]);
-            key.tonicIndex = key.unsortedScale.findIndex((el) => el === key.keyName);
+        getKeys.forEach(key => {
+            key.unsortedScale = key.noteNameIndexMap.map(val => allNoteNames[val]);
+            key.tonicIndex = key.unsortedScale.findIndex(el => el === key.keyName);
             key.scale = key.unsortedScale.splice(key.tonicIndex).concat(key.unsortedScale);
             // Not sure whether to use this as I may want to loop over multiple octaves:
             // key.scale.push(key.scale[0]);

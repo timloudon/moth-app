@@ -69,7 +69,7 @@ const IntervalQuestionIcon = React.forwardRef((
                 ${(isWrongAnswer === ref.current && isWrongAnswer !== 0) ? classes.incorrectBackground
                 : isCorrectAnswer ? classes.correctBackground
                     : classes.questionBackground}`}>
-            <Typography className={classes.text} variant="button">{isCorrectAnswer ? randomQuestion.noteName : '?'}</Typography>
+            <Typography className={classes.text} variant="button">{isCorrectAnswer ? randomQuestion.scaleTone : '?'}</Typography>
             <div className={classes.logo}>
                 <MothLogo widthAndHeight={widthAndHeight} />
             </div>

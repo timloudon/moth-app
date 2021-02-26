@@ -4,6 +4,7 @@ import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
 import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
+import { allScaleTones, keyMaps } from "../../resources/musicResources";
 import { getScaleMidiNumbers, findScalePattern, findChordInCadencePattern, generateNumberBetweenMinAndMax } from "../../resources/helperFunctions";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { CSSTransition } from "react-transition-group";
@@ -25,10 +26,11 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   console.log('exerciseKeys: ', exerciseKeys);
 
   class Question {
-    constructor(key, midiNumber, noteName, keyScale) {
+    constructor(key, midiNumber, noteName, scaleTone, keyScale) {
       this.key = key;
       this.midiNumber = midiNumber;
       this.noteName = noteName;
+      this.scaleTone = scaleTone;
       this.keyScale = keyScale;
     }
   }
@@ -47,9 +49,9 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     const randomKeyIndex = generateNumberBetweenMinAndMax(0, exerciseKeys.length - 1);
     const questionKey = exerciseKeys[randomKeyIndex].keyName;
     // 2) Find lowest tonic note in note range for the key
-    const instrumentNotesInRange = instrument.instrumentSounds.filter((note) => note.midiNumber >= lowestNoteInQuestionsRange && note.midiNumber <= highestNoteInQuestionsRange);
+    const instrumentNotesInRange = instrument.instrumentSounds.filter(note => note.midiNumber >= lowestNoteInQuestionsRange && note.midiNumber <= highestNoteInQuestionsRange);
     // finds the first element in instrumentNotesInRange - without [0] at the end it returns all notes that match (e.g. two C notes)
-    const lowestNoteInKey = instrumentNotesInRange.filter((note) => note.noteName.find((noteName) => noteName === questionKey))[0];
+    const lowestNoteInKey = instrumentNotesInRange.filter(note => note.noteName.find(noteName => noteName === questionKey))[0];
     const lowestMidiNumberInKey = lowestNoteInKey.midiNumber;
     // 3) Generate midi number scale using the lowest tonic note (key centre)
     const keyMidiNumberScale = getScaleMidiNumbers(scalePattern, lowestMidiNumberInKey, noteRange);
@@ -57,23 +59,35 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     const randomNoteIndex = generateNumberBetweenMinAndMax(0, keyMidiNumberScale.length - 1);
     const midiNumber = keyMidiNumberScale[randomNoteIndex];
     // 5) Generate noteName scale
-    const exerciseKey = exerciseKeys.filter((key) => key.keyName === questionKey)[0];
+    const exerciseKey = exerciseKeys.filter(key => key.keyName === questionKey)[0];
+    console.log('exerciseKey: ', exerciseKey);
     // fix to make sure the final note on the scale is the tonic, no matter the length of the original array
     if (exerciseKey.scale[exerciseKey.scale.length - 1] !== exerciseKey.scale[0]) {
       exerciseKey.scale.push(questionKey);
     }
     const keyNoteNameScale = exerciseKey.scale;
-    // 6) Generate noteName for question
+    // 6) Generate scaleTone scale
+    const scaleTones = [];
+    const getTonality = keyMaps.find(keyType => keyType.tonality === scaleType);
+    const getScaleToneIndexMap = getTonality.scaleTonesIndexMap;
+    console.log('getScaleToneIndexMap: ', getScaleToneIndexMap);
+    for (let i = 0; i < getScaleToneIndexMap.length; i++) {
+      scaleTones.push(allScaleTones[getScaleToneIndexMap[i]]);
+    }
+    console.log('scaleTones: ', scaleTones)
+    // 7) Generate noteName for question
     const noteName = exerciseKey.scale[randomNoteIndex];
-    // 7) Generate 2D array of keyScale
+    // 8) Generate scaleTone for question
+    const scaleTone = scaleTones[randomNoteIndex];
+    // 8) Generate 2D array of keyScale
     let keyScale = [];
 
     for (let i = 0; i < keyMidiNumberScale.length; i++) {
-      keyScale.push([keyMidiNumberScale[i], keyNoteNameScale[i]]);
+      keyScale.push({ midiNumber: keyMidiNumberScale[i], noteName: keyNoteNameScale[i], scaleTone: scaleTones[i] });
     }
 
-    return new Question(questionKey, midiNumber, noteName, keyScale);
-  };
+    return new Question(questionKey, midiNumber, noteName, scaleTone, keyScale);
+  }
 
   const checkIntervalAnswer = (answerIntervalNumber) => {
     if (answerIntervalNumber === randomQuestion.midiNumber) {
@@ -113,7 +127,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   const playChord = (pattern, when) => {
     pattern.forEach((number) => {
-      playNote((number + randomQuestion.keyScale[0][0]), when);
+      playNote((number + randomQuestion.keyScale[0].midiNumber), when);
     });
   };
 
@@ -168,7 +182,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
         </>)
         : (<>
           <ProgressBar
-            randomQuestion={randomQuestion}
             exerciseLength={exerciseLength}
             dataLogRef={dataLogRef}
           />
