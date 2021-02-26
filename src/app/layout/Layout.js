@@ -5,15 +5,11 @@ import { Grid } from "@material-ui/core";
 
 export default function Layout(props) {
 
-    const { title, handleOpen, handleClose, changeInstrumentSound, isOpen } = props;
+    const { title, handleOpen, handleClose, changeInstrumentSound } = props;
 
     return (
         <>
             <Header title={title} handleOpen={handleOpen}></Header>
-            {/* <Options
-                changeInstrumentSound={changeInstrumentSound}
-                isOpen={isOpen}
-                handleClose={handleClose} /> */}
             {props.children}
         </>
     );

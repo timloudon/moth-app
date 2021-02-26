@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys, exerciseLength }) {
 
+  console.log('exerciseKeys: ', exerciseKeys);
+
   class Question {
     constructor(key, midiNumber, noteName, keyScale) {
       this.key = key;
@@ -38,7 +40,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
   const cadenceType = routeProps.location.state.cadence.type;
 
   const createQuestion = (exerciseKeys) => {
-    // const generateNumberBetweenMinAndMax = (min, max) => Math.round(Math.random() * (max - min) + min);
     const lowestNoteInQuestionsRange = questionsNoteRange[0];
     const highestNoteInQuestionsRange = questionsNoteRange[1];
     const noteRange = highestNoteInQuestionsRange - lowestNoteInQuestionsRange;
@@ -118,6 +119,7 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   const [scalePattern] = useState(findScalePattern(scaleType));
   const [randomQuestion, setRandomQuestion] = useState(createQuestion(exerciseKeys));
+  console.dir('random question: ', randomQuestion)
   // add in state that holds user data
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isWrongAnswer, setIsWrongAnswer] = useState(0);

@@ -5,7 +5,9 @@ import SpinnerLogo from '../common/SpinnerLogo';
 import { allNoteNames, keyMaps } from "../../resources/musicResources";
 // import { getScaleNotes, getScalesOfKeySignatures } from '../../resources/helperFunctions';
 
-function SamplesProvider({ routeProps, instrumentType, ctx }) {
+function SamplesProvider({ ctx, routeProps, instrumentType, cadenceType, keySignatures, exerciseLength }) {
+    // cadenceType state not yet in use (pass to Exercise when ready)
+
     class Note {
         constructor(midiNumber, filePath) {
             this.midiNumber = midiNumber;
@@ -96,19 +98,11 @@ function SamplesProvider({ routeProps, instrumentType, ctx }) {
         return getKeys;
     }
 
-    // Options states:
-    // - samplesNoteRange: needs to be the maximum depending on the range of question notes and therefor cadences
-    // - questionNoteRange: the range of questions (default is one octave)
-    // - instrumentSound: the specific samples that are used for the exercise
-    // - exerciseKeys: the selected keys for practice
-
     const [samplesNoteRange, setNoteRange] = useState([42, 84]);
     const [questionsNoteRange, setQuestionsNoteRange] = useState([60, 72]);
-    const [questionKeySignatures, setQuestionKeySignatures] = useState(["F#", "Gb", "D", "C", "Eb"]);
-    const [exerciseLength, setExerciseLength] = useState(3);
     const [instrument, setInstrument] = useState(new Instrument(instrumentType, samplesNoteRange));
     const [isLoading] = useSamples(instrument, ctx);
-    const [exerciseKeys, setKeys] = useState(getScalesOfKeySignatures(scaleType, questionKeySignatures));
+    const [exerciseKeys, setKeys] = useState(getScalesOfKeySignatures(scaleType, keySignatures));
 
     return (
         <>

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import MainPage from "../../components/MainPage/MainPage";
 import Layout from "./Layout"
-import { instruments } from "../../resources/musicResources";
+import Options from "../../components/Options/Options"
+import { instruments, keyMaps } from "../../resources/musicResources";
 import "./App.css";
 import SamplesProvider from "../../components/Exercises/SamplesProvider";
-import { Container, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,28 +24,39 @@ function App() {
 
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-  const [isOpen, setOpen] = useState(false);
   const [instrumentType, setInstrumentType] = useState(instruments[0].instrumentName);
+  const [cadenceType, setCadenceType] = useState('451');
+  const [keySignatures, setKeySignatures] = useState(() => [keyMaps[0].keys[0].keyName]);
+  const [exerciseLength, setExerciseLength] = useState(10);
+  console.log(keySignatures);
 
-  const changeInstrumentSound = (instrumentName) => {
+  const changeInstrumentSound = (event, instrumentName) => {
     setInstrumentType(instrumentName);
+    console.log("instrument: ", instrumentType)
   }
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const changeCadenceType = (event, cadenceName) => {
+    setCadenceType(cadenceName);
+    console.log("cadenceType: ", cadenceType)
+  }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const changeKeySignatures = (event, keySignatures) => {
+    if (keySignatures.length) {
+      setKeySignatures(keySignatures);
+    }
+  }
+
+  // const selectAllKeySignatures = () => {
+  //   const allKeys = keyMaps[0].keys.map(key => key.keyName);
+  //   console.log("allKeys: ", allKeys);
+  //   setKeySignatures(allKeys);
+  // }
 
   const mainPage = () => (
     <Layout
       title="MOTH"
-      handleOpen={handleOpen}
-      handleClose={handleClose}
       changeInstrumentSound={changeInstrumentSound}
-      isOpen={isOpen}>
+    >
       <MainPage />
     </Layout>
   )
@@ -52,27 +64,33 @@ function App() {
   const exercise = (props) => (
     <Layout
       title={props.location.state.cadence.type}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
       changeInstrumentSound={changeInstrumentSound}
-      isOpen={isOpen}>
+    >
       <SamplesProvider
         routeProps={props}
         instrumentType={instrumentType}
+        cadenceType={cadenceType}
+        keySignatures={keySignatures}
+        exerciseLength={exerciseLength}
         ctx={ctx} />
     </Layout>
   )
 
-  // const options = () => (
-  //   <Layout
-  //     title="MOTH"
-  //     handleOpen={handleOpen}
-  //     handleClose={handleClose}
-  //     changeInstrumentSound={changeInstrumentSound}
-  //     isOpen={isOpen}>
-  //     <Options />
-  //   </Layout>
-  // )
+  const options = () => (
+    <Layout
+      title="MOTH"
+      changeInstrumentSound={changeInstrumentSound}
+    >
+      <Options
+        changeCadenceType={changeCadenceType}
+        cadenceType={cadenceType}
+        changeInstrumentSound={changeInstrumentSound}
+        instrumentType={instrumentType}
+        changeKeySignatures={changeKeySignatures}
+        keySignatures={keySignatures}
+      />
+    </Layout>
+  )
 
   return (
     <div className={classes.root}>
@@ -85,6 +103,11 @@ function App() {
           exact
           path="/Exercise/ExerciseContainer"
           component={exercise}
+        />
+        <Route
+          exact
+          path="/Options/Options"
+          component={options}
         />
       </Switch>
     </div>

@@ -22,7 +22,7 @@ function Header({ title, handleOpen }) {
             <Toolbar>
                 <Typography variant="h1" className={classes.titleStyles}>{title}</Typography>
                 <Button component={Link} to={'/'}>Main Page</Button>
-                <Button onClick={() => handleOpen()}>Options</Button>
+                <Button component={Link} to={'/Options/Options'}>Options</Button>
             </Toolbar>
         </AppBar>
     )
