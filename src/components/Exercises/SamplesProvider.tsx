@@ -15,14 +15,14 @@ interface Props {
   exerciseLength: Array<number>;
 }
 
-export const SamplesProvider: React.FC<Props> = ({
+function SamplesProvider({
   ctx,
   routeProps,
   instrumentType,
   cadenceType,
   keySignatures,
   exerciseLength,
-}) => {
+}: Props): JSX.Element {
   // cadenceType state not yet in use (pass to Exercise when ready)
 
   const scaleType = routeProps.location.state.scale.type;
@@ -74,7 +74,6 @@ export const SamplesProvider: React.FC<Props> = ({
           routeProps={routeProps}
           ctx={ctx}
           instrument={instrument}
-          instrumentType={instrumentType}
           questionsNoteRange={questionsNoteRange}
           exerciseLength={exerciseLength}
           exerciseKeys={exerciseKeys}
@@ -83,4 +82,6 @@ export const SamplesProvider: React.FC<Props> = ({
       )}
     </>
   );
-};
+}
+
+export default SamplesProvider;

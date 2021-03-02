@@ -75,6 +75,9 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     const scaleTone = scaleTones[randomNoteIndex];
     // 8) Generate 2D array of keyScale
     let keyScale = [];
+    for (let i = 0; i < keyMidiNumberScale.length; i++) {
+      keyScale.push({ midiNumber: keyMidiNumberScale[i], noteName: keyNoteNameScale[i], scaleTone: scaleTones[i] });
+    }
     return new Question(questionKey, midiNumber, noteName, scaleTone, keyScale);
   }
 

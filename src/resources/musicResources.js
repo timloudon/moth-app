@@ -75,6 +75,30 @@ export const keyMaps = [
             { keyName: "Db", relativeMinor: "Bbm", noteNameIndexMap: [0, 2, 5, 8, 10, 13, 16] },
             { keyName: "D", relativeMinor: "Bm", noteNameIndexMap: [1, 3, 6, 9, 11, 14, 16] },
         ]
+    },
+
+    // export const allScaleTones = ["1", "b2", "2", "b3", "3", "4", "#4", "b5", "5", "b6", "6", "b7", "7", "8"];
+    // const allNoteNames = [0"C", 1"C#", 2"Db", 3"D", 4"D#", 5"Eb", 6"E", 7"E#", 8"F", 9"F#", 
+    //                     10"Gb", 11"G", 12"G#", 13"Ab", 14"A", 15"A#", 16"Bb", 17"B", 18"Cb"];
+
+    {
+        tonality: "Chromatic",
+        scaleTonesIndexMap: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13],
+        keys: [
+            { keyName: "Eb", relativeMinor: "Cm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "E", relativeMinor: "C#m", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "F", relativeMinor: "Dm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "F#", relativeMinor: "D#m", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "Gb", relativeMinor: "Ebm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "G", relativeMinor: "Em", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "Ab", relativeMinor: "Fm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "A", relativeMinor: "F#m", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "Bb", relativeMinor: "Gm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "B", relativeMinor: "G#m", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "C", relativeMinor: "Am", noteNameIndexMap: [0, 1, 3, 4, 6, 8, 9, 11, 12, 14, 15, 17] },
+            { keyName: "Db", relativeMinor: "Bbm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+            { keyName: "D", relativeMinor: "Bm", noteNameIndexMap: [0, 2, 3, 5, 6, 8, 10, 11, 13, 14, 16, 17] },
+        ]
     }
 ]
 
