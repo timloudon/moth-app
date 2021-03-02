@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures, keySignatures, instrumentType, cadenceType }) {
+function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures, changeScaleTonesOrNoteNames, keySignatures, instrumentType, cadenceType, scaleTonesOrNoteNames }) {
 
     const classes = useStyles();
 
@@ -106,6 +106,23 @@ function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures
                     </ToggleButton>
                     <ToggleButton value={keyMaps[0].keys[11].keyName}>
                         {keyMaps[0].keys[11].keyName}
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Grid>
+            <Grid item
+                xs={12}>
+                <ToggleButtonGroup
+                    value={scaleTonesOrNoteNames}
+                    exclusive
+                    onChange={changeScaleTonesOrNoteNames}
+                    alignItems="center"
+                    aria-label="scale tones or note names"
+                >
+                    <ToggleButton value="Scale Tones" >
+                        <Typography variant="button" align="center">Scale Tones</Typography>
+                    </ToggleButton>
+                    <ToggleButton value="Note Names" >
+                        <Typography variant="button" align="center">Note Names</Typography>
                     </ToggleButton>
                 </ToggleButtonGroup>
             </Grid>

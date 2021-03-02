@@ -8,7 +8,7 @@ const IntervalQuestionIcon = React.forwardRef((
 
     const widthAndHeight = 85;
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(theme => ({
         scaleTone: {
             display: 'grid',
             gridTemplateColumns: '1fr',

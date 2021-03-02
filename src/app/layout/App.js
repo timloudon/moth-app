@@ -27,23 +27,25 @@ function App() {
   const [instrumentType, setInstrumentType] = useState(instruments[0].instrumentName);
   const [cadenceType, setCadenceType] = useState('451');
   const [keySignatures, setKeySignatures] = useState(() => [keyMaps[0].keys[0].keyName]);
+  const [scaleTonesOrNoteNames, setScaleTonesOrNoteNames] = useState("Scale Tones");
   const [exerciseLength, setExerciseLength] = useState(10);
-  console.log(keySignatures);
 
   const changeInstrumentSound = (event, instrumentName) => {
     setInstrumentType(instrumentName);
-    console.log("instrument: ", instrumentType)
   }
 
   const changeCadenceType = (event, cadenceName) => {
     setCadenceType(cadenceName);
-    console.log("cadenceType: ", cadenceType)
   }
 
   const changeKeySignatures = (event, keySignatures) => {
     if (keySignatures.length) {
       setKeySignatures(keySignatures);
     }
+  }
+
+  const changeScaleTonesOrNoteNames = (event, chosenOption) => {
+    setScaleTonesOrNoteNames(chosenOption)
   }
 
   // const selectAllKeySignatures = () => {
@@ -88,6 +90,8 @@ function App() {
         instrumentType={instrumentType}
         changeKeySignatures={changeKeySignatures}
         keySignatures={keySignatures}
+        changeScaleTonesOrNoteNames={changeScaleTonesOrNoteNames}
+        scaleTonesOrNoteNames={scaleTonesOrNoteNames}
       />
     </Layout>
   )

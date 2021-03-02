@@ -22,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys, exerciseLength }) {
-
-  console.log('exerciseKeys: ', exerciseKeys);
-
   class Question {
     constructor(key, midiNumber, noteName, scaleTone, keyScale) {
       this.key = key;
@@ -60,7 +57,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     const midiNumber = keyMidiNumberScale[randomNoteIndex];
     // 5) Generate noteName scale
     const exerciseKey = exerciseKeys.filter(key => key.keyName === questionKey)[0];
-    console.log('exerciseKey: ', exerciseKey);
     // fix to make sure the final note on the scale is the tonic, no matter the length of the original array
     if (exerciseKey.scale[exerciseKey.scale.length - 1] !== exerciseKey.scale[0]) {
       exerciseKey.scale.push(questionKey);
@@ -70,22 +66,15 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
     const scaleTones = [];
     const getTonality = keyMaps.find(keyType => keyType.tonality === scaleType);
     const getScaleToneIndexMap = getTonality.scaleTonesIndexMap;
-    console.log('getScaleToneIndexMap: ', getScaleToneIndexMap);
     for (let i = 0; i < getScaleToneIndexMap.length; i++) {
       scaleTones.push(allScaleTones[getScaleToneIndexMap[i]]);
     }
-    console.log('scaleTones: ', scaleTones)
     // 7) Generate noteName for question
     const noteName = exerciseKey.scale[randomNoteIndex];
     // 8) Generate scaleTone for question
     const scaleTone = scaleTones[randomNoteIndex];
     // 8) Generate 2D array of keyScale
     let keyScale = [];
-
-    for (let i = 0; i < keyMidiNumberScale.length; i++) {
-      keyScale.push({ midiNumber: keyMidiNumberScale[i], noteName: keyNoteNameScale[i], scaleTone: scaleTones[i] });
-    }
-
     return new Question(questionKey, midiNumber, noteName, scaleTone, keyScale);
   }
 
@@ -133,7 +122,6 @@ function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, 
 
   const [scalePattern] = useState(findScalePattern(scaleType));
   const [randomQuestion, setRandomQuestion] = useState(createQuestion(exerciseKeys));
-  console.dir('random question: ', randomQuestion)
   // add in state that holds user data
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isWrongAnswer, setIsWrongAnswer] = useState(0);
