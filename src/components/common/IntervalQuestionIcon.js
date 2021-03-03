@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import MothLogo from './MothLogo';
 
 const IntervalQuestionIcon = React.forwardRef((

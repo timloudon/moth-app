@@ -1,6 +1,6 @@
 import React from "react";
 // Components
-import { instruments, keyMaps } from "../../resources/musicResources";
+import { cadencePatterns, instruments, keyMaps } from "../../resources/musicResources";
 // MaterialUI
 import { makeStyles, Grid, Typography } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton"
@@ -12,12 +12,18 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures, changeScaleTonesOrNoteNames, keySignatures, instrumentType, cadenceType, scaleTonesOrNoteNames }) {
-
+function Options({
+    changeInstrumentSound,
+    changeCadenceType,
+    changeKeySignatures,
+    changeScaleTonesOrNoteNames,
+    keySignatures,
+    instrumentType,
+    cadenceType,
+    scaleTonesOrNoteNames
+}) {
     const classes = useStyles();
-
     // const allKeys = keyMaps[0].keys.map(key => key.keyName);
-
     return (
         <Grid container
             spacing={3}
@@ -33,22 +39,19 @@ function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures
                     alignItems="center"
                     aria-label="cadence type"
                 >
-                    <ToggleButton value="251" >
-                        <Typography
-                            variant="button"
-                            className={classes.text}
-                            align="center">
-                            ii - V - I
-                        </Typography>
-                    </ToggleButton>
-                    <ToggleButton value="451" >
-                        <Typography
-                            variant="button"
-                            className={classes.text}
-                            align="center">
-                            IV - V - I
-                        </Typography>
-                    </ToggleButton>
+                    {cadencePatterns.map((cadence, i) => {
+                        return (
+                            <ToggleButton value={cadence.type} key={i}>
+                                <Typography
+                                    variant="button"
+                                    className={classes.text}
+                                    align="center"
+                                >
+                                    {cadence.type}
+                                </Typography>
+                            </ToggleButton>
+                        )
+                    })}
                 </ToggleButtonGroup>
             </Grid>
             <Grid item
@@ -60,53 +63,24 @@ function Options({ changeInstrumentSound, changeCadenceType, changeKeySignatures
                     alignItems="center"
                     aria-label="instrument sound"
                 >
-                    <ToggleButton value={instruments[0].instrumentName} >
-                        <Typography variant="button" align="center">{instruments[0].instrumentName}</Typography>
-                    </ToggleButton>
-                    <ToggleButton value={instruments[1].instrumentName} >
-                        <Typography variant="button" align="center">{instruments[1].instrumentName}</Typography>
-                    </ToggleButton>
+                    {instruments.map((instrument, i) => {
+                        return (
+                            <ToggleButton key={i} value={instrument} >
+                                <Typography variant="button" align="center">{instrument}</Typography>
+                            </ToggleButton>
+                        )
+                    })}
                 </ToggleButtonGroup>
             </Grid>
             <Grid item>
                 <ToggleButtonGroup value={keySignatures} onChange={changeKeySignatures} aria-label="change key signatures">
-                    {/* <ToggleButton value={allKeys}>All Keys</ToggleButton> */}
-                    <ToggleButton value={keyMaps[0].keys[0].keyName}>
-                        {keyMaps[0].keys[0].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[1].keyName}>
-                        {keyMaps[0].keys[1].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[2].keyName}>
-                        {keyMaps[0].keys[2].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[3].keyName}>
-                        {keyMaps[0].keys[3].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[4].keyName}>
-                        {keyMaps[0].keys[4].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[5].keyName}>
-                        {keyMaps[0].keys[5].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[6].keyName}>
-                        {keyMaps[0].keys[6].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[7].keyName}>
-                        {keyMaps[0].keys[7].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[8].keyName}>
-                        {keyMaps[0].keys[8].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[9].keyName}>
-                        {keyMaps[0].keys[9].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[10].keyName}>
-                        {keyMaps[0].keys[10].keyName}
-                    </ToggleButton>
-                    <ToggleButton value={keyMaps[0].keys[11].keyName}>
-                        {keyMaps[0].keys[11].keyName}
-                    </ToggleButton>
+                    {keyMaps[0].keys.map((key, i) => {
+                        return (
+                            <ToggleButton key={i} value={key.keyName}>
+                                {key.keyName}
+                            </ToggleButton>
+                        )
+                    })}
                 </ToggleButtonGroup>
             </Grid>
             <Grid item

@@ -22,7 +22,7 @@ function SamplesProvider({
   cadenceType,
   keySignatures,
   exerciseLength,
-}: Props): JSX.Element {
+}: Props) {
   // cadenceType state not yet in use (pass to Exercise when ready)
 
   const scaleType = routeProps.location.state.scale.type;
@@ -55,7 +55,7 @@ function SamplesProvider({
     return getKeys;
   };
 
-  const [samplesNoteRange, setNoteRange] = useState([42, 84]);
+  const [samplesNoteRange, setNoteRange] = useState([36, 103]);
   const [questionsNoteRange, setQuestionsNoteRange] = useState([60, 72]);
   const [instrument, setInstrument] = useState(
     new Instrument(instrumentType, samplesNoteRange)
@@ -64,6 +64,7 @@ function SamplesProvider({
   const [exerciseKeys, setKeys] = useState(
     getScalesOfKeySignatures(scaleType, keySignatures)
   );
+  console.log("instrument: ", instrument);
 
   return (
     <>

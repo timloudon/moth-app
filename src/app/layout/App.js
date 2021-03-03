@@ -24,7 +24,7 @@ function App() {
 
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-  const [instrumentType, setInstrumentType] = useState(instruments[0].instrumentName);
+  const [instrumentType, setInstrumentType] = useState(instruments[0]);
   const [cadenceType, setCadenceType] = useState('451');
   const [keySignatures, setKeySignatures] = useState(() => [keyMaps[0].keys[0].keyName]);
   const [scaleTonesOrNoteNames, setScaleTonesOrNoteNames] = useState("Scale Tones");
@@ -58,6 +58,7 @@ function App() {
     <Layout
       title="MOTH"
       changeInstrumentSound={changeInstrumentSound}
+      page="MainPage"
     >
       <MainPage />
     </Layout>
@@ -67,6 +68,7 @@ function App() {
     <Layout
       title={props.location.state.cadence.type}
       changeInstrumentSound={changeInstrumentSound}
+      page="Exercise"
     >
       <SamplesProvider
         routeProps={props}

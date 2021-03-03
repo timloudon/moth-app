@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Header({ title, handleOpen }) {
+function Header({ title, page }) {
 
     const classes = useStyles();
 
@@ -21,8 +21,8 @@ function Header({ title, handleOpen }) {
         <AppBar className={classes.root} position="static">
             <Toolbar>
                 <Typography variant="h1" className={classes.titleStyles}>{title}</Typography>
-                <Button component={Link} to={'/'}>Main Page</Button>
-                <Button component={Link} to={'/Options/Options'}>Options</Button>
+                {page === "MainPage" ? null : <Button component={Link} to={'/'}>Main Page</Button>}
+                {page === "Exercise" ? null : <Button component={Link} to={'/Options/Options'}>Options</Button>}
             </Toolbar>
         </AppBar>
     )

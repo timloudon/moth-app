@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MothLogo from '../common/MothLogo';
-import MothButton from '../common/MothLogo';
-import { Grid, Typography, Button, ButtonBase, makeStyles } from '@material-ui/core';
+import { Grid, Typography, ButtonBase, makeStyles } from '@material-ui/core';
 import Footer from '../common/Footer';
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +77,7 @@ export default function MainPage() {
                             to={{
                                 pathname: "../Exercise/ExerciseContainer",
                                 state: {
-                                    scale: { type: "Chromatic" },
+                                    scale: { type: "Major" },
                                     cadence: { type: "Major" }
                                 }
                             }}>
@@ -94,7 +93,7 @@ export default function MainPage() {
                             to={{
                                 pathname: "../Exercise/ExerciseContainer",
                                 state: {
-                                    scale: { type: "Chromatic" },
+                                    scale: { type: "Minor" },
                                     cadence: { type: "Minor" }
                                 }
                             }}>

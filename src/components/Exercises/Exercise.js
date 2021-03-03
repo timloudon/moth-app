@@ -4,6 +4,7 @@ import CadenceSymbols from "./CadenceSymbols";
 import IntervalQuestionIcon from "../common/IntervalQuestionIcon";
 import ScaleTones from "./ScaleTones";
 import Footer from "../common/Footer";
+import Question from "./Question"
 import { allScaleTones, keyMaps } from "../../resources/musicResources";
 import { getScaleMidiNumbers, findScalePattern, findChordInCadencePattern, generateNumberBetweenMinAndMax } from "../../resources/helperFunctions";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
@@ -17,20 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     margin: 0,
-    // height: 'min-content',
   }
 }));
 
 function Exercise({ isLoading, routeProps, ctx, questionsNoteRange, instrument, exerciseKeys, exerciseLength }) {
-  class Question {
-    constructor(key, midiNumber, noteName, scaleTone, keyScale) {
-      this.key = key;
-      this.midiNumber = midiNumber;
-      this.noteName = noteName;
-      this.scaleTone = scaleTone;
-      this.keyScale = keyScale;
-    }
-  }
 
   const classes = useStyles();
 
